@@ -1,28 +1,38 @@
-import Database from "better-sqlite3";
-import path from "path";
-import fs from "fs";
-
-// In Next.js App Router, process.cwd() is the root of the web/ directory.
-const dbPath = path.resolve(process.cwd(), "../outputs", "database.sqlite");
-
 let db: any = null;
 
 function getDb() {
     if (db) return db;
+    if (typeof window !== "undefined") return null; // Ensure server-side only
 
     try {
-        if (!fs.existsSync(path.dirname(dbPath))) {
-            console.warn(`Database directory not found: ${path.dirname(dbPath)}`);
+        const Database = require("better-sqlite3");
+        const path = require("path");
+        const fs = require("fs");
+
+        // Try multiple possible locations for the database
+        const possiblePaths = [
+            path.resolve(process.cwd(), "../outputs", "database.sqlite"),
+            path.resolve(process.cwd(), "outputs", "database.sqlite"),
+            path.join(process.cwd(), "database.sqlite")
+        ];
+
+        let finalPath = "";
+        for (const p of possiblePaths) {
+            if (fs.existsSync(p)) {
+                finalPath = p;
+                break;
+            }
+        }
+
+        if (!finalPath) {
+            console.warn("Database file not found in any expected location. Returning null for build compatibility.");
             return null;
         }
-        if (!fs.existsSync(dbPath)) {
-            console.warn(`Database file not found: ${dbPath}`);
-            return null;
-        }
-        db = new Database(dbPath, { readonly: true });
+
+        db = new Database(finalPath, { readonly: true });
         return db;
     } catch (error) {
-        console.error("Failed to initialize database:", error);
+        console.error("Database initialization failed (safe for build):", error);
         return null;
     }
 }
