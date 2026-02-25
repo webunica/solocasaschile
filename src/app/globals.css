@@ -1,26 +1,53 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --color-brand-400: #37FFDB;
+  --color-brand-500: #3200C1;
+  --color-brand-600: #2b00a5;
+
+  --color-accent-500: #37FFDB;
+
+  --font-nunito: "Nunito", sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #FFFFFF;
+    --foreground: #3200C1;
+    --font-size-body: 22px;
+  }
+
+  html {
+    @apply antialiased scroll-smooth;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-size: var(--body-size, 18px);
+    /* 22px might be too much for all, but I'll set it in specific places or as optional */
+    @apply min-h-screen selection:bg-accent-500/30 selection:text-brand-500;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer utilities {
+  .brand-button-primary {
+    @apply inline-flex items-center justify-center gap-2 w-fit bg-[#37FFDB] text-[#3200C1] font-bold py-3 px-6 rounded-[4px] transition-all hover:brightness-110 active:scale-95 text-center;
+  }
+
+  .brand-button-secondary {
+    @apply inline-flex items-center justify-center gap-2 w-fit bg-white text-[#3200C1] border border-[#3200C1] font-bold py-3 px-6 rounded-[4px] transition-all hover:bg-slate-50 active:scale-95 text-center;
+  }
+
+  .brand-input {
+    @apply w-full bg-white border border-slate-300 rounded-[0px] px-4 py-3 text-[#343A40] focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-all shadow-none;
+  }
+
+  .glass-panel {
+    @apply bg-white border border-slate-200 shadow-sm rounded-[4px];
+  }
+
+  .glass-card {
+    @apply bg-white border border-slate-200 rounded-[4px] hover:border-accent-500 transition-all duration-300 shadow-sm;
+  }
 }
