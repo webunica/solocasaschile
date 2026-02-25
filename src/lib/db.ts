@@ -1,9 +1,31 @@
 import Database from "better-sqlite3";
 import path from "path";
+import fs from "fs";
 
 // In Next.js App Router, process.cwd() is the root of the web/ directory.
 const dbPath = path.resolve(process.cwd(), "../outputs", "database.sqlite");
-const db = new Database(dbPath, { readonly: true });
+
+let db: any = null;
+
+function getDb() {
+    if (db) return db;
+
+    try {
+        if (!fs.existsSync(path.dirname(dbPath))) {
+            console.warn(`Database directory not found: ${path.dirname(dbPath)}`);
+            return null;
+        }
+        if (!fs.existsSync(dbPath)) {
+            console.warn(`Database file not found: ${dbPath}`);
+            return null;
+        }
+        db = new Database(dbPath, { readonly: true });
+        return db;
+    } catch (error) {
+        console.error("Failed to initialize database:", error);
+        return null;
+    }
+}
 
 export interface ModelRow {
     id: number;
@@ -56,8 +78,11 @@ export function getModels(filters: {
     if (filters.maxPrice) { whereClause += " AND price_from <= ?"; params.push(filters.maxPrice); }
 
     // Count Total
+    const database = getDb();
+    if (!database) return { models: [], totalCount: 0, page: 1, limit: 20 };
+
     const countQuery = "SELECT count(*) as total FROM models" + whereClause;
-    const totalRow = db.prepare(countQuery).get(...params) as { total: number };
+    const totalRow = database.prepare(countQuery).get(...params) as { total: number };
     const totalCount = totalRow.total;
 
     // Build Main Data Query
@@ -89,20 +114,26 @@ export function getModels(filters: {
     query += " LIMIT ? OFFSET ?";
     params.push(limit, offset);
 
-    const stmt = db.prepare(query);
+    const stmt = database.prepare(query);
     const models = stmt.all(...params) as ModelRow[];
 
     return { models, totalCount, page, limit };
 }
 
 export function getDistinctCompanies() {
-    return db.prepare("SELECT DISTINCT company_name FROM models WHERE company_name IS NOT NULL ORDER BY company_name").all() as { company_name: string }[];
+    const database = getDb();
+    if (!database) return [];
+    return database.prepare("SELECT DISTINCT company_name FROM models WHERE company_name IS NOT NULL ORDER BY company_name").all() as { company_name: string }[];
 }
 
 export function getDistinctCategories() {
-    return db.prepare("SELECT DISTINCT category FROM models WHERE category IS NOT NULL ORDER BY category").all() as { category: string }[];
+    const database = getDb();
+    if (!database) return [];
+    return database.prepare("SELECT DISTINCT category FROM models WHERE category IS NOT NULL ORDER BY category").all() as { category: string }[];
 }
 
 export function getRandomModels(limit: number = 5) {
-    return db.prepare("SELECT rowid as id, * FROM models WHERE image_urls IS NOT NULL AND image_urls != '' ORDER BY RANDOM() LIMIT ?").all(limit) as ModelRow[];
+    const database = getDb();
+    if (!database) return [];
+    return database.prepare("SELECT rowid as id, * FROM models WHERE image_urls IS NOT NULL AND image_urls != '' ORDER BY RANDOM() LIMIT ?").all(limit) as ModelRow[];
 }
