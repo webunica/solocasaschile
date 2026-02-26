@@ -77,7 +77,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
 
       <main className="max-w-[1600px] w-full mx-auto px-6 pt-8 pb-12 flex flex-col xl:flex-row gap-8 items-start">
         {/* Sidebar Filter */}
-        <Suspense fallback={<div className="w-80 h-[80vh] bg-white border border-slate-100 animate-pulse rounded-lg shrink-0" />}>
+        <Suspense fallback={<div className="hidden xl:block w-80 h-[80vh] bg-white border border-slate-100 animate-pulse rounded-lg shrink-0" />}>
           <FiltersSidebar companies={companies} categories={categories} />
         </Suspense>
 
