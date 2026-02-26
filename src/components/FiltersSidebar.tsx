@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect } from "react";
 import { useQueryStates, parseAsInteger, parseAsString } from "nuqs";
 import { Search, Map, Bed, Bath, Hash, Banknote, SearchIcon, Filter, X } from "lucide-react";
