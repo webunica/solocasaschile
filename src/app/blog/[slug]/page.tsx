@@ -40,48 +40,48 @@ const POST_DATA: Record<string, any> = {
         `
     },
     "prefabricadas-vs-tradicional": {
-        title: "Casas Prefabricadas vs. Construcción Tradicional: ¿Cuál conviene más?",
+        title: "Casas Prefabricadas vs Construcción Tradicional en Chile: ¿Cuál es la mejor opción?",
         category: "Consejos",
         image: "https://images.unsplash.com/photo-1480074568708-e7b720bb3f09?auto=format&fit=crop&q=80&w=1600",
         content: `
-            <p>Elegir entre casas prefabricadas y construcción tradicional no es solo una decisión de precio. En Chile, donde el clima, la logística y la mano de obra influyen fuerte, conviene comparar costo total, tiempos reales, durabilidad y flexibilidad del proyecto.</p>
+            <p>Elegir entre <strong>casas prefabricadas vs construcción tradicional en Chile</strong> no es solo una decisión de precio. En Chile, donde el clima, la logística y la mano de obra influyen fuerte, conviene comparar costo total, tiempos reales, durabilidad y flexibilidad del proyecto para determinar cuál es la mejor opción.</p>
 
             <h2>¿Qué se considera “Casa Prefabricada” en Chile?</h2>
-            <p>Una casa prefabricada es una vivienda fabricada parcial o totalmente en un taller y luego transportada y montada en terreno. Puede ser panelizada, modular o de estructura liviana.</p>
+            <p>Una <strong>casa prefabricada</strong> es una vivienda fabricada parcial o totalmente en un taller y luego transportada y montada en terreno. Puede ser panelizada (como las <a href="/blog/ventajas-casas-sip-chile" style="text-decoration: underline; color: #3200C1;">casas SIP</a>), modular o de estructura liviana.</p>
             <p><strong>La clave:</strong> Gran parte del trabajo se hace fuera de obra con procesos repetibles y controlados.</p>
 
             <h2>¿Qué es Construcción Tradicional?</h2>
-            <p>Se refiere a la obra hecha principalmente en terreno con sistemas como albañilería (ladrillo), hormigón armado o estructuras de madera ejecutadas in situ. Es más “artesanal” y depende directamente de las condiciones del lugar.</p>
+            <p>La <strong>construcción tradicional</strong> se refiere a la obra hecha principalmente en terreno con sistemas como albañilería (ladrillo), hormigón armado o estructuras de madera ejecutadas in situ. Es más “artesanal” y depende directamente de las condiciones del lugar.</p>
 
-            <h2>Comparación rápida: ¿Qué conviene realmente?</h2>
+            <h2>Casas Prefabricadas vs Tradicional: ¿Cuál conviene realmente?</h2>
             
-            <h3>1) Costos</h3>
-            <p><strong>Prefabricadas:</strong> Precio inicial más “cerrado”. Eficiencia en fabricación pero ojo con lo que NO incluye (fundaciones, conexiones, permisos).</p>
-            <p><strong>Tradicional:</strong> Permite ajustar costos por etapas, pero es más sensible a imprevistos y alzas de materiales.</p>
+            <h3>1) Comparación de Costos</h3>
+            <p><strong>Costos prefabricadas:</strong> Precio inicial más “cerrado”. Eficiencia en fabricación pero ojo con lo que NO incluye (fundaciones, conexiones, permisos). Conoce más sobre <a href="/blog/financiamiento-casas-prefabricadas-chile" style="text-decoration: underline; color: #3200C1;">financiamiento para casas prefabricadas</a>.</p>
+            <p><strong>Costos tradicional:</strong> Permite ajustar costos por etapas, pero es más sensible a imprevistos y alzas de materiales durante la construcción.</p>
 
-            <h3>2) Tiempos de entrega</h3>
-            <p><strong>Prefabricadas:</strong> Notablemente más rápidas. El montaje es eficiente y se reduce la exposición a climas adversos durante la obra.</p>
-            <p><strong>Tradicional:</strong> Más lenta por procesos húmedos y coordinación de múltiples cuadrillas.</p>
+            <h3>2) Tiempos de entrega y construcción</h3>
+            <p><strong>Tiempos prefabricadas:</strong> Notablemente más rápidas. El montaje es eficiente y se reduce la exposición a climas adversos durante la obra. Ideal para proyectos con urgencia.</p>
+            <p><strong>Tiempos tradicional:</strong> Más lenta por procesos húmedos, tiempos de secado y la necesaria coordinación de múltiples cuadrillas en terreno.</p>
 
-            <h3>3) Durabilidad</h3>
-            <p>La durabilidad depende de la <strong>calidad de ejecución</strong> más que del método. Una prefabricada con buenos sellos y mantención puede durar tanto como una de hormigón.</p>
+            <h3>3) Durabilidad y mantenimiento</h3>
+            <p>La <strong>durabilidad y vida útil</strong> depende de la calidad de ejecución más que del método constructivo. Una <strong>casa prefabricada</strong> con buenos sellos y mantención adecuada puede durar tanto como una <strong>construcción tradicional</strong> de hormigón. Ambas requieren cumplir con la normativa chilena.</p>
 
-            <h2>¿Cuándo elegir cada una?</h2>
+            <h2>Conclusión: ¿Cuándo elegir cada sistema constructivo?</h2>
             <ul>
-                <li><strong>Elige Prefabricada si:</strong> Priorizas rapidez, quieres control de presupuesto y construyes en zonas de clima difícil (como el sur).</li>
-                <li><strong>Elige Tradicional si:</strong> Quieres personalización arquitectónica total o planeas ampliar la casa por etapas de forma compleja.</li>
+                <li><strong>Elige una Casa Prefabricada si:</strong> Priorizas rapidez en la construcción, quieres un mayor control del presupuesto final y construyes en zonas de clima difícil (como el sur de Chile).</li>
+                <li><strong>Elige Construcción Tradicional si:</strong> Quieres una personalización arquitectónica total desde cero o planeas ampliar la casa por etapas de forma compleja a largo plazo.</li>
             </ul>
 
-            <h2>Costos ocultos a considerar</h2>
-            <p>Antes de decidir, revisa este checklist que suele mover el presupuesto:</p>
+            <h2>Consideraciones finales y costos ocultos</h2>
+            <p>Antes de tomar una decisión entre <strong>prefabricadas vs tradicional</strong>, revisa este checklist que suele mover el presupuesto:</p>
             <ul>
-                <li>Radier y fundaciones.</li>
-                <li>Transporte y logística de acceso.</li>
-                <li>Instalaciones (agua, luz, fosa séptica).</li>
-                <li>Permisos y regularización municipal.</li>
+                <li>Obras previas: Radier y fundaciones de hormigón.</li>
+                <li>Transporte y logística de acceso al terreno.</li>
+                <li>Instalaciones sanitarias y eléctricas (agua, luz, fosa séptica).</li>
+                <li><a href="/blog/permisos-municipales-construccion-chile" style="text-decoration: underline; color: #3200C1;">Permisos y regularización municipal</a> (necesarios en ambos casos).</li>
             </ul>
 
-            <p><strong>Consejo final:</strong> Pide presupuestos "llave en mano" comparables. No compares solo el valor del kit, sino el costo total habitado.</p>
+            <p><strong>Consejo final:</strong> Pide presupuestos "llave en mano" comparables. No te quedes solo con el valor del kit básico de la casa prefabricada, analiza siempre el <strong>costo total habitado</strong>.</p>
         `
     },
     "ventajas-casas-sip-chile": {
@@ -159,8 +159,25 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
     if (slug === "prefabricadas-vs-tradicional") {
         return {
-            title: "Casas Prefabricadas vs Tradicional en Chile: ¿Cuál conviene?",
-            description: "Compara casas prefabricadas vs construcción tradicional en Chile. Analizamos costos, tiempos y durabilidad."
+            title: "Casas Prefabricadas vs Construcción Tradicional en Chile: ¿Cuál es la mejor opción?",
+            description: "Compara casas prefabricadas y tradicionales en Chile: costos, tiempos y durabilidad analizados.",
+            alternates: {
+                canonical: `https://www.solocasaschile.com/blog/${slug}`
+            },
+            openGraph: {
+                title: "Casas Prefabricadas vs Construcción Tradicional en Chile: ¿Cuál es la mejor opción?",
+                description: "Compara casas prefabricadas y tradicionales en Chile: costos, tiempos y durabilidad analizados.",
+                url: `https://www.solocasaschile.com/blog/${slug}`,
+                images: [
+                    {
+                        url: "https://images.unsplash.com/photo-1480074568708-e7b720bb3f09?auto=format&fit=crop&q=80&w=1600",
+                        width: 1600,
+                        height: 900,
+                        alt: "Casas prefabricadas vs tradicionales"
+                    }
+                ],
+                type: 'article',
+            }
         };
     }
 
@@ -188,13 +205,33 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     if (post) {
         return {
             title: `${post.title} | solocasaschile.com`,
-            description: post.excerpt || `Lee nuestro artículo sobre ${post.title} y descubre las mejores opciones para tu hogar en Chile.`
+            description: post.excerpt || `Lee nuestro artículo sobre ${post.title} y descubre las mejores opciones para tu hogar en Chile.`,
+            alternates: {
+                canonical: `https://www.solocasaschile.com/blog/${slug}`
+            },
+            openGraph: {
+                title: post.title,
+                description: post.excerpt || `Lee nuestro artículo sobre ${post.title} y descubre las mejores opciones para tu hogar en Chile.`,
+                url: `https://www.solocasaschile.com/blog/${slug}`,
+                images: [
+                    {
+                        url: post.image,
+                        width: 1600,
+                        height: 900,
+                        alt: post.title
+                    }
+                ],
+                type: 'article',
+            }
         };
     }
 
     return {
         title: "Blog de Vivienda Sostenible | solocasaschile.com",
-        description: "Artículos, guías y consejos sobre casas SIP, prefabricadas y construcción eficiente en Chile."
+        description: "Artículos, guías y consejos sobre casas SIP, prefabricadas y construcción eficiente en Chile.",
+        alternates: {
+            canonical: `https://www.solocasaschile.com/blog`
+        }
     };
 }
 
@@ -206,8 +243,37 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         image: "https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&q=80&w=1600"
     };
 
+    const schemaMarkup = {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": post.title,
+        "image": post.image,
+        "author": {
+            "@type": "Organization",
+            "name": "Equipo solocasaschile"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "solocasaschile.com",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://www.solocasaschile.com/icon.png"
+            }
+        },
+        "datePublished": "2026-02-25T00:00:00+00:00",
+        "dateModified": "2026-02-25T00:00:00+00:00",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": `https://www.solocasaschile.com/blog/${slug}`
+        }
+    };
+
     return (
         <article className="bg-white min-h-screen">
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaMarkup) }}
+            />
             {/* Header */}
             <header className="border-b border-slate-100 bg-white/80 backdrop-blur-md sticky top-0 z-50">
                 <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
