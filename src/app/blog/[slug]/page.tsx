@@ -85,18 +85,32 @@ const POST_DATA: Record<string, any> = {
         `
     },
     "ventajas-casas-sip-chile": {
-        title: "Guía Completa: Ventajas de las Casas SIP en el Clima Chileno",
+        title: "Ventajas de las Casas SIP en Chile: Beneficios y Características",
         category: "Casas SIP",
         image: "https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&q=80&w=1600",
         content: `
-            <p>Las casas SIP (Structural Insulated Panels) se han vuelto una alternativa cada vez más buscada en Chile por una razón simple: el país tiene climas muy exigentes y cambiantes.</p>
-            <h2>Beneficios en el Clima Chileno</h2>
-            <p>Desde lluvias intensas en el sur hasta calor fuerte en el norte, la envolvente térmica de una vivienda hace toda la diferencia.</p>
-            <h3>Principales Ventajas:</h3>
-            <ul>
-                <li><strong>Aislación térmica superior:</strong> Más confort todo el año y ahorro significativo en calefacción.</li>
-                <li><strong>Construcción rápida:</strong> Ideal para zonas donde el clima puede retrasar las obras tradicionales.</li>
-            </ul>
+            <p>Las <strong>casas SIP en Chile</strong> (Structural Insulated Panels o Paneles Estructurales Aislados) se han vuelto una alternativa cada vez más buscada por una razón simple: el país cuenta con climas muy exigentes y cambiantes, donde la eficiencia energética es fundamental.</p>
+            
+            <h2>Beneficios de las Casas SIP en el Clima Chileno</h2>
+            <p>Desde lluvias intensas y frío extremo en el sur hasta el calor fuerte en la zona norte y central, la <strong>envolvente térmica</strong> de una vivienda hace toda la diferencia para tu calidad de vida.</p>
+            
+            <h3>1. Eficiencia Energética y Aislación Térmica Superior</h3>
+            <p>El núcleo de poliuretano o poliestireno actúa como barrera de temperatura. Esto se traduce en más confort durante el año y un <a href="/blog/ahorrar-calefaccion-paneles-sip" style="text-decoration: underline; color: #3200C1;">ahorro de hasta un 40% en calefacción</a>. Las <strong>casas de paneles SIP</strong> mantienen el calor en invierno y el frescor en verano.</p>
+
+            <h3>2. Rapidez de Construcción</h3>
+            <p>La construcción en seco permite un ensamblaje mucho más veloz en comparación con construcciones de albañilería tradicional. Es ideal para zonas con ventanas de buen clima muy ajustadas, donde acortar los tiempos de obra es primordial.</p>
+
+            <h3>3. Resistencia Estructural y Sismorresistencia</h3>
+            <p>El panel SIP al unirse funciona de forma monolítica. En un país sísmico como Chile, su comportamiento estructural distribuye las cargas de manera óptima, aportando flexibilidad y resistencia superior.</p>
+
+            <h2>Casas SIP vs Construcción Tradicional</h2>
+            <p>Si te preguntas qué materialidad elegir, te invitamos a leer nuestra <a href="/blog/prefabricadas-vs-tradicional" style="text-decoration: underline; color: #3200C1;">comparativa de prefabricadas vs construcción tradicional en Chile</a> para entender cuál se adapta mejor a tu terreno y presupuesto.</p>
+            
+            <div style="margin-top: 2rem; padding: 1.5rem; background-color: #f8fafc; border-radius: 0.5rem; border-left: 4px solid #3200C1;">
+                <h3 style="margin-top: 0; color: #3200C1;">¿Listo para dar el siguiente paso?</h3>
+                <p>Nuestros expertos pueden asesorarte en la elección del mejor modelo SIP para tu nueva casa.</p>
+                <a href="#contacto-asesoria" style="display: inline-block; background-color: #37FFDB; color: #3200C1; font-weight: bold; padding: 0.75rem 1.5rem; border-radius: 0.5rem; text-decoration: none; margin-top: 1rem;">Solicitar una asesoría gratuita</a>
+            </div>
         `
     },
     "financiamiento-casas-prefabricadas-chile": {
@@ -152,8 +166,25 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
     if (slug === "ventajas-casas-sip-chile") {
         return {
-            title: "Ventajas de las Casas SIP en Chile: Guía Completa 2026",
-            description: "Conoce las ventajas de las casas SIP en el clima chileno: aislación térmica, ahorro en calefacción y rapidez de construcción."
+            title: "Ventajas de las Casas SIP en Chile: Beneficios y Características",
+            description: "Descubre cómo las casas SIP pueden mejorar tu calidad de vida en Chile con su eficiencia energética y rapidez de construcción.",
+            alternates: {
+                canonical: `https://www.solocasaschile.com/blog/${slug}`
+            },
+            openGraph: {
+                title: "Ventajas de las Casas SIP en Chile: Beneficios y Características",
+                description: "Descubre cómo las casas SIP pueden mejorar tu calidad de vida en Chile con su eficiencia energética y rapidez de construcción.",
+                url: `https://www.solocasaschile.com/blog/${slug}`,
+                images: [
+                    {
+                        url: "https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&q=80&w=1600",
+                        width: 1600,
+                        height: 900,
+                        alt: "Ventajas casas SIP en Chile"
+                    }
+                ],
+                type: 'article',
+            }
         };
     }
 
@@ -250,7 +281,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         "image": post.image,
         "author": {
             "@type": "Organization",
-            "name": "Equipo solocasaschile"
+            "name": "Equipo solocasaschile",
+            "url": "https://www.solocasaschile.com"
         },
         "publisher": {
             "@type": "Organization",
@@ -258,6 +290,13 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             "logo": {
                 "@type": "ImageObject",
                 "url": "https://www.solocasaschile.com/icon.png"
+            },
+            "contactPoint": {
+                "@type": "ContactPoint",
+                "telephone": "+56900000000",
+                "contactType": "customer service",
+                "areaServed": "CL",
+                "availableLanguage": "Spanish"
             }
         },
         "datePublished": "2026-02-25T00:00:00+00:00",
@@ -389,7 +428,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                                 <MessageSquare className="w-8 h-8 text-[#37FFDB] mx-auto mb-4" />
                                 <h4 className="font-bold text-[#3200C1] mb-2">¿Tienes dudas?</h4>
                                 <p className="text-sm text-slate-500 mb-4">Nuestros expertos pueden asesorarte gratis.</p>
-                                <button className="w-full py-3 bg-[#3200C1] text-white rounded-xl text-sm font-bold">Contactar Experto</button>
+                                <button id="contacto-asesoria" className="w-full py-3 bg-[#3200C1] text-white rounded-xl text-sm font-bold">Contactar Experto</button>
                             </div>
                         </div>
                     </aside>
