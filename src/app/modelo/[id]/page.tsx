@@ -219,7 +219,7 @@ export default async function ModelPage({ params }: Props) {
                                 <MessageSquare className="w-6 h-6 text-white" />
                             </div>
                             <h3 className="text-xl font-black text-[#3200C1] leading-tight">¿Te interesa este modelo?</h3>
-                            <p className="text-sm text-[#3200C1]/80 font-medium mt-2">Cotiza directamente con <span className="font-bold underline">{model.company_name}</span>.</p>
+                            <p className="text-sm text-[#3200C1]/80 font-medium mt-2">¡Cotiza sin compromiso con un experto! 🏠</p>
                         </div>
 
                         {/* Generador de Lead — Email + Registro en Sanity */}
