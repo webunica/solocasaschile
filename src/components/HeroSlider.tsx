@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { ArrowUpRight, Bed, Bath, Scale, MapPin } from "lucide-react";
 import { formatPrice } from "@/lib/utils";
 import type { ModelRow } from "@/lib/db";
@@ -76,14 +77,12 @@ export function HeroSlider({ models }: { models: ModelRow[] }) {
                                     </p>
                                 </div>
 
-                                <a
-                                    href={model.model_url}
-                                    target="_blank"
-                                    rel="noreferrer"
+                                <Link
+                                    href={`/modelo/${model.id}`}
                                     className="brand-button-primary px-10 py-4 text-lg"
                                 >
                                     Cotizar Ahora <ArrowUpRight className="w-5 h-5" />
-                                </a>
+                                </Link>
                             </div>
                         </div>
                     </div>

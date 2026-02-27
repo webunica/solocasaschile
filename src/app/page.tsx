@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import Link from "next/link";
-import { getModels, getDistinctCompanies, getDistinctCategories, getRandomModels } from "@/lib/db";
+import { getModels, getDistinctCompanies, getDistinctCategories, getRandomModels, getConstructorCompanies, ModelRow } from "@/lib/db";
 import { FiltersSidebar } from "@/components/FiltersSidebar";
 import { HeroSlider } from "@/components/HeroSlider";
 import { AdCarousel } from "@/components/AdCarousel";
@@ -8,9 +8,10 @@ import { FeaturedCompanyBanner } from "@/components/FeaturedCompanyBanner";
 import { SortDropdown } from "@/components/SortDropdown";
 import { Pagination } from "@/components/Pagination";
 import { formatPrice } from "@/lib/utils";
-import { Bed, Bath, Hash, ArrowUpRight, Scale, MapPin, Inbox } from "lucide-react";
+import { Bed, Bath, Hash, ArrowUpRight, Scale, MapPin, Inbox, Star, Crown } from "lucide-react";
 
 import { BlogCarousel } from "@/components/BlogCarousel";
+import { ConstructorBanner } from "@/components/ConstructorBanner";
 
 export default async function HomePage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
   const rawParams = await searchParams;
@@ -29,10 +30,18 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
     limit: 20
   };
 
-  const { models, totalCount } = getModels(filtersParams);
-  const companies = getDistinctCompanies();
-  const categories = getDistinctCategories();
-  const randomModels = getRandomModels(5);
+  // Sanity Fetches
+  const [
+    { models, totalCount },
+    companies,
+    categories,
+    randomModels
+  ] = await Promise.all([
+    getModels(filtersParams),
+    getDistinctCompanies(),
+    getDistinctCategories(),
+    getRandomModels(5)
+  ]);
 
   return (
     <div className="min-h-screen bg-white">
@@ -70,6 +79,10 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
           <HeroSlider models={randomModels} />
         </Suspense>
       </div>
+
+      <Suspense fallback={null}>
+        <ConstructorBanner />
+      </Suspense>
 
       <AdCarousel />
 
@@ -112,7 +125,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
 }
 
 async function ModelsGrid({ filtersParams }: { filtersParams: Record<string, unknown> }) {
-  const { models } = getModels(filtersParams);
+  const { models } = await getModels(filtersParams);
 
   if (models.length === 0) {
     return (
@@ -128,80 +141,100 @@ async function ModelsGrid({ filtersParams }: { filtersParams: Record<string, unk
 
   return (
     <>
-      {models.map((house) => (
-        <article key={house.id} className="group relative rounded-[4px] overflow-hidden bg-white border border-slate-100 hover:border-[#37FFDB] transition-all duration-500 shadow-sm hover:shadow-md flex flex-col">
-          {/* Top Image Section */}
-          <div className="relative w-full aspect-[4/3] sm:aspect-video overflow-hidden bg-slate-50">
-            {house.image_urls ? (
-              <img
-                src={house.image_urls.split(",")[0].trim()}
-                alt={house.model_name}
-                loading="lazy"
-                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-              />
-            ) : (
-              <div className="absolute inset-0 flex flex-col items-center justify-center bg-slate-50 text-slate-300">
-                <span className="text-xs tracking-widest uppercase font-bold text-slate-400 mb-2">Sin Imagen</span>
-              </div>
-            )}
+      {models.map((house: ModelRow) => {
+        const plan = house.company_plan || "starter";
+        const isConstructor = plan === "constructor";
+        const isBuilder = plan === "builder";
 
-            {/* Gradient Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-[#3200C1]/40 to-transparent" />
+        return (
+          <article key={house.id} className={`group relative rounded-[4px] overflow-hidden bg-white border transition-all duration-500 shadow-sm hover:shadow-md flex flex-col ${isConstructor ? "border-amber-300 ring-1 ring-amber-200 hover:border-amber-400" :
+            isBuilder ? "border-blue-200 hover:border-blue-300" :
+              "border-slate-100 hover:border-[#37FFDB]"
+            }`}>
+            {/* Top Image Section */}
+            <div className="relative w-full aspect-[4/3] sm:aspect-video overflow-hidden bg-slate-50">
+              {house.image_urls ? (
+                <img
+                  src={house.image_urls.split(",")[0].trim()}
+                  alt={house.model_name}
+                  loading="lazy"
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                />
+              ) : (
+                <div className="absolute inset-0 flex flex-col items-center justify-center bg-slate-50 text-slate-300">
+                  <span className="text-xs tracking-widest uppercase font-bold text-slate-400 mb-2">Sin Imagen</span>
+                </div>
+              )}
 
-            {/* Labels */}
-            <div className="absolute top-4 inset-x-4 flex justify-between items-start">
-              <div className="inline-flex w-fit items-center gap-1.25 px-2.5 py-1 rounded-full bg-white/90 backdrop-blur-sm text-[#3200C1] text-xs font-bold shadow-sm">
-                <MapPin className="w-3 h-3" />
-                {house.company_name}
-              </div>
-              <div className="inline-flex w-fit px-2.5 py-1 rounded-full bg-[#37FFDB] text-[#3200C1] text-[10px] uppercase font-black shadow-sm">
-                {house.category}
+              {/* Gradient Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-[#3200C1]/40 to-transparent" />
+
+              {/* Labels */}
+              <div className="absolute top-4 inset-x-4 flex justify-between items-start">
+                <div className="inline-flex w-fit items-center gap-1.25 px-2.5 py-1 rounded-full bg-white/90 backdrop-blur-sm text-[#3200C1] text-xs font-bold shadow-sm">
+                  <MapPin className="w-3 h-3" />
+                  {house.company_name}
+                </div>
+                <div className="flex flex-col items-end gap-1.5">
+                  {/* Badge de Plan */}
+                  {isConstructor && (
+                    <div className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-amber-400 text-amber-900 text-[9px] uppercase font-black shadow-sm">
+                      <Crown className="w-3 h-3" /> Plan Destacado
+                    </div>
+                  )}
+                  {isBuilder && (
+                    <div className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-blue-500 text-white text-[9px] uppercase font-black shadow-sm">
+                      <Star className="w-3 h-3" /> Plan Crecer
+                    </div>
+                  )}
+                  <div className="inline-flex w-fit px-2.5 py-1 rounded-full bg-[#37FFDB] text-[#3200C1] text-[10px] uppercase font-black shadow-sm">
+                    {house.category}
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* Lower Content */}
-          <div className="p-5 flex flex-col flex-1 gap-5 bg-white">
-            <div className="flex flex-col gap-1">
-              <h3 className="text-xl font-black text-[#3200C1]">
-                {house.model_name}
-              </h3>
-              <div className="flex items-baseline gap-2">
-                <span className="text-2xl font-black text-[#3200C1] tabular-nums">
-                  {formatPrice(house.price_from, house.currency)}
-                </span>
-                <span className="text-xs font-bold text-slate-400">/ Desde</span>
-              </div>
-            </div>
-
-            {/* Stats Grid */}
-            <div className="grid grid-cols-3 gap-2 sm:gap-3">
-              <FeatureItem icon={<Scale className="w-3.5 h-3.5" />} label="Superficie" value={`${house.surface_m2 || "--"} m²`} />
-              <FeatureItem icon={<Bed className="w-3.5 h-3.5" />} label="Dorms" value={house.bedrooms || "--"} />
-              <FeatureItem icon={<Bath className="w-3.5 h-3.5" />} label="Baños" value={house.bathrooms || "--"} />
-            </div>
-
-            {/* CTA row */}
-            <div className="mt-auto flex items-center justify-between gap-4 pt-4 border-t border-slate-50">
-              <div className="flex flex-col min-w-0">
-                <span className="text-[10px] uppercase font-bold text-slate-400 mb-0.5">Formatos</span>
-                <span className="text-xs font-bold text-[#3200C1] truncate">
-                  {house.delivery_modes || "N/A"}
-                </span>
+            {/* Lower Content */}
+            <div className="p-5 flex flex-col flex-1 gap-5 bg-white">
+              <div className="flex flex-col gap-1">
+                <h3 className="text-xl font-black text-[#3200C1]">
+                  {house.model_name}
+                </h3>
+                <div className="flex items-baseline gap-2">
+                  <span className="text-2xl font-black text-[#3200C1] tabular-nums">
+                    {formatPrice(house.price_from, house.currency)}
+                  </span>
+                  <span className="text-xs font-bold text-slate-400">/ Desde</span>
+                </div>
               </div>
 
-              <a
-                href={house.model_url}
-                target="_blank"
-                rel="noreferrer"
-                className="brand-button-primary"
-              >
-                Ver Modelo
-              </a>
+              {/* Stats Grid */}
+              <div className="grid grid-cols-3 gap-2 sm:gap-3">
+                <FeatureItem icon={<Scale className="w-3.5 h-3.5" />} label="Superficie" value={`${house.surface_m2 || "--"} m²`} />
+                <FeatureItem icon={<Bed className="w-3.5 h-3.5" />} label="Dorms" value={house.bedrooms || "--"} />
+                <FeatureItem icon={<Bath className="w-3.5 h-3.5" />} label="Baños" value={house.bathrooms || "--"} />
+              </div>
+
+              {/* CTA row */}
+              <div className="mt-auto flex items-center justify-between gap-4 pt-4 border-t border-slate-50">
+                <div className="flex flex-col min-w-0">
+                  <span className="text-[10px] uppercase font-bold text-slate-400 mb-0.5">Formatos</span>
+                  <span className="text-xs font-bold text-[#3200C1] truncate">
+                    {house.delivery_modes || "N/A"}
+                  </span>
+                </div>
+
+                <Link
+                  href={`/modelo/${house.id}`}
+                  className="brand-button-primary"
+                >
+                  Ver Modelo
+                </Link>
+              </div>
             </div>
-          </div>
-        </article>
-      ))}
+          </article>
+        );
+      })}
     </>
   );
 }
