@@ -69,6 +69,14 @@ export const houseModelType = defineType({
             type: 'string',
             description: 'Palabras clave separadas por comas (ej: casa prefabricada, modelo llave en mano, santiago)'
         }),
+        // --- Visibilidad ---
+        defineField({
+            name: 'is_active',
+            title: '¿Propiedad Activa?',
+            type: 'boolean',
+            description: 'Si está desactivada, NO aparecerá en el comparador público.',
+            initialValue: true,
+        }),
     ],
     preview: {
         select: { title: 'model_name', subtitle: 'company_name' }

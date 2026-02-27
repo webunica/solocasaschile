@@ -89,7 +89,8 @@ export async function getModels(filters: {
     const disabledSet = new Set(disabledNames);
 
     // ── Condiciones GROQ simples (sin joins costosos) ─────────────
-    let conditions = `_type == "houseModel"`;
+    // is_active != false incluye modelos sin el campo (importados antes del cambio)
+    let conditions = `_type == "houseModel" && is_active != false`;
     const params: Record<string, any> = {};
 
     if (filters.company) {
@@ -151,8 +152,8 @@ export async function getModels(filters: {
 }
 
 export async function getDistinctCompanies() {
-    // Paso 1: todos los nombres de empresas que tienen modelos (sin join costoso)
-    const allNamesQuery = `array::unique(*[_type == "houseModel" && defined(company_name)].company_name)`;
+    // Paso 1: empresas con al menos un modelo ACTIVO
+    const allNamesQuery = `array::unique(*[_type == "houseModel" && is_active != false && defined(company_name)].company_name)`;
 
     // Paso 2: nombres de empresas con cuenta B2B DESACTIVADA explícitamente
     const disabledQuery = `*[_type == "companyUser" && is_active == false].company_name`;
@@ -176,8 +177,8 @@ export async function getDistinctCategories() {
 }
 
 export async function getRandomModels(limit: number = 5) {
-    // Solo modelos de empresas sin cuenta O con cuenta activa
-    const query = `*[_type == "houseModel" && (defined(image_urls) || defined(images)) && (
+    // Solo modelos activos de empresas sin cuenta O con cuenta activa
+    const query = `*[_type == "houseModel" && is_active != false && (defined(image_urls) || defined(images)) && (
         count(*[_type=="companyUser" && company_name==^.company_name]) == 0 ||
         count(*[_type=="companyUser" && company_name==^.company_name && is_active!=false]) > 0
     )] | order(_updatedAt desc) [0...${limit}] { ..., "image_urls": coalesce(images[].asset->url, image_urls) }`;
