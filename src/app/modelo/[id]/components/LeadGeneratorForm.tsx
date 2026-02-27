@@ -103,8 +103,8 @@ export default function LeadGeneratorForm({ companyName, modelName, modelId, com
                 disabled={status === "loading"}
                 type="submit"
                 className={`w-full py-4 mt-1 font-black rounded-xl shadow-md transition-all active:scale-[0.98] flex items-center justify-center gap-2 text-sm ${status === "loading"
-                        ? "bg-slate-100 text-slate-400 cursor-not-allowed"
-                        : "bg-[#3200C1] text-[#37FFDB] hover:bg-[#3200C1]/90"
+                    ? "bg-slate-100 text-slate-400 cursor-not-allowed"
+                    : "bg-[#3200C1] text-[#37FFDB] hover:bg-[#3200C1]/90"
                     }`}
             >
                 {status === "loading" ? (
@@ -121,7 +121,7 @@ export default function LeadGeneratorForm({ companyName, modelName, modelId, com
             </button>
 
             <p className="text-[11px] text-center text-slate-400 leading-tight">
-                Tu solicitud será enviada directamente a <strong>{companyName}</strong>.<br />
+                Tu solicitud será enviada directamente a un experto que te contactará a la brevedad.<br />
                 Recibirás una copia en tu correo.
             </p>
         </form>
