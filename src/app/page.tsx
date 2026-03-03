@@ -87,7 +87,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
           <div className="flex items-center gap-8">
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-lg bg-[#37FFDB] flex items-center justify-center shadow-sm">
-                <Hash className="w-5 h-5 text-[#3200C1]" />
+                <Hash className="w-5 h-5 text-[#3200C1]" aria-hidden="true" />
               </div>
               <Link href="/" className="text-xl font-bold text-[#3200C1]" aria-label="SolocasasChile.com - Inicio">
                 solocasaschile.com
@@ -119,7 +119,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
 
       {/* H1 SEO — visible para buscadores, estilo contenido */}
       <section className="max-w-7xl mx-auto px-6 pt-10 pb-2">
-        <h1 className="text-3xl md:text-4xl font-black text-[#3200C1] leading-tight">
+        <h1 className="text-3xl md:text-4xl font-black text-[#3200C1] leading-tight [text-wrap:balance]">
           Comparador de Casas Prefabricadas en Chile
         </h1>
         <p className="mt-2 text-base md:text-lg text-slate-600 max-w-3xl">

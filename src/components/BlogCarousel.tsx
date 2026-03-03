@@ -65,7 +65,7 @@ export const BlogCarousel = () => {
     };
 
     return (
-        <section className="py-24 bg-slate-50 relative overflow-hidden">
+        <section className="py-24 bg-slate-50 relative overflow-hidden" aria-label="Últimas publicaciones del blog">
             <div className="max-w-[1600px] mx-auto px-6">
                 <div className="flex flex-col md:flex-row justify-between items-end gap-6 mb-12">
                     <div className="max-w-2xl">
@@ -88,15 +88,17 @@ export const BlogCarousel = () => {
                         <div className="flex gap-2">
                             <button
                                 onClick={() => scroll("left")}
-                                className="w-12 h-12 rounded-full border-2 border-[#3200C1]/10 flex items-center justify-center text-[#3200C1] hover:bg-[#3200C1] hover:text-white transition-all active:scale-90"
+                                aria-label="Publicaciones anteriores"
+                                className="w-12 h-12 rounded-full border-2 border-[#3200C1]/10 flex items-center justify-center text-[#3200C1] hover:bg-[#3200C1] hover:text-white transition-colors duration-200 active:scale-90 focus-visible:ring-2 focus-visible:ring-[#3200C1] focus-visible:outline-none"
                             >
-                                <ChevronLeft className="w-6 h-6" />
+                                <ChevronLeft className="w-6 h-6" aria-hidden="true" />
                             </button>
                             <button
                                 onClick={() => scroll("right")}
-                                className="w-12 h-12 rounded-full border-2 border-[#3200C1]/10 flex items-center justify-center text-[#3200C1] hover:bg-[#3200C1] hover:text-white transition-all active:scale-90"
+                                aria-label="Publicaciones siguientes"
+                                className="w-12 h-12 rounded-full border-2 border-[#3200C1]/10 flex items-center justify-center text-[#3200C1] hover:bg-[#3200C1] hover:text-white transition-colors duration-200 active:scale-90 focus-visible:ring-2 focus-visible:ring-[#3200C1] focus-visible:outline-none"
                             >
-                                <ChevronRight className="w-6 h-6" />
+                                <ChevronRight className="w-6 h-6" aria-hidden="true" />
                             </button>
                         </div>
                     </div>
@@ -104,6 +106,8 @@ export const BlogCarousel = () => {
 
                 <div
                     ref={scrollRef}
+                    role="region"
+                    aria-label="Carrusel de publicaciones"
                     className="flex gap-6 overflow-x-auto pb-8 scrollbar-hide snap-x snap-mandatory"
                     style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
                 >

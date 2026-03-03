@@ -54,8 +54,13 @@
 
 /* ─── Marquee animation (used by AdCarousel) ─────────────────────────────── */
 @keyframes marquee {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(calc(-33.333% - 1rem)); }
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(calc(-33.333% - 1rem));
+  }
 }
 
 .animate-marquee {
@@ -64,4 +69,23 @@
 
 .animate-marquee:hover {
   animation-play-state: paused;
+}
+
+/* ─── Respeto prefers-reduced-motion ────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .animate-marquee {
+    animation: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

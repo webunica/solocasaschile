@@ -95,7 +95,7 @@ export default async function ModelPage({ params }: Props) {
                                 <span className="inline-block px-3 py-1 bg-[#37FFDB] text-[#3200C1] rounded-full text-xs font-black uppercase tracking-widest mb-4">
                                     {model.category || "Modelo Estándar"}
                                 </span>
-                                <h1 className="text-3xl md:text-5xl font-black text-[#3200C1] leading-tight mb-2">
+                                <h1 className="text-3xl md:text-5xl font-black text-[#3200C1] leading-tight mb-2 [text-wrap:balance]">
                                     {model.model_name}
                                 </h1>
 
@@ -201,10 +201,10 @@ export default async function ModelPage({ params }: Props) {
                             <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
                                 <h4 className="font-bold text-[#3200C1] mb-4 text-sm uppercase tracking-wider">Formatos de Entrega</h4>
                                 <ul className="space-y-3">
-                                    {(model.delivery_modes || []).map((mode: string, i: number) => (
+                                    {(model.delivery_modes || []).map((mode: string) => (
                                         typeof mode === 'string' && (
-                                            <li key={i} className="flex items-center gap-3 text-sm font-medium text-slate-700">
-                                                <CheckCircle2 className="w-5 h-5 text-[#37FFDB] shrink-0" /> {mode}
+                                            <li key={mode} className="flex items-center gap-3 text-sm font-medium text-slate-700">
+                                                <CheckCircle2 className="w-5 h-5 text-[#37FFDB] shrink-0" aria-hidden="true" /> {mode}
                                             </li>
                                         )
                                     ))}

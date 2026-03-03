@@ -84,23 +84,29 @@ export function FiltersSidebar({ companies, categories }: FiltersSidebarProps) {
                 <div
                     className="xl:hidden fixed inset-0 bg-[#3200C1]/40 backdrop-blur-sm z-[70] transition-opacity"
                     onClick={toggleSidebar}
+                    aria-hidden="true"
                 />
             )}
 
             {/* Sidebar / Drawer */}
-            <aside className={`
-                fixed inset-y-0 left-0 z-[80] w-[85%] max-w-sm bg-white p-8 overflow-y-auto transition-transform duration-500 transform
+            <aside
+                role={isOpen ? "dialog" : undefined}
+                aria-modal={isOpen ? "true" : undefined}
+                aria-labelledby="filters-title"
+                className={`
+                fixed inset-y-0 left-0 z-[80] w-[85%] max-w-sm bg-white p-8 overflow-y-auto overscroll-contain transition-transform duration-500 transform
                 ${isOpen ? "translate-x-0" : "-translate-x-full"}
                 xl:relative xl:translate-x-0 xl:inset-auto xl:z-auto xl:w-80 xl:max-h-[calc(100vh-3rem)] xl:flex xl:flex-col xl:gap-8 xl:sticky xl:top-6 xl:rounded-2xl xl:border xl:border-slate-100 xl:shadow-lg
             `}>
                 <div className="flex justify-between items-center mb-8 xl:mb-0">
                     <div>
-                        <h2 className="text-2xl xl:text-xl font-black tracking-tight text-[#3200C1]">Filtros</h2>
+                        <h2 id="filters-title" className="text-2xl xl:text-xl font-black tracking-tight text-[#3200C1]">Filtros</h2>
                         <p className="text-sm font-bold text-slate-400">Encuentra tu casa ideal</p>
                     </div>
                     <button
                         onClick={toggleSidebar}
-                        className="xl:hidden p-2 text-slate-400 hover:text-[#3200C1] transition-colors"
+                        aria-label="Cerrar filtros"
+                        className="xl:hidden p-2 text-slate-400 hover:text-[#3200C1] transition-colors focus-visible:ring-2 focus-visible:ring-[#3200C1] focus-visible:outline-none rounded-lg"
                     >
                         <X className="w-8 h-8" />
                     </button>

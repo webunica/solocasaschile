@@ -2,32 +2,32 @@
 
 import { useQueryState } from "nuqs";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useEffect, useState } from "react";
 
 export function Pagination({ totalCount, limit = 20 }: { totalCount: number, limit?: number }) {
     const [pageParam, setPageParam] = useQueryState("page", { defaultValue: "1", shallow: false });
     const currentPage = parseInt(pageParam) || 1;
     const totalPages = Math.ceil(totalCount / limit);
-    const [isClient, setIsClient] = useState(false);
 
-    useEffect(() => {
-        setIsClient(true);
-    }, []);
-
-    if (!isClient || totalPages <= 1) return null;
+    // nuqs ya sincroniza con la URL; no necesitamos isClient pattern —
+    // el componente es "use client" y solo ejecuta en el cliente.
+    if (totalPages <= 1) return null;
 
     return (
-        <div className="flex items-center justify-center gap-2 mt-12 mb-8">
+        <nav aria-label="Paginación de modelos" className="flex items-center justify-center gap-2 mt-12 mb-8">
             <button
                 onClick={() => setPageParam(String(Math.max(1, currentPage - 1)))}
                 disabled={currentPage <= 1}
-                className="p-2 md:p-2.5 rounded-[4px] bg-white border border-slate-100 text-[#3200C1] hover:bg-slate-50 hover:border-[#37FFDB] disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm active:scale-95"
-                title="Página Anterior"
+                aria-label="Página anterior"
+                className="p-2 md:p-2.5 rounded-[4px] bg-white border border-slate-100 text-[#3200C1] hover:bg-slate-50 hover:border-[#37FFDB] disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm active:scale-95 focus-visible:ring-2 focus-visible:ring-[#3200C1] focus-visible:outline-none"
             >
-                <ChevronLeft className="w-5 h-5 text-[#37FFDB]" />
+                <ChevronLeft className="w-5 h-5 text-[#37FFDB]" aria-hidden="true" />
             </button>
 
-            <div className="flex items-center px-4 rounded-[4px] bg-white border border-slate-100 h-[40px] md:h-[42px] shadow-sm text-sm">
+            <div
+                aria-live="polite"
+                aria-atomic="true"
+                className="flex items-center px-4 rounded-[4px] bg-white border border-slate-100 h-[40px] md:h-[42px] shadow-sm text-sm"
+            >
                 <span className="font-extrabold text-[#3200C1]">
                     Página {currentPage} de {totalPages}
                 </span>
@@ -36,11 +36,11 @@ export function Pagination({ totalCount, limit = 20 }: { totalCount: number, lim
             <button
                 onClick={() => setPageParam(String(Math.min(totalPages, currentPage + 1)))}
                 disabled={currentPage >= totalPages}
-                className="p-2 md:p-2.5 rounded-[4px] bg-white border border-slate-100 text-[#3200C1] hover:bg-slate-50 hover:border-[#37FFDB] disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm active:scale-95"
-                title="Siguiente Página"
+                aria-label="Página siguiente"
+                className="p-2 md:p-2.5 rounded-[4px] bg-white border border-slate-100 text-[#3200C1] hover:bg-slate-50 hover:border-[#37FFDB] disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm active:scale-95 focus-visible:ring-2 focus-visible:ring-[#3200C1] focus-visible:outline-none"
             >
-                <ChevronRight className="w-5 h-5 text-[#37FFDB]" />
+                <ChevronRight className="w-5 h-5 text-[#37FFDB]" aria-hidden="true" />
             </button>
-        </div>
+        </nav>
     );
 }

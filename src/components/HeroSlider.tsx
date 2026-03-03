@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowUpRight, Bed, Bath, Scale, MapPin } from "lucide-react";
@@ -9,10 +9,15 @@ import type { ModelRow } from "@/lib/db";
 
 export function HeroSlider({ models }: { models: ModelRow[] }) {
     const [currentIndex, setCurrentIndex] = useState(0);
+    const prefersReducedMotion = useRef(false);
 
-    // Auto-slide every 6 seconds
     useEffect(() => {
-        if (models.length <= 1) return;
+        // Detectar preferencia del sistema
+        const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+        prefersReducedMotion.current = mq.matches;
+
+        if (models.length <= 1 || mq.matches) return;
+
         const interval = setInterval(() => {
             setCurrentIndex((prev) => (prev + 1) % models.length);
         }, 6000);
@@ -23,7 +28,6 @@ export function HeroSlider({ models }: { models: ModelRow[] }) {
 
     return (
         <div className="w-full h-[50vh] min-h-[400px] max-h-[600px] relative overflow-hidden shadow-sm border-b border-slate-100 group">
-            {/* Container holding all images for smooth translation */}
             {models.map((model, idx) => {
                 const isActive = idx === currentIndex;
                 const imageUrl = model.image_urls.split(",")[0].trim();
@@ -31,23 +35,24 @@ export function HeroSlider({ models }: { models: ModelRow[] }) {
                 return (
                     <div
                         key={model.id}
-                        className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${isActive ? "opacity-100 z-10" : "opacity-0 z-0 delay-150"}`}
+                        aria-hidden={!isActive}
+                        className={`absolute inset-0 transition-opacity duration-1000 ease-in-out motion-reduce:transition-none ${isActive ? "opacity-100 z-10" : "opacity-0 z-0 delay-150"}`}
                     >
-                        {/* Background Image — priority on the first slide for LCP */}
+                        {/* Background Image — priority en primera diapositiva para LCP */}
                         <div className="absolute inset-0 bg-slate-50">
                             <Image
                                 src={imageUrl}
-                                alt={`${model.model_name} - Casa prefabricada ${model.surface_m2 ? model.surface_m2 + " m²" : ""}`}
+                                alt={`${model.model_name} - Casa prefabricada ${model.surface_m2 ? model.surface_m2 + " m²" : ""} en Chile`}
                                 fill
                                 sizes="100vw"
-                                className={`object-cover transition-transform duration-[8000ms] ease-linear ${isActive ? "scale-110" : "scale-100"}`}
+                                className={`object-cover transition-transform duration-[8000ms] ease-linear motion-reduce:transition-none motion-reduce:transform-none ${isActive ? "scale-110" : "scale-100"}`}
                                 priority={idx === 0}
                                 loading={idx === 0 ? "eager" : "lazy"}
                                 quality={85}
                             />
                         </div>
 
-                        {/* Overlays - Adjusted for light theme branding */}
+                        {/* Overlays */}
                         <div className="absolute inset-x-0 bottom-0 h-[80%] bg-gradient-to-t from-[#3200C1]/60 via-[#3200C1]/20 to-transparent" />
                         <div className="absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-[#3200C1]/40 to-transparent" />
 
@@ -57,22 +62,22 @@ export function HeroSlider({ models }: { models: ModelRow[] }) {
                                 🌟 Propiedad Destacada
                             </div>
 
-                            <h2 className="text-4xl md:text-6xl font-black text-white mb-3 tracking-tighter drop-shadow-md max-w-3xl">
+                            <h2 className="text-4xl md:text-6xl font-black text-white mb-3 tracking-tighter drop-shadow-md max-w-3xl [text-wrap:balance]">
                                 {model.model_name}
                             </h2>
 
                             <div className="flex flex-wrap items-center gap-3 md:gap-6 mb-8 text-white/90">
                                 <span className="flex items-center gap-1.5 font-bold text-sm md:text-base border-r border-white/20 pr-3 md:pr-6">
-                                    <MapPin className="w-4 h-4 text-[#37FFDB]" /> {model.company_name}
+                                    <MapPin className="w-4 h-4 text-[#37FFDB]" aria-hidden="true" /> {model.company_name}
                                 </span>
                                 <span className="flex items-center gap-1.5 font-bold text-sm md:text-base border-r border-white/20 pr-3 md:pr-6">
-                                    <Scale className="w-4 h-4 text-[#37FFDB]" /> {model.surface_m2 || "--"} m²
+                                    <Scale className="w-4 h-4 text-[#37FFDB]" aria-hidden="true" /> {model.surface_m2 || "--"} m²
                                 </span>
                                 <span className="flex items-center gap-1.5 font-bold text-sm md:text-base border-r border-white/20 pr-3 md:pr-6">
-                                    <Bed className="w-4 h-4 text-[#37FFDB]" /> {model.bedrooms || "--"} Dorms
+                                    <Bed className="w-4 h-4 text-[#37FFDB]" aria-hidden="true" /> {model.bedrooms || "--"} Dorms
                                 </span>
                                 <span className="flex items-center gap-1.5 font-bold text-sm md:text-base">
-                                    <Bath className="w-4 h-4 text-[#37FFDB]" /> {model.bathrooms || "--"} Baños
+                                    <Bath className="w-4 h-4 text-[#37FFDB]" aria-hidden="true" /> {model.bathrooms || "--"} Baños
                                 </span>
                             </div>
 
@@ -89,7 +94,7 @@ export function HeroSlider({ models }: { models: ModelRow[] }) {
                                     className="brand-button-primary px-10 py-4 text-lg"
                                     prefetch={false}
                                 >
-                                    Cotizar Ahora <ArrowUpRight className="w-5 h-5" />
+                                    Cotizar Ahora <ArrowUpRight className="w-5 h-5" aria-hidden="true" />
                                 </Link>
                             </div>
                         </div>
@@ -98,13 +103,15 @@ export function HeroSlider({ models }: { models: ModelRow[] }) {
             })}
 
             {/* Navigation Indicators */}
-            <div className="absolute bottom-6 right-8 flex gap-2 z-20">
-                {models.map((_, idx) => (
+            <div className="absolute bottom-6 right-8 flex gap-2 z-20" role="tablist" aria-label="Diapositivas del hero">
+                {models.map((model, idx) => (
                     <button
                         key={idx}
+                        role="tab"
+                        aria-selected={currentIndex === idx}
+                        aria-label={`Ver ${model.model_name}`}
                         onClick={() => setCurrentIndex(idx)}
-                        className={`transition-all duration-300 rounded-full h-1.5 ${currentIndex === idx ? "w-8 bg-[#37FFDB]" : "w-1.5 bg-white/40 hover:bg-white/60"}`}
-                        aria-label={`Ir a la diapositiva ${idx + 1}`}
+                        className={`transition-all duration-300 motion-reduce:transition-none rounded-full h-1.5 ${currentIndex === idx ? "w-8 bg-[#37FFDB]" : "w-1.5 bg-white/40 hover:bg-white/60"}`}
                     />
                 ))}
             </div>
