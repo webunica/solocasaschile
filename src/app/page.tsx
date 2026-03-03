@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import type { Metadata } from "next";
 import Link from "next/link";
 import { getModels, getDistinctCompanies, getDistinctCategories, getRandomModels, getConstructorCompanies, ModelRow } from "@/lib/db";
 import { FiltersSidebar } from "@/components/FiltersSidebar";
@@ -12,6 +13,20 @@ import { Bed, Bath, Hash, ArrowUpRight, Scale, MapPin, Inbox, Star, Crown } from
 
 import { BlogCarousel } from "@/components/BlogCarousel";
 import { ConstructorBanner } from "@/components/ConstructorBanner";
+
+export const metadata: Metadata = {
+  title: "Casas Prefabricadas, SIP y Modulares en Chile | Comparador de Precios 2026",
+  description:
+    "Compara más de 200 modelos de casas prefabricadas, casas SIP, casas modulares y llave en mano en Chile. Precios actualizados, fotos y ficha técnica de cada constructora. Cotiza gratis.",
+  alternates: { canonical: "https://www.solocasaschile.com" },
+  openGraph: {
+    title: "Casas Prefabricadas, SIP y Modulares en Chile | Precios 2026",
+    description:
+      "El comparador más completo de casas prefabricadas Chile. Encuentra modelos desde 36 m² de las mejores empresas.",
+    url: "https://www.solocasaschile.com",
+    images: [{ url: "https://www.solocasaschile.com/og-home.jpg", width: 1200, height: 630, alt: "Casas prefabricadas en Chile - SolocasasChile" }],
+  },
+};
 
 export default async function HomePage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
   const rawParams = await searchParams;
@@ -43,8 +58,28 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
     getRandomModels(5)
   ]);
 
+  // JSON-LD WebSite + SearchAction
+  const websiteJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "SolocasasChile.com",
+    url: "https://www.solocasaschile.com",
+    description: "Comparador de casas prefabricadas, SIP, modulares y llave en mano en Chile.",
+    potentialAction: {
+      "@type": "SearchAction",
+      target: "https://www.solocasaschile.com/?category={search_term_string}",
+      "query-input": "required name=search_term_string",
+    },
+  };
+
   return (
     <div className="min-h-screen bg-white">
+      {/* JSON-LD */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+      />
+
       {/* Header */}
       <header className="border-b border-slate-100 bg-white/80 backdrop-blur-md sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
@@ -53,12 +88,12 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
               <div className="w-8 h-8 rounded-lg bg-[#37FFDB] flex items-center justify-center shadow-sm">
                 <Hash className="w-5 h-5 text-[#3200C1]" />
               </div>
-              <Link href="/" className="text-xl font-bold text-[#3200C1]">
+              <Link href="/" className="text-xl font-bold text-[#3200C1]" aria-label="SolocasasChile.com - Inicio">
                 solocasaschile.com
               </Link>
             </div>
 
-            <nav className="hidden md:flex items-center gap-6">
+            <nav className="hidden md:flex items-center gap-6" aria-label="Navegación principal">
               <Link href="/" className="text-sm font-bold text-[#3200C1] hover:text-[#37FFDB] transition-colors">
                 Inicio
               </Link>
@@ -74,11 +109,48 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
         </div>
       </header>
 
+      {/* Hero */}
       <div className="w-full">
         <Suspense fallback={<div className="w-full h-[50vh] animate-pulse bg-slate-100" />}>
           <HeroSlider models={randomModels} />
         </Suspense>
       </div>
+
+      {/* H1 SEO — visible para buscadores, estilo contenido */}
+      <section className="max-w-7xl mx-auto px-6 pt-10 pb-2">
+        <h1 className="text-3xl md:text-4xl font-black text-[#3200C1] leading-tight">
+          Comparador de Casas Prefabricadas en Chile
+        </h1>
+        <p className="mt-2 text-base md:text-lg text-slate-600 max-w-3xl">
+          Encuentra y compara modelos de <strong>casas prefabricadas</strong>, <strong>casas SIP</strong>,
+          <strong> casas modulares</strong> y <strong>casas llave en mano</strong> en Chile.
+          Más de {totalCount} opciones de las principales constructoras del país, con precios, fotos y ficha técnica.
+        </p>
+      </section>
+
+      {/* Categorías SEO – H2 links internos */}
+      <section className="max-w-7xl mx-auto px-6 py-6" aria-label="Categorías de casas prefabricadas">
+        <h2 className="sr-only">Categorías de casas prefabricadas en Chile</h2>
+        <div className="flex flex-wrap gap-3">
+          {[
+            { label: "Casas Prefabricadas", href: "/?category=Prefabricada+Madera", emoji: "🏠" },
+            { label: "Casas SIP", href: "/?category=SIP", emoji: "🧱" },
+            { label: "Casas Modulares", href: "/?category=Modular", emoji: "📦" },
+            { label: "Casas Llave en Mano", href: "/?category=Llave+en+Mano", emoji: "🔑" },
+            { label: "Casas Metalcon", href: "/?category=Metalcon", emoji: "⚙️" },
+            { label: "Casas desde 36 m²", href: "/?minSurface=0&maxSurface=40", emoji: "📐" },
+          ].map((cat) => (
+            <Link
+              key={cat.label}
+              href={cat.href}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full border-2 border-[#3200C1]/20 text-sm font-bold text-[#3200C1] hover:bg-[#3200C1] hover:text-white hover:border-[#3200C1] transition-all"
+            >
+              <span>{cat.emoji}</span>
+              {cat.label}
+            </Link>
+          ))}
+        </div>
+      </section>
 
       <Suspense fallback={null}>
         <ConstructorBanner />
@@ -88,7 +160,8 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
 
       <FeaturedCompanyBanner />
 
-      <main className="max-w-[1600px] w-full mx-auto px-6 pt-8 pb-12 flex flex-col xl:flex-row gap-8 items-start">
+      {/* Results section con id para anchor */}
+      <main id="results" className="max-w-[1600px] w-full mx-auto px-6 pt-8 pb-12 flex flex-col xl:flex-row gap-8 items-start">
         {/* Sidebar Filter */}
         <Suspense fallback={<div className="hidden xl:block w-80 h-[80vh] bg-white border border-slate-100 animate-pulse rounded-lg shrink-0" />}>
           <FiltersSidebar companies={companies} categories={categories} />
@@ -98,7 +171,9 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
         <div className="flex-1 w-full flex flex-col gap-6">
           <div className="flex flex-col sm:flex-row justify-between items-center bg-slate-50 p-4 rounded-xl border border-slate-100 shadow-sm">
             <div className="text-sm font-bold text-slate-600 mb-4 sm:mb-0">
-              Mostrando <span className="text-[#3200C1]">{models.length}</span> de <span className="text-[#3200C1]">{totalCount}</span> resultados interactivos
+              <h2 className="inline text-sm font-bold text-slate-600">
+                Mostrando <span className="text-[#3200C1]">{models.length}</span> de <span className="text-[#3200C1]">{totalCount}</span> modelos de casas prefabricadas en Chile
+              </h2>
             </div>
             <SortDropdown />
           </div>
@@ -120,6 +195,29 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
       </main>
 
       <BlogCarousel />
+
+      {/* Sección SEO textual al final */}
+      <section className="max-w-4xl mx-auto px-6 py-16">
+        <h2 className="text-2xl font-black text-[#3200C1] mb-4">¿Qué encontrarás en SolocasasChile?</h2>
+        <div className="grid md:grid-cols-2 gap-8 text-slate-600">
+          <div>
+            <h3 className="text-lg font-bold text-[#3200C1] mb-2">Casas Prefabricadas</h3>
+            <p>Modelos de casas prefabricadas de madera desde 36 m² con precios actualizados. Compara kits básicos, packs completos y modalidades llave en mano de las principales constructoras de Chile.</p>
+          </div>
+          <div>
+            <h3 className="text-lg font-bold text-[#3200C1] mb-2">Casas SIP</h3>
+            <p>Las casas con paneles SIP ofrecen mejor aislación térmica y acústica. Encuentra empresas especializadas en construcción con paneles SIP en todo Chile.</p>
+          </div>
+          <div>
+            <h3 className="text-lg font-bold text-[#3200C1] mb-2">Casas Modulares</h3>
+            <p>Soluciones de vivienda modular e industrializada para distintos terrenos y presupuestos. Desde módulos de 15 m² hasta viviendas familiares de 169 m².</p>
+          </div>
+          <div>
+            <h3 className="text-lg font-bold text-[#3200C1] mb-2">Casas Llave en Mano</h3>
+            <p>¿Quieres tu casa lista para habitar? Compara empresas que ofrecen instalación, armado y entrega llave en mano en tu terreno en todo Chile.</p>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
@@ -156,8 +254,10 @@ async function ModelsGrid({ filtersParams }: { filtersParams: Record<string, unk
               {house.image_urls ? (
                 <img
                   src={house.image_urls.split(",")[0].trim()}
-                  alt={house.model_name}
+                  alt={`${house.model_name} - ${house.company_name} - Casa prefabricada ${house.surface_m2 ? house.surface_m2 + " m²" : ""} en Chile`}
                   loading="lazy"
+                  width={480}
+                  height={320}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                 />
               ) : (
