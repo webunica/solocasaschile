@@ -10,7 +10,7 @@ import { FeaturedCompanyBanner } from "@/components/FeaturedCompanyBanner";
 import { SortDropdown } from "@/components/SortDropdown";
 import { Pagination } from "@/components/Pagination";
 import { formatPrice } from "@/lib/utils";
-import { Bed, Bath, Hash, Scale, MapPin, Inbox, Star, Crown } from "lucide-react";
+import { Bed, Bath, Hash, Scale, MapPin, Inbox, Star, Crown, ArrowRight } from "lucide-react";
 
 import { BlogCarousel } from "@/components/BlogCarousel";
 import { ConstructorBanner } from "@/components/ConstructorBanner";
@@ -192,24 +192,128 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
 
       {/* Sección SEO textual al final */}
       <section className="max-w-4xl mx-auto px-6 py-16">
+        {/* Bloque 1: Qué encontrarás */}
         <h2 className="text-2xl font-black text-[#3200C1] mb-4">¿Qué encontrarás en SolocasasChile?</h2>
-        <div className="grid md:grid-cols-2 gap-8 text-slate-600">
+        <div className="grid md:grid-cols-2 gap-8 text-slate-600 mb-16">
           <div>
             <h3 className="text-lg font-bold text-[#3200C1] mb-2">Casas Prefabricadas</h3>
             <p>Modelos de casas prefabricadas de madera desde 36 m² con precios actualizados. Compara kits básicos, packs completos y modalidades llave en mano de las principales constructoras de Chile.</p>
+            <Link href="/?category=Prefabricada+Madera" className="inline-flex items-center gap-1 mt-3 text-sm font-black text-[#3200C1] hover:text-[#37FFDB] transition-colors group">
+              Ver casas prefabricadas disponibles <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
+            </Link>
           </div>
           <div>
             <h3 className="text-lg font-bold text-[#3200C1] mb-2">Casas SIP</h3>
             <p>Las casas con paneles SIP ofrecen mejor aislación térmica y acústica. Encuentra empresas especializadas en construcción con paneles SIP en todo Chile.</p>
+            <Link href="/?category=SIP" className="inline-flex items-center gap-1 mt-3 text-sm font-black text-[#3200C1] hover:text-[#37FFDB] transition-colors group">
+              Ver casas SIP disponibles <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
+            </Link>
           </div>
           <div>
             <h3 className="text-lg font-bold text-[#3200C1] mb-2">Casas Modulares</h3>
             <p>Soluciones de vivienda modular e industrializada para distintos terrenos y presupuestos. Desde módulos de 15 m² hasta viviendas familiares de 169 m².</p>
+            <Link href="/?category=Modular" className="inline-flex items-center gap-1 mt-3 text-sm font-black text-[#3200C1] hover:text-[#37FFDB] transition-colors group">
+              Ver casas modulares disponibles <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
+            </Link>
           </div>
           <div>
             <h3 className="text-lg font-bold text-[#3200C1] mb-2">Casas Llave en Mano</h3>
             <p>¿Quieres tu casa lista para habitar? Compara empresas que ofrecen instalación, armado y entrega llave en mano en tu terreno en todo Chile.</p>
+            <Link href="/?category=Llave+en+Mano" className="inline-flex items-center gap-1 mt-3 text-sm font-black text-[#3200C1] hover:text-[#37FFDB] transition-colors group">
+              Ver casas llave en mano <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
+            </Link>
           </div>
+        </div>
+
+        {/* Bloque 2: Ventajas */}
+        <h2 className="text-2xl font-black text-[#3200C1] mb-6">Ventajas de las Casas Prefabricadas en Chile</h2>
+        <p className="text-slate-600 mb-8 max-w-3xl">Las casas prefabricadas han revolucionado el mercado inmobiliario en Chile, ofreciendo una alternativa accesible, rápida y eficiente frente a la construcción tradicional. Estas son las principales razones por las que cada vez más familias las eligen.</p>
+        <div className="grid md:grid-cols-3 gap-6 mb-16">
+          {[
+            {
+              title: "Ahorro Económico",
+              text: "Su costo es significativamente menor al de una construcción tradicional gracias a la producción industrializada y la reducción de desperdicios en fábrica. Puedes acceder a una vivienda digna sin endeudarte de por vida.",
+            },
+            {
+              title: "Construcción Rápida",
+              text: "Al fabricarse en planta y ensamblarse en terreno, los tiempos de entrega se reducen hasta en un 60% respecto a la construcción convencional. Algunas empresas entregan tu casa en menos de 30 días.",
+            },
+            {
+              title: "Eficiencia Energética",
+              text: "Las tecnologías SIP y Metalcon ofrecen excelente aislación térmica y acústica, reduciendo los costos de calefacción hasta en un 40% y haciéndolas ideales para el clima de la zona sur de Chile.",
+            },
+          ].map(({ title, text }) => (
+            <div key={title} className="bg-slate-50 rounded-xl p-6 border border-slate-100">
+              <div className="w-2 h-6 bg-[#37FFDB] rounded-full mb-3" aria-hidden="true" />
+              <h3 className="text-base font-black text-[#3200C1] mb-2">{title}</h3>
+              <p className="text-sm text-slate-600 leading-relaxed">{text}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Bloque 3: Tipos */}
+        <h2 className="text-2xl font-black text-[#3200C1] mb-6">Tipos de Casas Prefabricadas Disponibles en Chile</h2>
+        <p className="text-slate-600 mb-8 max-w-3xl">Conocer las diferencias entre los tipos de construcción prefabricada te ayudará a elegir la opción más adecuada para tu terreno, presupuesto y clima.</p>
+        <div className="grid md:grid-cols-2 gap-8 mb-16 text-slate-600">
+          <div>
+            <h3 className="text-lg font-bold text-[#3200C1] mb-2">Casas con Paneles SIP</h3>
+            <p>Los paneles SIP (Structural Insulated Panels) son la tecnología más eficiente del mercado. Combinan estructura y aislación en un solo elemento, reduciendo puentes térmicos y costos de climatización. Son ideales para zonas con temperaturas extremas como La Araucanía, Los Lagos y Los Ríos.</p>
+          </div>
+          <div>
+            <h3 className="text-lg font-bold text-[#3200C1] mb-2">Casas Modulares</h3>
+            <p>Se construyen en secciones independientes que se ensamblan en el terreno. Ofrecen flexibilidad para crecer: puedes comenzar con un módulo básico y agregar dormitorios o áreas en etapas posteriores. Son una excelente opción para terrenos con difícil acceso.</p>
+          </div>
+          <div>
+            <h3 className="text-lg font-bold text-[#3200C1] mb-2">Casas Metalcon</h3>
+            <p>Utilizan perfiles de acero galvanizado liviano como estructura principal. Son muy resistentes a sismos, lo que las hace particularmente adecuadas para Chile. Además, su estructura metálica no se pudre, no es atacada por termitas y tiene una vida útil superior a los 50 años.</p>
+          </div>
+          <div>
+            <h3 className="text-lg font-bold text-[#3200C1] mb-2">Casas de Madera Prefabricada</h3>
+            <p>La tradición constructiva chilena en madera cuenta hoy con versiones prefabricadas que combinan lo mejor de ambos mundos: la calidez del material natural con la precisión de la manufactura en fábrica. Disponibles desde 36 m² en kits de armado propio hasta entregas llave en mano.</p>
+          </div>
+        </div>
+
+        {/* Bloque 4: Cómo elegir */}
+        <h2 className="text-2xl font-black text-[#3200C1] mb-6">¿Cómo Elegir tu Casa Prefabricada Ideal?</h2>
+        <p className="text-slate-600 mb-8 max-w-3xl">Con más de {totalCount} modelos disponibles en SolocasasChile es fácil sentirse abrumado. Estos tres factores te ayudarán a filtrar las opciones y tomar una decisión informada.</p>
+        <div className="grid md:grid-cols-3 gap-6 mb-12 text-slate-600">
+          {[
+            {
+              step: "01",
+              title: "Define tu Presupuesto",
+              text: "Establece un rango de precio realista considerando el valor del kit o la casa terminada, el costo de la fundación, la instalación y los permisos municipales. Usa nuestros filtros de precio para acotar resultados al instante.",
+            },
+            {
+              step: "02",
+              title: "Considera tu Terreno",
+              text: "Las características del suelo, la pendiente y el acceso al predio determinan qué tipo de construcción es viable. Algunos fabricantes ofrecen asesoría técnica gratuita antes de cotizar.",
+            },
+            {
+              step: "03",
+              title: "Compara Fabricantes",
+              text: "Evalúa la reputación del fabricante, sus años de experiencia, los materiales que utilizan y las garantías que ofrecen. En SolocasasChile verificamos y agrupamos la información de cada empresa para que puedas comparar fácilmente.",
+            },
+          ].map(({ step, title, text }) => (
+            <div key={step} className="relative bg-white rounded-xl p-6 border border-slate-100 shadow-sm">
+              <span className="absolute -top-3 -left-3 w-8 h-8 bg-[#3200C1] text-[#37FFDB] text-xs font-black rounded-full flex items-center justify-center shadow-md" aria-hidden="true">{step}</span>
+              <h3 className="text-base font-black text-[#3200C1] mb-2 mt-1">{title}</h3>
+              <p className="text-sm leading-relaxed">{text}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* CTA Final */}
+        <div className="bg-[#3200C1] rounded-2xl p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div>
+            <h2 className="text-2xl md:text-3xl font-black text-white mb-2 [text-wrap:balance]">¿Listo para comparar y cotizar?</h2>
+            <p className="text-white/70 max-w-xl">Usa nuestro comparador gratuito, aplica filtros por precio, m², dormitorios y constructora, y solicita tu cotización en minutos.</p>
+          </div>
+          <Link
+            href="#results"
+            className="shrink-0 inline-flex items-center gap-2 bg-[#37FFDB] text-[#3200C1] font-black px-8 py-4 rounded-[4px] hover:brightness-110 active:scale-95 transition-all text-base whitespace-nowrap"
+          >
+            Usar el Comparador Gratuito <ArrowRight className="w-5 h-5" aria-hidden="true" />
+          </Link>
         </div>
       </section>
     </div>
