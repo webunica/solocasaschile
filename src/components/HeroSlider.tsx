@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowUpRight, Bed, Bath, Scale, MapPin } from "lucide-react";
 import { formatPrice } from "@/lib/utils";
 import type { ModelRow } from "@/lib/db";
@@ -25,18 +26,24 @@ export function HeroSlider({ models }: { models: ModelRow[] }) {
             {/* Container holding all images for smooth translation */}
             {models.map((model, idx) => {
                 const isActive = idx === currentIndex;
+                const imageUrl = model.image_urls.split(",")[0].trim();
 
                 return (
                     <div
                         key={model.id}
                         className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${isActive ? "opacity-100 z-10" : "opacity-0 z-0 delay-150"}`}
                     >
-                        {/* Background Image */}
+                        {/* Background Image — priority on the first slide for LCP */}
                         <div className="absolute inset-0 bg-slate-50">
-                            <img
-                                src={model.image_urls.split(",")[0].trim()}
-                                alt={model.model_name}
-                                className={`w-full h-full object-cover transition-transform duration-[8000ms] ease-linear ${isActive ? 'scale-110' : 'scale-100'}`}
+                            <Image
+                                src={imageUrl}
+                                alt={`${model.model_name} - Casa prefabricada ${model.surface_m2 ? model.surface_m2 + " m²" : ""}`}
+                                fill
+                                sizes="100vw"
+                                className={`object-cover transition-transform duration-[8000ms] ease-linear ${isActive ? "scale-110" : "scale-100"}`}
+                                priority={idx === 0}
+                                loading={idx === 0 ? "eager" : "lazy"}
+                                quality={85}
                             />
                         </div>
 
@@ -80,6 +87,7 @@ export function HeroSlider({ models }: { models: ModelRow[] }) {
                                 <Link
                                     href={`/modelo/${model.id}`}
                                     className="brand-button-primary px-10 py-4 text-lg"
+                                    prefetch={false}
                                 >
                                     Cotizar Ahora <ArrowUpRight className="w-5 h-5" />
                                 </Link>
@@ -96,7 +104,7 @@ export function HeroSlider({ models }: { models: ModelRow[] }) {
                         key={idx}
                         onClick={() => setCurrentIndex(idx)}
                         className={`transition-all duration-300 rounded-full h-1.5 ${currentIndex === idx ? "w-8 bg-[#37FFDB]" : "w-1.5 bg-white/40 hover:bg-white/60"}`}
-                        aria-label={`Go to slide ${idx + 1}`}
+                        aria-label={`Ir a la diapositiva ${idx + 1}`}
                     />
                 ))}
             </div>

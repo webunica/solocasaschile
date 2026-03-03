@@ -1,4 +1,5 @@
-import { ArrowRight, Star, ShieldCheck, Zap } from "lucide-react";
+import Image from "next/image";
+import { ArrowRight } from "lucide-react";
 
 export function FeaturedCompanyBanner() {
     return (
@@ -8,10 +9,14 @@ export function FeaturedCompanyBanner() {
                 {/* Primer Banner */}
                 <div className="relative w-full h-[400px] overflow-hidden rounded-[4px] bg-slate-50 border border-slate-100 group shadow-sm flex flex-col justify-end">
                     <div className="absolute inset-0">
-                        <img
+                        <Image
                             src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=2075&auto=format&fit=crop"
-                            alt="Casas Chile"
-                            className="w-full h-full object-cover grayscale opacity-40 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700"
+                            alt="Casas Chile - Box Panel Chile"
+                            fill
+                            sizes="(max-width: 1024px) 100vw, 50vw"
+                            className="object-cover grayscale opacity-40 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700"
+                            loading="lazy"
+                            quality={75}
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-white via-white/40 to-transparent" />
                     </div>
@@ -38,10 +43,14 @@ export function FeaturedCompanyBanner() {
                 {/* Segundo Banner */}
                 <div className="relative w-full h-[400px] overflow-hidden rounded-[4px] bg-slate-50 border border-slate-100 group shadow-sm flex flex-col justify-end">
                     <div className="absolute inset-0">
-                        <img
+                        <Image
                             src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop"
-                            alt="Metalkit"
-                            className="w-full h-full object-cover grayscale opacity-40 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700"
+                            alt="Metalkit - Casas de estructura metálica en Chile"
+                            fill
+                            sizes="(max-width: 1024px) 100vw, 50vw"
+                            className="object-cover grayscale opacity-40 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700"
+                            loading="lazy"
+                            quality={75}
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-white via-white/40 to-transparent" />
                     </div>

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Nunito } from "next/font/google";
 import "./globals.css";
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
@@ -73,6 +73,13 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport: Viewport = {
+  themeColor: "#3200C1",
+  width: "device-width",
+  initialScale: 1,
+  minimumScale: 1,
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -101,6 +108,11 @@ export default function RootLayout({
   return (
     <html lang="es" className="scroll-smooth">
       <head>
+        {/* Preconnect to external origins for better LCP/FCP */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://images.unsplash.com" />
+        <link rel="dns-prefetch" href="https://cdn.sanity.io" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

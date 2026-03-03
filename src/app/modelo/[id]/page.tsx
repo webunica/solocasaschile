@@ -1,5 +1,6 @@
 import { ArrowLeft, Bath, Bed, Maximize, Ruler, Home as HomeIcon, CheckCircle2, Factory, Calendar, MessageSquare, ShieldCheck, FileText } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { sanityClient } from "@/lib/sanity.client";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
@@ -125,10 +126,17 @@ export default async function ModelPage({ params }: Props) {
                         {/* Imagen Principal */}
                         {thumbnail ? (
                             <div className="aspect-[16/9] w-full bg-slate-200 rounded-3xl overflow-hidden relative shadow-lg">
-                                {/* eslint-disable-next-line @next/next/no-img-element */}
-                                <img src={thumbnail} alt={model.model_name} className="w-full h-full object-cover" />
+                                <Image
+                                    src={thumbnail}
+                                    alt={`${model.model_name} - ${model.company_name} | Casa prefabricada en Chile`}
+                                    fill
+                                    sizes="(max-width: 1024px) 100vw, calc(100vw - 440px)"
+                                    className="object-cover"
+                                    priority
+                                    quality={85}
+                                />
 
-                                <div className="absolute top-4 left-4 flex gap-2">
+                                <div className="absolute top-4 left-4 flex gap-2 z-10">
                                     <div className="bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-lg text-sm font-bold text-[#3200C1] flex items-center gap-2 shadow-sm">
                                         <ShieldCheck className="w-4 h-4 text-[#37FFDB]" />
                                         Empresa Verificada

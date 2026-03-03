@@ -1,5 +1,6 @@
 import { getConstructorCompanies } from "@/lib/db";
 import Link from "next/link";
+import Image from "next/image";
 import { Crown, ArrowRight } from "lucide-react";
 
 export async function ConstructorBanner() {
@@ -37,8 +38,15 @@ export async function ConstructorBanner() {
                             {/* Logo */}
                             <div className="w-14 h-14 rounded-xl bg-white flex items-center justify-center shadow-md overflow-hidden border-2 border-amber-400/30 group-hover:border-amber-400 transition-colors">
                                 {co.logo_url ? (
-                                    // eslint-disable-next-line @next/next/no-img-element
-                                    <img src={co.logo_url} alt={co.company_name} className="w-full h-full object-cover" />
+                                    <Image
+                                        src={co.logo_url}
+                                        alt={`Logo de ${co.company_name}`}
+                                        width={56}
+                                        height={56}
+                                        className="w-full h-full object-contain"
+                                        loading="lazy"
+                                        quality={80}
+                                    />
                                 ) : (
                                     <Crown className="w-6 h-6 text-amber-500" />
                                 )}

@@ -2,6 +2,7 @@
 
 import React, { useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, Calendar, ChevronLeft, ChevronRight } from "lucide-react";
 
 const BLOG_POSTS = [
@@ -112,12 +113,16 @@ export const BlogCarousel = () => {
                             className="min-w-[300px] md:min-w-[400px] bg-white rounded-2xl border border-slate-100 overflow-hidden snap-start group hover:shadow-xl transition-all duration-500"
                         >
                             <Link href={`/blog/${post.slug}`} className="relative h-56 block overflow-hidden">
-                                <img
+                                <Image
                                     src={post.image}
                                     alt={post.title}
-                                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                                    fill
+                                    sizes="(max-width: 768px) 300px, 400px"
+                                    className="object-cover group-hover:scale-110 transition-transform duration-700"
+                                    loading="lazy"
+                                    quality={75}
                                 />
-                                <div className="absolute top-4 left-4">
+                                <div className="absolute top-4 left-4 z-10">
                                     <span className="bg-[#37FFDB] text-[#3200C1] px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider">
                                         {post.category}
                                     </span>

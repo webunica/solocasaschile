@@ -1,7 +1,8 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getModels, getDistinctCompanies, getDistinctCategories, getRandomModels, getConstructorCompanies, ModelRow } from "@/lib/db";
+import Image from "next/image";
+import { getModels, getDistinctCompanies, getDistinctCategories, getRandomModels, ModelRow } from "@/lib/db";
 import { FiltersSidebar } from "@/components/FiltersSidebar";
 import { HeroSlider } from "@/components/HeroSlider";
 import { AdCarousel } from "@/components/AdCarousel";
@@ -9,7 +10,7 @@ import { FeaturedCompanyBanner } from "@/components/FeaturedCompanyBanner";
 import { SortDropdown } from "@/components/SortDropdown";
 import { Pagination } from "@/components/Pagination";
 import { formatPrice } from "@/lib/utils";
-import { Bed, Bath, Hash, ArrowUpRight, Scale, MapPin, Inbox, Star, Crown } from "lucide-react";
+import { Bed, Bath, Hash, Scale, MapPin, Inbox, Star, Crown } from "lucide-react";
 
 import { BlogCarousel } from "@/components/BlogCarousel";
 import { ConstructorBanner } from "@/components/ConstructorBanner";
@@ -45,7 +46,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
     limit: 20
   };
 
-  // Sanity Fetches
+  // All DB fetches run in parallel — getModels is only called ONCE here.
   const [
     { models, totalCount },
     companies,
@@ -178,16 +179,9 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
             <SortDropdown />
           </div>
 
+          {/* Models Grid — rendered directly, no second DB call */}
           <div className="w-full grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-6 text-[22px]">
-            <Suspense fallback={
-              <>
-                {[...Array(6)].map((_, i) => (
-                  <div key={i} className="h-96 w-full animate-pulse bg-slate-100 rounded-lg border border-slate-200" />
-                ))}
-              </>
-            }>
-              <ModelsGrid filtersParams={filtersParams} />
-            </Suspense>
+            <ModelsGrid models={models} />
           </div>
 
           <Pagination totalCount={totalCount} limit={filtersParams.limit} />
@@ -222,9 +216,9 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
   );
 }
 
-async function ModelsGrid({ filtersParams }: { filtersParams: Record<string, unknown> }) {
-  const { models } = await getModels(filtersParams);
-
+// ─── Models Grid ─────────────────────────────────────────────────────────────
+// Receives pre-fetched models — NO additional DB call.
+function ModelsGrid({ models }: { models: ModelRow[] }) {
   if (models.length === 0) {
     return (
       <div className="col-span-full py-24 flex flex-col items-center justify-center text-center glass-card border-dashed">
@@ -239,10 +233,13 @@ async function ModelsGrid({ filtersParams }: { filtersParams: Record<string, unk
 
   return (
     <>
-      {models.map((house: ModelRow) => {
+      {models.map((house: ModelRow, index: number) => {
         const plan = house.company_plan || "starter";
         const isConstructor = plan === "constructor";
         const isBuilder = plan === "builder";
+        // Eagerly load and prioritize the first 4 cards (above the fold on desktop)
+        const isAboveFold = index < 4;
+        const imageUrl = house.image_urls ? house.image_urls.split(",")[0].trim() : null;
 
         return (
           <article key={house.id} className={`group relative rounded-[4px] overflow-hidden bg-white border transition-all duration-500 shadow-sm hover:shadow-md flex flex-col ${isConstructor ? "border-amber-300 ring-1 ring-amber-200 hover:border-amber-400" :
@@ -251,14 +248,16 @@ async function ModelsGrid({ filtersParams }: { filtersParams: Record<string, unk
             }`}>
             {/* Top Image Section */}
             <div className="relative w-full aspect-[4/3] sm:aspect-video overflow-hidden bg-slate-50">
-              {house.image_urls ? (
-                <img
-                  src={house.image_urls.split(",")[0].trim()}
+              {imageUrl ? (
+                <Image
+                  src={imageUrl}
                   alt={`${house.model_name} - ${house.company_name} - Casa prefabricada ${house.surface_m2 ? house.surface_m2 + " m²" : ""} en Chile`}
-                  loading="lazy"
-                  width={480}
-                  height={320}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1536px) 50vw, 33vw"
+                  className="object-cover group-hover:scale-110 transition-transform duration-700"
+                  loading={isAboveFold ? "eager" : "lazy"}
+                  priority={isAboveFold}
+                  quality={80}
                 />
               ) : (
                 <div className="absolute inset-0 flex flex-col items-center justify-center bg-slate-50 text-slate-300">
@@ -327,6 +326,7 @@ async function ModelsGrid({ filtersParams }: { filtersParams: Record<string, unk
                 <Link
                   href={`/modelo/${house.id}`}
                   className="brand-button-primary"
+                  prefetch={false}
                 >
                   Ver Modelo
                 </Link>
