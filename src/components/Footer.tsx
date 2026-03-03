@@ -57,7 +57,8 @@ export const Footer = () => {
                                 { name: "Modelos", href: "/#results" },
                                 { name: "Blog", href: "/blog" },
                                 { name: "Empresas", href: "#" },
-                                { name: "Categorías", href: "#" }
+                                { name: "Categorías", href: "#" },
+                                { name: "Términos y Condiciones", href: "/terminos" }
                             ].map((item) => (
                                 <li key={item.name}>
                                     <Link href={item.href} className="text-white/70 hover:text-[#37FFDB] flex items-center gap-2 group transition-colors">
@@ -135,20 +136,29 @@ export const Footer = () => {
                 </div>
 
                 {/* Bottom Bar */}
-                <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-6">
+                <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
                     <p className="text-white/40 text-sm">
                         © {currentYear} solocasaschile.com. Todos los derechos reservados.
                     </p>
-                    <div className="flex items-center gap-2 text-white/60 text-sm">
-                        <span>Desarrollado por</span>
-                        <a
-                            href="https://webunica.cl"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="font-black text-[#37FFDB] hover:underline"
+                    <div className="flex flex-wrap items-center justify-center gap-4 text-sm">
+                        <Link
+                            href="/terminos"
+                            className="text-white/50 hover:text-[#37FFDB] transition-colors"
                         >
-                            webunica.cl
-                        </a>
+                            Términos y Condiciones
+                        </Link>
+                        <span className="text-white/20">|</span>
+                        <div className="flex items-center gap-2 text-white/60">
+                            <span>Desarrollado por</span>
+                            <a
+                                href="https://webunica.cl"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="font-black text-[#37FFDB] hover:underline"
+                            >
+                                webunica.cl
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
