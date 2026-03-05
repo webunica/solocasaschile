@@ -1,36 +1,30 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Comparador Inmobiliario - Extractor y Normalizador de Datos
 
-## Getting Started
+Este es un sistema robusto para descubrir empresas de construcción, extraer catálogos de modelos de casas (SIPS, prefabricadas, modulares) y normalizarlos para que puedan ser comparados.
 
-First, run the development server:
+## Requisitos
+- Python 3.9+
+- Instalar dependencias: `pip install -r requirements.txt`
+
+## Uso por CLI
+Puedes ejecutar el scraper desde la línea de comandos usando `main.py`:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+python main.py --pais "Chile" --region "La Araucanía" --salida "csv+sqlite"
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Estructura
+- `/core`: Lógica principal (normalización, almacenamiento, loggers).
+- `/portals`: Adaptadores específicos de sitios web.
+- `/schemas`: Modelos de datos de Pydantic.
+- `/outputs`: Archivos generados (CSV, SQLite).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Cómo agregar nuevos adaptadores/sitios
+1. Crea un nuevo archivo en `portals/` (ej: `empresa_x_adapter.py`).
+2. Hereda de `BaseSiteAdapter`.
+3. Implementa los métodos `discover_model_urls`, `parse_company_info` y `parse_model_page`.
+4. Importa y agrega el adaptador a la lista `adapters` en `main.py`.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Limitaciones (MVP)
+- El descubrimiento automático de URLs mediante buscadores requiere configuración de proxy o APIs como SerpApi para evitar bloqueos.
+- La extracción de PDF está diseñada para una fase 3 posterior.

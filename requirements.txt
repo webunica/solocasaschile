@@ -1,0 +1,9 @@
+requests
+beautifulsoup4
+playwright
+pandas
+sqlalchemy
+pydantic
+pyyaml
+tenacity
+loguru
