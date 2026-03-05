@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import Link from "next/link";
-import { Search, Home, Plus, Settings, LogOut, Package, Building2, Mail } from "lucide-react";
+import { Search, Home, Plus, Settings, LogOut, Package, Building2, Mail, BarChart3 } from "lucide-react";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
@@ -44,6 +44,10 @@ export default async function DashboardLayout({ children }: { children: ReactNod
                     <Link href="/dashboard/leads" className="px-4 py-3 text-slate-500 hover:bg-slate-50 hover:text-[#3200C1] rounded-xl font-bold flex items-center gap-3 transition-colors">
                         <Mail className="w-5 h-5" />
                         Mensajes
+                    </Link>
+                    <Link href="/dashboard/impressions" className="px-4 py-3 text-slate-500 hover:bg-slate-50 hover:text-[#3200C1] rounded-xl font-bold flex items-center gap-3 transition-colors">
+                        <BarChart3 className="w-5 h-5" />
+                        Impresiones
                     </Link>
                     <Link href="/dashboard/settings" className="px-4 py-3 text-slate-500 hover:bg-slate-50 hover:text-[#3200C1] rounded-xl font-bold flex items-center gap-3 transition-colors">
                         <Settings className="w-5 h-5" />

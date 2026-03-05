@@ -10,7 +10,8 @@ import { FeaturedCompanyBanner } from "@/components/FeaturedCompanyBanner";
 import { SortDropdown } from "@/components/SortDropdown";
 import { Pagination } from "@/components/Pagination";
 import { formatPrice } from "@/lib/utils";
-import { Bed, Bath, Hash, Scale, MapPin, Inbox, Star, Crown, ArrowRight } from "lucide-react";
+import { Bed, Bath, Hash, Scale, MapPin, Inbox, Star, Crown, ArrowRight, ExternalLink } from "lucide-react";
+import VisitPublicationButton from "@/components/VisitPublicationButton";
 
 import { BlogCarousel } from "@/components/BlogCarousel";
 import { ConstructorBanner } from "@/components/ConstructorBanner";
@@ -419,7 +420,7 @@ function ModelsGrid({ models }: { models: ModelRow[] }) {
               </div>
 
               {/* CTA row */}
-              <div className="mt-auto flex items-center justify-between gap-4 pt-4 border-t border-slate-50">
+              <div className="mt-auto flex flex-col gap-3 pt-4 border-t border-slate-50">
                 <div className="flex flex-col min-w-0">
                   <span className="text-[10px] uppercase font-bold text-slate-400 mb-0.5">Formatos</span>
                   <span className="text-xs font-bold text-[#3200C1] truncate">
@@ -427,13 +428,25 @@ function ModelsGrid({ models }: { models: ModelRow[] }) {
                   </span>
                 </div>
 
-                <Link
-                  href={`/modelo/${house.id}`}
-                  className="brand-button-primary"
-                  prefetch={false}
-                >
-                  Ver Modelo
-                </Link>
+                <div className="flex items-center gap-2">
+                  <Link
+                    href={`/modelo/${house.id}`}
+                    className="flex-1 text-center py-2.5 rounded-[4px] border-2 border-[#3200C1] text-[#3200C1] font-black text-xs hover:bg-[#3200C1] hover:text-white transition-all"
+                    prefetch={false}
+                  >
+                    Ver Detalle
+                  </Link>
+                  {house.model_url && (
+                    <VisitPublicationButton
+                      modelId={house.id}
+                      modelName={house.model_name}
+                      companyName={house.company_name}
+                      targetUrl={house.model_url}
+                      source="card"
+                      label="Ver Publicación"
+                    />
+                  )}
+                </div>
               </div>
             </div>
           </article>

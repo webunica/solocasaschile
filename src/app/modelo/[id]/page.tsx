@@ -1,10 +1,13 @@
-import { ArrowLeft, Bath, Bed, Maximize, Ruler, Home as HomeIcon, CheckCircle2, Factory, Calendar, MessageSquare, ShieldCheck, FileText } from "lucide-react";
+import { ArrowLeft, Bath, Bed, Maximize, Ruler, Home as HomeIcon, CheckCircle2, Factory, Calendar, MessageSquare, ShieldCheck, FileText, ExternalLink } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { sanityClient } from "@/lib/sanity.client";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import LeadGeneratorForm from "./components/LeadGeneratorForm";
+import VisitPublicationButton from "@/components/VisitPublicationButton";
+import { Suspense } from "react";
+import SimilarPropertiesSection from "@/components/SimilarPropertiesSection";
 
 type Props = {
     params: Promise<{ id: string }>
@@ -16,6 +19,7 @@ const MODEL_QUERY = `*[_type == "houseModel" && _id == $id][0]{
     tags,
     company_name,
     model_name,
+    model_url,
     category,
     surface_m2,
     bedrooms,
@@ -71,14 +75,29 @@ export default async function ModelPage({ params }: Props) {
             {/* Header / Breadcrumb */}
             <div className="bg-white border-b border-slate-200">
                 <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-                    <Link href="/" className="inline-flex items-center gap-2 text-slate-500 hover:text-[#3200C1] font-bold text-sm transition-colors">
-                        <ArrowLeft className="w-4 h-4" /> Volver al Comparador
-                    </Link>
                     <div className="flex items-center gap-2">
-                        <span className="w-6 h-6 rounded-md bg-[#37FFDB]/20 flex items-center justify-center text-[#3200C1]">
-                            <Factory className="w-3 h-3" />
-                        </span>
-                        <span className="text-sm font-bold text-slate-700">{model.company_name}</span>
+                        <Link href="/" className="inline-flex items-center gap-2 text-slate-500 hover:text-[#3200C1] font-bold text-sm transition-colors">
+                            <ArrowLeft className="w-4 h-4" /> Volver al Comparador
+                        </Link>
+                    </div>
+                    <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-2">
+                            <span className="w-6 h-6 rounded-md bg-[#37FFDB]/20 flex items-center justify-center text-[#3200C1]">
+                                <Factory className="w-3 h-3" />
+                            </span>
+                            <span className="text-sm font-bold text-slate-700">{model.company_name}</span>
+                        </div>
+                        {model.model_url && (
+                            <VisitPublicationButton
+                                modelId={model._id}
+                                modelName={model.model_name}
+                                companyName={model.company_name}
+                                targetUrl={model.model_url}
+                                source="detail"
+                                label="Ver Publicación Original"
+                                className="inline-flex items-center gap-2 px-4 py-2 rounded-[4px] bg-[#3200C1] text-[#37FFDB] text-xs font-black hover:brightness-110 active:scale-95 transition-all whitespace-nowrap"
+                            />
+                        )}
                     </div>
                 </div>
             </div>
@@ -241,6 +260,26 @@ export default async function ModelPage({ params }: Props) {
                     </div>
                 </aside>
 
+            </div>
+
+            {/* Propiedades Similares */}
+            <div className="bg-white border-t border-slate-100 mt-10">
+                <Suspense fallback={
+                    <div className="max-w-7xl mx-auto px-6 py-14">
+                        <div className="h-6 bg-slate-100 rounded-full w-64 mb-8 animate-pulse" />
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {[1, 2, 3].map(i => <div key={i} className="h-72 bg-slate-100 rounded-[4px] animate-pulse" />)}
+                        </div>
+                    </div>
+                }>
+                    <SimilarPropertiesSection
+                        currentModelId={model._id}
+                        category={model.category}
+                        bedrooms={model.bedrooms}
+                        surface_m2={model.surface_m2}
+                        company_name={model.company_name}
+                    />
+                </Suspense>
             </div>
         </div>
     );
