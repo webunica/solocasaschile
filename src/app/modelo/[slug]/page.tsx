@@ -34,7 +34,10 @@ const MODEL_QUERY = `*[_type == "houseModel" && (_id == $slug || slug.current ==
     seo_description,
     "contact_phone": *[_type == "companyUser" && company_name == ^.company_name][0].contact_phone,
     "company_email": *[_type == "companyUser" && company_name == ^.company_name][0].email,
-    "images": coalesce(images[].asset->url, image_urls)
+    "images": coalesce(
+        images[]{ "url": asset->url, "alt": alt },
+        image_urls[]{ "url": @, "alt": "" }
+    )
 }`;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -50,9 +53,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return {
         title: model.seo_title || `${model.model_name} por ${model.company_name} | solocasaschile.com`,
         description: model.seo_description || `Conoce los detalles, m2, materialidad y precio del modelo ${model.model_name} construido por ${model.company_name}. Solicita tu asesoría gratuita.`,
+        keywords: model.seo_keywords ? model.seo_keywords.split(',').map((k: string) => k.trim()) : [`casa prefabricada`, model.model_name, model.company_name],
         openGraph: {
             title: `${model.model_name} | ${model.company_name}`,
-            images: model.images && model.images.length > 0 ? [{ url: model.images[0] }] : []
+            images: model.images && model.images.length > 0 ? [{ url: model.images[0].url, alt: model.images[0].alt }] : []
         }
     };
 }
@@ -149,8 +153,8 @@ export default async function ModelPage({ params }: Props) {
                         {thumbnail ? (
                             <div className="aspect-[16/9] w-full bg-slate-200 rounded-3xl overflow-hidden relative shadow-lg">
                                 <Image
-                                    src={thumbnail}
-                                    alt={`${model.model_name} - ${model.company_name} | Casa prefabricada en Chile`}
+                                    src={thumbnail.url}
+                                    alt={thumbnail.alt || `${model.model_name} - ${model.company_name} | Casa prefabricada en Chile`}
                                     fill
                                     sizes="(max-width: 1024px) 100vw, calc(100vw - 440px)"
                                     className="object-cover"

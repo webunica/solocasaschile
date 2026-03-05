@@ -59,7 +59,18 @@ export const houseModelType = defineType({
             name: 'images',
             title: 'Galería de Imágenes',
             type: 'array',
-            of: [{ type: 'image', options: { hotspot: true } }]
+            of: [{
+                type: 'image',
+                options: { hotspot: true },
+                fields: [
+                    {
+                        name: 'alt',
+                        type: 'string',
+                        title: 'Texto Alternativo (SEO)',
+                        description: 'Descripción de la imagen para SEO y accesibilidad.'
+                    }
+                ]
+            }]
         }),
         defineField({ name: 'pdf_ficha_url', title: 'Ficha PDF (URL)', type: 'url' }),
         defineField({ name: 'scrape_date', title: 'Fecha de Scrapeo', type: 'datetime' }),
