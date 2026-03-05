@@ -1,7 +1,8 @@
 import { sanityClient } from "./sanity.client";
 
 export interface ModelRow {
-    id: string;
+    id: string; // Internal Sanity ID, useful for mutations
+    slug?: string; // URL amigable
     company_name: string;
     model_name: string;
     model_url: string;
@@ -16,12 +17,13 @@ export interface ModelRow {
     pdf_ficha_url: string;
     original_price_text: string;
     image_urls: string;
-    company_plan?: string; // "starter" | "builder" | "constructor"
+    company_plan?: string;
 }
 
 function formatSanityHouse(doc: any): ModelRow {
     return {
         id: doc._id,
+        slug: doc.slug || "",
         company_name: doc.company_name || "",
         model_name: doc.model_name || "",
         model_url: doc.model_url || "",
@@ -124,6 +126,7 @@ export async function getModels(filters: {
     // ── GROQ: trae todos los modelos con plan de la empresa ───────
     const dataQuery = `*[${conditions}] | order(${orderClause}) [0...${oversample}] {
         ...,
+        "slug": slug.current,
         "image_urls":   coalesce(images[].asset->url, image_urls),
         "company_plan": *[_type=="companyUser" && company_name==^.company_name && is_active!=false][0].plan
     }`;
@@ -181,7 +184,11 @@ export async function getRandomModels(limit: number = 5) {
     const query = `*[_type == "houseModel" && is_active != false && (defined(image_urls) || defined(images)) && (
         count(*[_type=="companyUser" && company_name==^.company_name]) == 0 ||
         count(*[_type=="companyUser" && company_name==^.company_name && is_active!=false]) > 0
-    )] | order(_updatedAt desc) [0...${limit}] { ..., "image_urls": coalesce(images[].asset->url, image_urls) }`;
+    )] | order(_updatedAt desc) [0...${limit}] {
+        ...,
+        "slug": slug.current,
+        "image_urls": coalesce(images[].asset->url, image_urls)
+    }`;
     const docs = await sanityClient.fetch(query);
     return docs.map(formatSanityHouse);
 }

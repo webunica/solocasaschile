@@ -9,6 +9,7 @@ import VisitPublicationButton from "@/components/VisitPublicationButton";
 
 export interface SimilarHouse {
     _id: string;
+    slug?: string;
     model_name: string;
     company_name: string;
     category: string;
@@ -83,10 +84,10 @@ export default function SimilarPropertiesCarousel({ models }: Props) {
                         <article
                             key={house._id}
                             className={`min-w-[85vw] sm:min-w-[400px] shrink-0 snap-start group relative rounded-[4px] overflow-hidden bg-white border transition-all duration-300 shadow-sm hover:shadow-md flex flex-col ${isConstructor
-                                    ? "border-amber-300 ring-1 ring-amber-200 hover:border-amber-400"
-                                    : isBuilder
-                                        ? "border-blue-200 hover:border-blue-300"
-                                        : "border-slate-100 hover:border-[#37FFDB]"
+                                ? "border-amber-300 ring-1 ring-amber-200 hover:border-amber-400"
+                                : isBuilder
+                                    ? "border-blue-200 hover:border-blue-300"
+                                    : "border-slate-100 hover:border-[#37FFDB]"
                                 }`}
                         >
                             {/* Image */}
@@ -175,7 +176,7 @@ export default function SimilarPropertiesCarousel({ models }: Props) {
                                 {/* CTA row */}
                                 <div className="mt-auto flex items-center gap-2 pt-3 border-t border-slate-50">
                                     <Link
-                                        href={`/modelo/${house._id}`}
+                                        href={`/modelo/${house.slug || house._id}`}
                                         className="flex-1 text-center py-2 rounded-[4px] border-2 border-[#3200C1] text-[#3200C1] font-black text-xs hover:bg-[#3200C1] hover:text-white transition-all"
                                     >
                                         Ver Detalle

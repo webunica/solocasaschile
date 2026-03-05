@@ -2,7 +2,7 @@ import { ArrowLeft, Bath, Bed, Maximize, Ruler, Home as HomeIcon, CheckCircle2, 
 import Link from "next/link";
 import Image from "next/image";
 import { sanityClient } from "@/lib/sanity.client";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { Metadata } from "next";
 import LeadGeneratorForm from "./components/LeadGeneratorForm";
 import VisitPublicationButton from "@/components/VisitPublicationButton";
@@ -10,11 +10,12 @@ import { Suspense } from "react";
 import SimilarPropertiesSection from "@/components/SimilarPropertiesSection";
 
 type Props = {
-    params: Promise<{ id: string }>
+    params: Promise<{ slug: string }>
 }
 
-const MODEL_QUERY = `*[_type == "houseModel" && _id == $id][0]{
+const MODEL_QUERY = `*[_type == "houseModel" && (_id == $slug || slug.current == $slug)][0]{
     _id,
+    "slug": slug.current,
     property_id,
     tags,
     company_name,
@@ -37,8 +38,8 @@ const MODEL_QUERY = `*[_type == "houseModel" && _id == $id][0]{
 }`;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-    const { id } = await params;
-    const model = await sanityClient.fetch(MODEL_QUERY, { id });
+    const { slug } = await params;
+    const model = await sanityClient.fetch(MODEL_QUERY, { slug });
 
     if (!model) {
         return {
@@ -57,14 +58,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function ModelPage({ params }: Props) {
-    const { id } = await params;
+    const { slug } = await params;
 
-    const model = await sanityClient.fetch(MODEL_QUERY, { id }, {
-        next: { tags: [`model-${id}`], revalidate: 3600 } // ISR Cache: 1 Hora
-    });
+    // Fetch directly what we need
+    const model = await sanityClient.fetch(MODEL_QUERY, { slug });
 
-    if (!model) {
-        notFound();
+    if (!model) return notFound();
+
+    // Check if the URL reached was the old _id but we have a slug
+    if (model.slug && slug !== model.slug) {
+        redirect(`/modelo/${model.slug}`);
     }
 
     // Datos que se caen atrás

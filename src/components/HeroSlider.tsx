@@ -90,7 +90,7 @@ export function HeroSlider({ models }: { models: ModelRow[] }) {
                                 </div>
 
                                 <Link
-                                    href={`/modelo/${model.id}`}
+                                    href={`/modelo/${model.slug || model.id}`}
                                     className="brand-button-primary px-10 py-4 text-lg"
                                     prefetch={false}
                                 >

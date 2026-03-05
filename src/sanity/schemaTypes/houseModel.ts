@@ -8,6 +8,22 @@ export const houseModelType = defineType({
         defineField({ name: 'company_name', title: 'Nombre Empresa', type: 'string', validation: Rule => Rule.required() }),
         defineField({ name: 'model_name', title: 'Nombre del Modelo', type: 'string', validation: Rule => Rule.required() }),
         defineField({
+            name: 'slug',
+            title: 'URL Amigable (Slug)',
+            type: 'slug',
+            description: 'Se usa para la URL de la propiedad. Haz clic en "Generate".',
+            options: {
+                source: (doc) => {
+                    const type = 'casa-prefabricada';
+                    const category = doc.category ? `${doc.category}-` : '';
+                    const m2 = doc.surface_m2 ? `${doc.surface_m2}m2-` : '';
+                    return `${type}-${category}${doc.model_name}-${m2}${doc.company_name}`.toLowerCase();
+                },
+                maxLength: 200,
+            },
+            validation: Rule => Rule.required(),
+        }),
+        defineField({
             name: 'property_id',
             title: 'ID Interno de la Propiedad',
             type: 'string',

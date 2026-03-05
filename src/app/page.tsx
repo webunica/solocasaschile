@@ -430,7 +430,7 @@ function ModelsGrid({ models }: { models: ModelRow[] }) {
 
                 <div className="flex items-center gap-2">
                   <Link
-                    href={`/modelo/${house.id}`}
+                    href={`/modelo/${house.slug || house.id}`}
                     className="flex-1 text-center py-2.5 rounded-[4px] border-2 border-[#3200C1] text-[#3200C1] font-black text-xs hover:bg-[#3200C1] hover:text-white transition-all"
                     prefetch={false}
                   >
