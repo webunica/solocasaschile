@@ -73,6 +73,7 @@ function applyPlanLimits(docs: ModelRow[]): ModelRow[] {
 }
 
 export async function getModels(filters: {
+    search?: string;
     company?: string;
     category?: string;
     minPrice?: number;
@@ -95,6 +96,10 @@ export async function getModels(filters: {
     let conditions = `_type == "houseModel" && is_active != false`;
     const params: Record<string, any> = {};
 
+    if (filters.search) {
+        conditions += ` && (model_name match $search || company_name match $search || category match $search)`;
+        params.search = `*${filters.search}*`;
+    }
     if (filters.company) {
         conditions += ` && company_name == $company`;
         params.company = filters.company;
@@ -202,4 +207,28 @@ export async function getConstructorCompanies() {
         "model_count": count(*[_type == "houseModel" && company_name == ^.company_name])
     }`;
     return sanityClient.fetch(query);
+}
+
+export async function getBlogPosts(search?: string) {
+    let conditions = `_type == "blogPost"`;
+    const params: Record<string, any> = {};
+
+    if (search) {
+        conditions += ` && (title match $search || excerpt match $search || category match $search)`;
+        params.search = `*${search}*`;
+    }
+
+    const query = `*[${conditions}] | order(publishedAt desc) {
+        _id,
+        title,
+        excerpt,
+        category,
+        publishedAt,
+        "date": publishedAt,
+        "slug": slug.current,
+        "image": coverImage.asset->url,
+        "author": "Equipo solocasaschile"
+    }`;
+
+    return sanityClient.fetch(query, params);
 }

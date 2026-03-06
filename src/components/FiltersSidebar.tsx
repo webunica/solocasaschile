@@ -12,6 +12,7 @@ interface FiltersSidebarProps {
 export function FiltersSidebar({ companies, categories }: FiltersSidebarProps) {
     const [isOpen, setIsOpen] = useState(false);
     const [query, setQuery] = useQueryStates({
+        search: parseAsString,
         company: parseAsString,
         category: parseAsString,
         minSurface: parseAsInteger,
@@ -22,6 +23,7 @@ export function FiltersSidebar({ companies, categories }: FiltersSidebarProps) {
     });
 
     const [local, setLocal] = useState({
+        search: query.search || "",
         company: query.company || "",
         category: query.category || "",
         minSurface: query.minSurface || "",
@@ -34,6 +36,7 @@ export function FiltersSidebar({ companies, categories }: FiltersSidebarProps) {
     // Sincronizar si cambia desde la URL o al resetear
     useEffect(() => {
         setLocal({
+            search: query.search || "",
             company: query.company || "",
             category: query.category || "",
             minSurface: query.minSurface || "",
@@ -42,11 +45,12 @@ export function FiltersSidebar({ companies, categories }: FiltersSidebarProps) {
             minPrice: query.minPrice || "",
             maxPrice: query.maxPrice || "",
         });
-    }, [query.company, query.category, query.minSurface, query.bedrooms, query.bathrooms, query.minPrice, query.maxPrice]);
+    }, [query.search, query.company, query.category, query.minSurface, query.bedrooms, query.bathrooms, query.minPrice, query.maxPrice]);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         setQuery({
+            search: local.search || null,
             company: local.company || null,
             category: local.category || null,
             minSurface: local.minSurface ? Number(local.minSurface) : null,
@@ -59,8 +63,8 @@ export function FiltersSidebar({ companies, categories }: FiltersSidebarProps) {
     };
 
     const resetFilters = () => {
-        setLocal({ company: "", category: "", minSurface: "", bedrooms: "", bathrooms: "", minPrice: "", maxPrice: "" });
-        setQuery({ company: null, category: null, minSurface: null, bedrooms: null, bathrooms: null, minPrice: null, maxPrice: null }, { shallow: false });
+        setLocal({ search: "", company: "", category: "", minSurface: "", bedrooms: "", bathrooms: "", minPrice: "", maxPrice: "" });
+        setQuery({ search: null, company: null, category: null, minSurface: null, bedrooms: null, bathrooms: null, minPrice: null, maxPrice: null }, { shallow: false });
         setIsOpen(false);
     };
 
@@ -114,6 +118,21 @@ export function FiltersSidebar({ companies, categories }: FiltersSidebarProps) {
 
                 <form onSubmit={handleSubmit} className="space-y-6 flex flex-col h-full mt-6 xl:mt-0">
                     <div className="space-y-6 flex-1">
+                        {/* Búsqueda General */}
+                        <div className="space-y-2">
+                            <label htmlFor="search" className="text-[10px] font-black uppercase tracking-widest text-[#3200C1]/60 flex items-center gap-2">
+                                <SearchIcon className="w-3.5 h-3.5 text-[#37FFDB]" /> Buscar por palabra clave
+                            </label>
+                            <input
+                                type="text"
+                                id="search"
+                                value={local.search}
+                                onChange={(e) => setLocal({ ...local, search: e.target.value })}
+                                placeholder="Ej: Alicante, Madera..."
+                                className="brand-input"
+                            />
+                        </div>
+
                         <div className="space-y-2">
                             <label htmlFor="company" className="text-[10px] font-black uppercase tracking-widest text-[#3200C1]/60 flex items-center gap-2">
                                 <Hash className="w-3.5 h-3.5 text-[#37FFDB]" /> Fabricante

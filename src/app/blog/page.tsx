@@ -1,5 +1,7 @@
-import { ArrowRight, Calendar, User, Tag, ChevronRight, Hash } from "lucide-react";
+import { ArrowRight, Calendar, User, Tag, ChevronRight, Hash, Inbox } from "lucide-react";
 import Link from "next/link";
+import { getBlogPosts } from "@/lib/db";
+import { BlogSearch } from "@/components/BlogSearch";
 
 interface Post {
     id: string;
@@ -95,7 +97,26 @@ const SAMPLE_POSTS: Post[] = [
     }
 ];
 
-export default function BlogPage() {
+export default async function BlogPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
+    const rawParams = await searchParams;
+    const search = typeof rawParams.search === "string" ? rawParams.search : undefined;
+
+    let posts = await getBlogPosts(search);
+
+    // Si no hay posts en Sanity y estamos buscando, filtrar los estáticos
+    if (!posts || posts.length === 0) {
+        if (search) {
+            const s = search.toLowerCase();
+            posts = SAMPLE_POSTS.filter(p =>
+                p.title.toLowerCase().includes(s) ||
+                p.category.toLowerCase().includes(s) ||
+                p.excerpt.toLowerCase().includes(s)
+            );
+        } else {
+            posts = SAMPLE_POSTS;
+        }
+    }
+
     return (
         <div className="bg-white">
             {/* Header */}
@@ -148,62 +169,61 @@ export default function BlogPage() {
 
                     {/* Posts Grid */}
                     <div className="flex-1">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                            {SAMPLE_POSTS.map((post) => (
-                                <article key={post.id} className="group flex flex-col bg-white border border-slate-100 rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-1">
-                                    <Link href={`/blog/${post.slug}`} className="relative h-64 overflow-hidden">
-                                        <img
-                                            src={post.image}
-                                            alt={post.title}
-                                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                                        />
-                                        <div className="absolute top-4 left-4">
-                                            <span className="bg-[#37FFDB] text-[#3200C1] px-4 py-1 rounded-full text-xs font-black uppercase tracking-wider shadow-lg">
-                                                {post.category}
-                                            </span>
-                                        </div>
-                                    </Link>
-
-                                    <div className="p-8 flex-1 flex flex-col">
-                                        <div className="flex items-center gap-4 text-slate-400 text-sm mb-4">
-                                            <span className="flex items-center gap-1.5"><Calendar className="w-4 h-4" /> {post.date}</span>
-                                            <span className="flex items-center gap-1.5"><User className="w-4 h-4" /> {post.author}</span>
-                                        </div>
-
-                                        <h2 className="text-2xl font-black text-[#3200C1] mb-4 group-hover:text-[#37FFDB] transition-colors leading-tight">
-                                            <Link href={`/blog/${post.slug}`}>{post.title}</Link>
-                                        </h2>
-
-                                        <p className="text-slate-500 leading-relaxed mb-6 flex-1">
-                                            {post.excerpt}
-                                        </p>
-
-                                        <Link
-                                            href={`/blog/${post.slug}`}
-                                            className="inline-flex items-center gap-2 text-[#3200C1] font-black group/btn"
-                                        >
-                                            Leer más
-                                            <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-2 transition-transform" />
+                        {posts.length > 0 ? (
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                {posts.map((post: any) => (
+                                    <article key={post._id || post.id} className="group flex flex-col bg-white border border-slate-100 rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-1">
+                                        <Link href={`/blog/${post.slug}`} className="relative h-64 overflow-hidden">
+                                            <img
+                                                src={post.image}
+                                                alt={post.title}
+                                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                            />
+                                            <div className="absolute top-4 left-4">
+                                                <span className="bg-[#37FFDB] text-[#3200C1] px-4 py-1 rounded-full text-xs font-black uppercase tracking-wider shadow-lg">
+                                                    {post.category}
+                                                </span>
+                                            </div>
                                         </Link>
-                                    </div>
-                                </article>
-                            ))}
-                        </div>
+
+                                        <div className="p-8 flex-1 flex flex-col">
+                                            <div className="flex items-center gap-4 text-slate-400 text-sm mb-4">
+                                                <span className="flex items-center gap-1.5"><Calendar className="w-4 h-4" /> {post.date}</span>
+                                                <span className="flex items-center gap-1.5"><User className="w-4 h-4" /> {post.author}</span>
+                                            </div>
+
+                                            <h2 className="text-2xl font-black text-[#3200C1] mb-4 group-hover:text-[#37FFDB] transition-colors leading-tight">
+                                                <Link href={`/blog/${post.slug}`}>{post.title}</Link>
+                                            </h2>
+
+                                            <p className="text-slate-500 leading-relaxed mb-6 flex-1 line-clamp-3">
+                                                {post.excerpt}
+                                            </p>
+
+                                            <Link
+                                                href={`/blog/${post.slug}`}
+                                                className="inline-flex items-center gap-2 text-[#3200C1] font-black group/btn"
+                                            >
+                                                Leer más
+                                                <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-2 transition-transform" />
+                                            </Link>
+                                        </div>
+                                    </article>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="py-24 flex flex-col items-center justify-center text-center bg-slate-50 rounded-2xl border-2 border-dashed border-slate-200">
+                                <Inbox className="w-16 h-16 text-slate-300 mb-4" />
+                                <h3 className="text-2xl font-black text-[#3200C1] mb-2">No encontramos artículos</h3>
+                                <p className="text-slate-500 max-w-sm">Intenta buscar con otros términos o limpia los filtros.</p>
+                            </div>
+                        )}
                     </div>
 
                     {/* Sidebar */}
                     <aside className="lg:w-96 flex flex-col gap-10">
                         {/* Search */}
-                        <div className="p-8 bg-slate-50 rounded-2xl border border-slate-100">
-                            <h3 className="text-xl font-black text-[#3200C1] mb-6">Buscar artículos</h3>
-                            <div className="relative">
-                                <input
-                                    type="text"
-                                    placeholder="Ej: Casas SIP..."
-                                    className="w-full bg-white border border-slate-200 rounded-xl py-3 px-4 focus:ring-2 focus:ring-[#37FFDB] outline-none transition-all"
-                                />
-                            </div>
-                        </div>
+                        <BlogSearch />
 
                         {/* Categories */}
                         <div className="p-8 bg-slate-50 rounded-2xl border border-slate-100">

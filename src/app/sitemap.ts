@@ -21,7 +21,7 @@ function toDate(value?: string): Date {
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     // ── 0. Diagnóstico (visible en logs del servidor) ────────────────────────
-    const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'placeholder'
+    const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || process.env.SANITY_PROJECT_ID || 'placeholder'
     console.log(`[sitemap] Sanity projectId: ${projectId}`)
 
     // ── 1. Slugs de Blog Posts desde Sanity ─────────────────────────────────

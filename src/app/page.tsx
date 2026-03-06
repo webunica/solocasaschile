@@ -35,6 +35,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
 
   // Parse manually for safe filtering since it's going into SQLite
   const filtersParams = {
+    search: typeof rawParams.search === "string" ? rawParams.search : undefined,
     company: typeof rawParams.company === "string" ? rawParams.company : undefined,
     category: typeof rawParams.category === "string" ? rawParams.category : undefined,
     minPrice: rawParams.minPrice ? parseInt(rawParams.minPrice as string) : undefined,
