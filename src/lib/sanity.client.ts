@@ -10,3 +10,4 @@ export const sanityClient = createClient({
     apiVersion,
     useCdn: true,
 })
+
