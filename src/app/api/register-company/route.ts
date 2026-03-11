@@ -50,6 +50,6 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ success: true });
     } catch (err: any) {
         console.error("Register error:", err);
-        return NextResponse.json({ error: "Error interno al crear la cuenta." }, { status: 500 });
+        return NextResponse.json({ error: `Error interno: ${err.message}` }, { status: 500 });
     }
 }
