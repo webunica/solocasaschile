@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
         );
 
         if (existing) {
-            return NextResponse.json({ error: "Ya existe una cuenta asociada a ese correo electrónico." }, { status: 409 });
+            return NextResponse.json({ error: "Ya existe una cuenta con ese correo. ¿Olvidaste tu contraseña? Inicia sesión." }, { status: 409 });
         }
 
         // Hash password
