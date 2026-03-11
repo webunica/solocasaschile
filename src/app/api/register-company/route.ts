@@ -3,8 +3,8 @@ import { createClient } from "@sanity/client";
 import bcrypt from "bcryptjs";
 
 const client = createClient({
-    projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!,
-    dataset: process.env.NEXT_PUBLIC_SANITY_DATASET!,
+    projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || process.env.SANITY_PROJECT_ID || "c3n3g73v",
+    dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || process.env.SANITY_DATASET || "production",
     apiVersion: "2024-02-26",
     token: process.env.SANITY_API_WRITE_TOKEN,
     useCdn: false,
