@@ -103,12 +103,18 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
               <Link href="/blog" className="text-sm font-bold text-[#3200C1] hover:text-[#37FFDB] transition-colors">
                 Publicaciones
               </Link>
+              <Link href="/registro" className="text-sm font-bold text-[#3200C1] hover:text-[#37FFDB] transition-colors">
+                Registra tu Empresa
+              </Link>
             </nav>
           </div>
 
-          <div className="text-sm font-medium text-slate-500">
-            {totalCount} Modelos encontrados
-          </div>
+          <Link
+            href="/registro"
+            className="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-[4px] bg-[#3200C1] text-[#37FFDB] text-sm font-black hover:brightness-110 transition-all whitespace-nowrap"
+          >
+            Publicar Propiedad
+          </Link>
         </div>
       </header>
 
@@ -310,12 +316,20 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
             <h2 className="text-2xl md:text-3xl font-black text-white mb-2 [text-wrap:balance]">¿Listo para comparar y cotizar?</h2>
             <p className="text-white/70 max-w-xl">Usa nuestro comparador gratuito, aplica filtros por precio, m², dormitorios y constructora, y solicita tu cotización en minutos.</p>
           </div>
-          <Link
-            href="#results"
-            className="shrink-0 inline-flex items-center gap-2 bg-[#37FFDB] text-[#3200C1] font-black px-8 py-4 rounded-[4px] hover:brightness-110 active:scale-95 transition-all text-base whitespace-nowrap"
-          >
-            Usar el Comparador Gratuito <ArrowRight className="w-5 h-5" aria-hidden="true" />
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-3 shrink-0">
+            <Link
+              href="#results"
+              className="inline-flex items-center gap-2 bg-[#37FFDB] text-[#3200C1] font-black px-8 py-4 rounded-[4px] hover:brightness-110 active:scale-95 transition-all text-base whitespace-nowrap"
+            >
+              Usar el Comparador <ArrowRight className="w-5 h-5" aria-hidden="true" />
+            </Link>
+            <Link
+              href="/registro"
+              className="inline-flex items-center gap-2 bg-white/10 text-white border border-white/20 font-black px-8 py-4 rounded-[4px] hover:bg-white/20 active:scale-95 transition-all text-base whitespace-nowrap"
+            >
+              Publicar mi Empresa
+            </Link>
+          </div>
         </div>
       </section>
     </div>
