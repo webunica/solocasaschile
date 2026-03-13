@@ -46,7 +46,8 @@ export async function createPostAction(formData: FormData) {
         });
 
         revalidatePath("/dashboard/blog");
-        revalidatePath("/blog");
+        revalidatePath("/blog", "layout");
+        revalidatePath(`/blog/${slug}`);
 
         return { success: true };
     } catch (error: any) {

@@ -27,9 +27,9 @@ const POST_QUERY = `*[_type == "blogPost" && slug.current == $slug][0]{
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { slug } = await params;
 
-    // Hacemos fetch a Sanity (ISR con tags)
+    // Hacemos fetch a Sanity (ISR con tags, evitando caché agresivo si no existe)
     const post = await sanityClient.fetch(POST_QUERY, { slug }, {
-        next: { tags: [`post-${slug}`], revalidate: 3600 }
+        cache: 'no-store'
     });
 
     if (!post) {
@@ -65,9 +65,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function BlogPostPage({ params }: Props) {
     const { slug } = await params;
 
-    // Sanity / Next.js deduplica los requests idénticos, por lo que este fetch no pega 2 veces a la API
+    // Evitar caché persistente temporalmente para que las nuevas publicaciones no de 404
     const post = await sanityClient.fetch(POST_QUERY, { slug }, {
-        next: { tags: [`post-${slug}`], revalidate: 3600 }
+        cache: 'no-store'
     });
 
     if (!post) {

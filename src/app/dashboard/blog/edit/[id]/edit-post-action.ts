@@ -58,7 +58,7 @@ export async function editPostAction(id: string, formData: FormData) {
 
         revalidatePath(`/dashboard/blog/edit/${id}`);
         revalidatePath("/dashboard/blog");
-        revalidatePath("/blog");
+        revalidatePath("/blog", "layout");
         revalidatePath(`/blog/${slug}`);
 
         return { success: true };
