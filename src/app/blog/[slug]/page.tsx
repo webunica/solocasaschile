@@ -143,7 +143,7 @@ export default async function BlogPostPage({ params }: Props) {
 
             {/* Article Header */}
             <header className="bg-slate-50 border-b border-slate-100 py-16">
-                <div className="max-w-[1000px] mx-auto px-6">
+                <div className="max-w-[1100px] mx-auto px-6">
                     <Link href="/blog" className="inline-flex items-center gap-2 text-[#3200C1] font-bold mb-8 hover:underline">
                         <ArrowLeft className="w-4 h-4" /> Volver al blog
                     </Link>
@@ -195,7 +195,7 @@ export default async function BlogPostPage({ params }: Props) {
             )}
 
             {/* Content */}
-            <div className="max-w-[1000px] mx-auto px-6 py-20">
+            <div className="max-w-[1100px] mx-auto px-6 py-20">
                 <div className="flex flex-col lg:flex-row gap-16">
 
                     <div className="flex-1 min-w-0">
