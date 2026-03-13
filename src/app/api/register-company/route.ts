@@ -12,7 +12,15 @@ const client = createClient({
 
 export async function POST(req: NextRequest) {
     try {
-        const { company_name, email, contact_phone, password } = await req.json();
+        const formData = await req.formData();
+        
+        const company_name = formData.get("company_name") as string;
+        const email = formData.get("email") as string;
+        const contact_phone = formData.get("contact_phone") as string;
+        const password = formData.get("password") as string;
+        
+        const logoFile = formData.get("logo") as File | null;
+        const faviconFile = formData.get("favicon") as File | null;
 
         if (!company_name || !email || !password) {
             return NextResponse.json({ error: "Nombre de empresa, email y contraseña son obligatorios." }, { status: 400 });
@@ -35,6 +43,21 @@ export async function POST(req: NextRequest) {
         // Hash password
         const hashedPassword = await bcrypt.hash(password, 12);
 
+        // Upload images if they exist
+        let logoAsset;
+        if (logoFile && logoFile.size > 0) {
+            const buffer = Buffer.from(await logoFile.arrayBuffer());
+            const asset = await client.assets.upload('image', buffer, { filename: logoFile.name });
+            logoAsset = { _type: 'image', asset: { _type: "reference", _ref: asset._id } };
+        }
+
+        let faviconAsset;
+        if (faviconFile && faviconFile.size > 0) {
+            const buffer = Buffer.from(await faviconFile.arrayBuffer());
+            const asset = await client.assets.upload('image', buffer, { filename: faviconFile.name });
+            faviconAsset = { _type: 'image', asset: { _type: "reference", _ref: asset._id } };
+        }
+
         // Create the company user doc
         await client.create({
             _type: "companyUser",
@@ -45,6 +68,8 @@ export async function POST(req: NextRequest) {
             plan: "starter",
             is_active: true,
             password: hashedPassword,
+            ...(logoAsset && { logo: logoAsset }),
+            ...(faviconAsset && { favicon: faviconAsset })
         });
 
         return NextResponse.json({ success: true });

@@ -32,9 +32,23 @@ export default function RegistroPage() {
         password: "",
         confirm_password: "",
     });
+    const [logoFile, setLogoFile] = useState<File | null>(null);
+    const [faviconFile, setFaviconFile] = useState<File | null>(null);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    };
+
+    const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            setLogoFile(e.target.files[0]);
+        }
+    };
+
+    const handleFaviconChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            setFaviconFile(e.target.files[0]);
+        }
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -53,15 +67,17 @@ export default function RegistroPage() {
         setStatus("loading");
 
         try {
+            const formPayload = new FormData();
+            formPayload.append("company_name", formData.company_name);
+            formPayload.append("email", formData.email);
+            formPayload.append("contact_phone", formData.contact_phone);
+            formPayload.append("password", formData.password);
+            if (logoFile) formPayload.append("logo", logoFile);
+            if (faviconFile) formPayload.append("favicon", faviconFile);
+
             const res = await fetch("/api/register-company", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    company_name: formData.company_name,
-                    email: formData.email,
-                    contact_phone: formData.contact_phone,
-                    password: formData.password,
-                }),
+                body: formPayload,
             });
 
             const data = await res.json();
@@ -233,6 +249,31 @@ export default function RegistroPage() {
                                     onChange={handleChange}
                                     className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:border-[#3200C1] focus:outline-none transition-colors text-sm"
                                 />
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1.5">
+                                        Logotipo Principal
+                                    </label>
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={handleLogoChange}
+                                        className="w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-[#3200C1]/10 file:text-[#3200C1] hover:file:bg-[#3200C1]/20 cursor-pointer"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1.5">
+                                        Favicon / Icono (Redes)
+                                    </label>
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={handleFaviconChange}
+                                        className="w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-[#37FFDB]/20 file:text-[#3200C1] hover:file:bg-[#37FFDB]/40 cursor-pointer"
+                                    />
+                                </div>
                             </div>
 
                             <div>

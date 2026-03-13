@@ -59,6 +59,7 @@ export const companyUserType = defineType({
             description: 'Solo Administrador: Escribe aquí la nueva clave para que el webhook la encripte, o para gestión manual.'
         }),
         defineField({ name: 'logo', title: 'Logotipo Corporativo', type: 'image', options: { hotspot: true } }),
+        defineField({ name: 'favicon', title: 'Favicon / Icono (Redes)', type: 'image', options: { hotspot: true }, description: 'Símbolo o icono de tu empresa para la web y redes.' }),
         defineField({ name: 'contact_phone', title: 'Teléfono Comercial (Receptor Leads)', type: 'string' }),
     ],
     preview: {
