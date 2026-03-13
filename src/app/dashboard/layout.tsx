@@ -54,10 +54,16 @@ export default async function DashboardLayout({ children }: { children: ReactNod
                         Ajustes
                     </Link>
                     {isAdmin && (
-                        <Link href="/dashboard/companies" className="px-4 py-3 text-slate-500 hover:bg-slate-50 hover:text-[#3200C1] rounded-xl font-bold flex items-center gap-3 transition-colors">
-                            <Building2 className="w-5 h-5" />
-                            Empresas B2B
-                        </Link>
+                        <>
+                            <Link href="/dashboard/companies" className="px-4 py-3 text-slate-500 hover:bg-slate-50 hover:text-[#3200C1] rounded-xl font-bold flex items-center gap-3 transition-colors">
+                                <Building2 className="w-5 h-5" />
+                                Empresas B2B
+                            </Link>
+                            <Link href="/dashboard/blog" className="px-4 py-3 text-slate-500 hover:bg-slate-50 hover:text-[#3200C1] rounded-xl font-bold flex items-center gap-3 transition-colors">
+                                <Package className="w-5 h-5" />
+                                Publicaciones
+                            </Link>
+                        </>
                     )}
                 </nav>
 

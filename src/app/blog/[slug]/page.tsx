@@ -16,8 +16,12 @@ const POST_QUERY = `*[_type == "blogPost" && slug.current == $slug][0]{
   excerpt,
   publishedAt,
   body,
+  htmlContent,
+  schemaMarkup,
   category,
-  "coverImageUrl": coverImage.asset->url
+  "coverImageUrl": coverImage.asset->url,
+  "coverImageAlt": coverImage.alt,
+  "coverImageCaption": coverImage.caption
 }`
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -70,7 +74,7 @@ export default async function BlogPostPage({ params }: Props) {
         notFound();
     }
 
-    const schemaMarkup = {
+    const defaultSchemaMarkup = {
         "@context": "https://schema.org",
         "@type": "Article",
         "headline": post.title,
@@ -102,12 +106,15 @@ export default async function BlogPostPage({ params }: Props) {
             "@id": `https://www.solocasaschile.com/blog/${post.slug}`
         }
     };
+    
+    // Si escribió un JSON-LD en Sanity, intentamos usar eso, de lo contrario usamos el schema por defecto.
+    const finalSchemaMarkup = post.schemaMarkup ? post.schemaMarkup : JSON.stringify(defaultSchemaMarkup);
 
     return (
         <article className="bg-white min-h-screen">
             <script
                 type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaMarkup) }}
+                dangerouslySetInnerHTML={{ __html: finalSchemaMarkup }}
             />
             {/* Header */}
             <header className="border-b border-slate-100 bg-white/80 backdrop-blur-md sticky top-0 z-50">
@@ -181,12 +188,17 @@ export default async function BlogPostPage({ params }: Props) {
             {/* Featured Image */}
             {post.coverImageUrl && (
                 <div className="max-w-[1200px] mx-auto px-6 -mt-12">
-                    <div className="rounded-3xl overflow-hidden aspect-video shadow-2xl">
-                        <img
-                            src={post.coverImageUrl}
-                            alt={post.title}
-                            className="w-full h-full object-cover"
-                        />
+                    <div className="flex flex-col items-center">
+                        <div className="w-full rounded-3xl overflow-hidden aspect-video shadow-2xl">
+                            <img
+                                src={post.coverImageUrl}
+                                alt={post.coverImageAlt || post.title}
+                                className="w-full h-full object-cover"
+                            />
+                        </div>
+                        {post.coverImageCaption && (
+                            <p className="mt-3 text-sm text-slate-500 italic max-w-2xl text-center">{post.coverImageCaption}</p>
+                        )}
                     </div>
                 </div>
             )}
@@ -196,7 +208,9 @@ export default async function BlogPostPage({ params }: Props) {
                 <div className="flex flex-col lg:flex-row gap-16">
 
                     <div className="flex-1 prose prose-xl prose-slate max-w-none prose-headings:font-black prose-headings:text-[#3200C1] prose-p:text-slate-600 prose-p:leading-relaxed prose-strong:text-[#3200C1]">
-                        {post.body ? (
+                        {post.htmlContent ? (
+                            <div dangerouslySetInnerHTML={{ __html: post.htmlContent }} />
+                        ) : post.body ? (
                             <PortableText
                                 value={post.body}
                                 components={{
