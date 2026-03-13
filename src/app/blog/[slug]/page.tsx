@@ -4,6 +4,7 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { sanityClient } from "@/lib/sanity.client";
 import { PortableText } from "@portabletext/react";
+import SiteLogo from "@/components/SiteLogo";
 
 type Props = {
     params: Promise<{ slug: string }>
@@ -113,12 +114,7 @@ export default async function BlogPostPage({ params }: Props) {
                 <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
                     <div className="flex items-center gap-8">
                         <div className="flex items-center gap-3">
-                            <div className="w-8 h-8 rounded-lg bg-[#37FFDB] flex items-center justify-center shadow-sm">
-                                <Hash className="w-5 h-5 text-[#3200C1]" />
-                            </div>
-                            <Link href="/" className="text-xl font-bold text-[#3200C1]">
-                                solocasaschile.com
-                            </Link>
+                            <SiteLogo />
                         </div>
 
                         <nav className="hidden md:flex items-center gap-6">

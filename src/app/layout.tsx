@@ -5,18 +5,28 @@ import "./globals.css";
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
 import { Footer } from "@/components/Footer";
 import NextAuthProvider from "@/components/NextAuthProvider";
+import { sanityClient } from "@/lib/sanity.client";
 
 const nunito = Nunito({ subsets: ["latin"], display: "swap" });
 
 const SITE_URL = "https://www.solocasaschile.com";
 const SITE_NAME = "SoloClasasChile.com";
 
-export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
-  title: {
-    default: "Casas Prefabricadas en Chile | Comparador de Precios y Modelos | SolocasasChile",
-    template: "%s | SolocasasChile.com",
-  },
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await sanityClient.fetch(`*[_type == "siteSettings"][0]{
+    site_name,
+    "favicon_url": site_favicon.asset->url
+  }`);
+
+  const title = settings?.site_name || "SolocasasChile.com";
+
+  return {
+    metadataBase: new URL(SITE_URL),
+    title: {
+      default: `Casas Prefabricadas en Chile | Comparador de Precios y Modelos | ${title}`,
+      template: `%s | ${title}`,
+    },
+    icons: settings?.favicon_url ? { icon: settings.favicon_url } : undefined,
   description:
     "Compara casas prefabricadas, casas SIP, casas modulares y llave en mano en Chile. Encuentra el mejor precio entre las principales constructoras. Modelos desde 36 m² con fotos, especificaciones y cotización online.",
   keywords: [
@@ -72,6 +82,7 @@ export const metadata: Metadata = {
       "Compara precios y modelos de casas prefabricadas, SIP, modulares y llave en mano en Chile.",
     images: [`${SITE_URL}/og-home.jpg`],
   },
+  }
 };
 
 export const viewport: Viewport = {

@@ -49,6 +49,19 @@ export const siteSettingsType = defineType({
             initialValue: 'Solo Casas Chile',
         }),
         defineField({
+            name: 'site_logo',
+            title: 'Logotipo Principal (Cabecera)',
+            type: 'image',
+            description: 'Se mostrará en la barra superior del sitio web.',
+            options: { hotspot: true }
+        }),
+        defineField({
+            name: 'site_favicon',
+            title: 'Favicon / Icono (Pestaña Navegador)',
+            type: 'image',
+            description: 'Aparecerá junto al título en la pestaña del navegador.',
+        }),
+        defineField({
             name: 'site_url',
             title: 'URL del Sitio',
             type: 'url',

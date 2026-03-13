@@ -2,6 +2,7 @@ import { ArrowRight, Calendar, User, Tag, ChevronRight, Hash, Inbox } from "luci
 import Link from "next/link";
 import { getBlogPosts } from "@/lib/db";
 import { BlogSearch } from "@/components/BlogSearch";
+import SiteLogo from "@/components/SiteLogo";
 
 interface Post {
     id: string;
@@ -124,12 +125,7 @@ export default async function BlogPage({ searchParams }: { searchParams: Promise
                 <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
                     <div className="flex items-center gap-8">
                         <div className="flex items-center gap-3">
-                            <div className="w-8 h-8 rounded-lg bg-[#37FFDB] flex items-center justify-center shadow-sm">
-                                <Hash className="w-5 h-5 text-[#3200C1]" />
-                            </div>
-                            <Link href="/" className="text-xl font-bold text-[#3200C1]">
-                                solocasaschile.com
-                            </Link>
+                            <SiteLogo />
                         </div>
 
                         <nav className="hidden md:flex items-center gap-6">

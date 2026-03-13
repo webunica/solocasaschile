@@ -12,6 +12,7 @@ import { Pagination } from "@/components/Pagination";
 import { formatPrice } from "@/lib/utils";
 import { Bed, Bath, Hash, Scale, MapPin, Inbox, Star, Crown, ArrowRight, ExternalLink } from "lucide-react";
 import VisitPublicationButton from "@/components/VisitPublicationButton";
+import SiteLogo from "@/components/SiteLogo";
 
 import { BlogCarousel } from "@/components/BlogCarousel";
 import { ConstructorBanner } from "@/components/ConstructorBanner";
@@ -88,12 +89,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-8">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-[#37FFDB] flex items-center justify-center shadow-sm">
-                <Hash className="w-5 h-5 text-[#3200C1]" aria-hidden="true" />
-              </div>
-              <Link href="/" className="text-xl font-bold text-[#3200C1]" aria-label="SolocasasChile.com - Inicio">
-                solocasaschile.com
-              </Link>
+              <SiteLogo />
             </div>
 
             <nav className="hidden md:flex items-center gap-6" aria-label="Navegación principal">
