@@ -207,9 +207,9 @@ export default async function BlogPostPage({ params }: Props) {
             <div className="max-w-[1000px] mx-auto px-6 py-20">
                 <div className="flex flex-col lg:flex-row gap-16">
 
-                    <div className="flex-1 prose prose-xl prose-slate max-w-none prose-headings:font-black prose-headings:text-[#3200C1] prose-p:text-slate-600 prose-p:leading-relaxed prose-strong:text-[#3200C1]">
+                    <div className="flex-1 min-w-0">
                         {post.htmlContent ? (
-                            <div dangerouslySetInnerHTML={{ __html: post.htmlContent }} />
+                            <div className="blog-content" dangerouslySetInnerHTML={{ __html: post.htmlContent }} />
                         ) : post.body ? (
                             <PortableText
                                 value={post.body}
