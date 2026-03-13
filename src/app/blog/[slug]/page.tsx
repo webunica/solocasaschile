@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { sanityClient } from "@/lib/sanity.client";
 import { PortableText } from "@portabletext/react";
 import SiteLogo from "@/components/SiteLogo";
+import ShareButtons from "@/components/ShareButtons";
 
 type Props = {
     params: Promise<{ slug: string }>
@@ -169,18 +170,8 @@ export default async function BlogPostPage({ params }: Props) {
                             </div>
                         </div>
 
-                        <div className="flex items-center gap-3">
-                            <span className="text-slate-400 text-sm font-bold mr-2">Compartir:</span>
-                            <button className="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center text-[#3200C1] hover:bg-[#3200C1] hover:text-white transition-all">
-                                <Facebook className="w-4 h-4" />
-                            </button>
-                            <button className="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center text-[#3200C1] hover:bg-[#3200C1] hover:text-white transition-all">
-                                <Twitter className="w-4 h-4" />
-                            </button>
-                            <button className="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center text-[#3200C1] hover:bg-[#3200C1] hover:text-white transition-all">
-                                <Linkedin className="w-4 h-4" />
-                            </button>
-                        </div>
+                        <ShareButtons title={post.title} slug={post.slug} excerpt={post.excerpt} />
+
                     </div>
                 </div>
             </header>
@@ -236,10 +227,13 @@ export default async function BlogPostPage({ params }: Props) {
                             </div>
                         )}
 
-                        <div className="my-16 p-10 bg-[#37FFDB]/10 rounded-2xl border border-[#37FFDB]/20">
-                            <h3 className="text-2xl font-black mb-4">🏠 ¿Buscas modelos de casas?</h3>
-                            <p className="mb-6">En nuestro comparador puedes filtrar cientos de modelos por materialidad, precio y m².</p>
-                            <Link href="/" className="brand-button-primary">Explorar Modelos</Link>
+                        {/* Share strip al final del artículo */}
+                        <div className="mt-12 pt-10 border-t border-slate-200 flex flex-col sm:flex-row items-start sm:items-center gap-6 justify-between bg-slate-50 rounded-2xl p-8">
+                            <div>
+                                <p className="font-black text-[#3200C1] text-lg">¿Te fue útil este artículo?</p>
+                                <p className="text-slate-500 text-sm mt-1">Compártelo con tus amigos y familia 👇</p>
+                            </div>
+                            <ShareButtons title={post.title} slug={post.slug} excerpt={post.excerpt} />
                         </div>
                     </div>
 

@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import Link from "next/link";
-import { Search, Home, Plus, Settings, LogOut, Package, Building2, Mail, BarChart3 } from "lucide-react";
+import { Search, Home, Plus, Settings, LogOut, Package, Building2, Mail, BarChart3, Share2 } from "lucide-react";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
@@ -62,6 +62,10 @@ export default async function DashboardLayout({ children }: { children: ReactNod
                             <Link href="/dashboard/blog" className="px-4 py-3 text-slate-500 hover:bg-slate-50 hover:text-[#3200C1] rounded-xl font-bold flex items-center gap-3 transition-colors">
                                 <Package className="w-5 h-5" />
                                 Publicaciones
+                            </Link>
+                            <Link href="/dashboard/social" className="px-4 py-3 text-slate-500 hover:bg-slate-50 hover:text-[#3200C1] rounded-xl font-bold flex items-center gap-3 transition-colors">
+                                <Share2 className="w-5 h-5" />
+                                Redes Sociales
                             </Link>
                         </>
                     )}
