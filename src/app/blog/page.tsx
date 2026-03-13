@@ -169,39 +169,40 @@ export default async function BlogPage({ searchParams }: { searchParams: Promise
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                 {posts.map((post: any) => (
                                     <article key={post._id || post.id} className="group flex flex-col bg-white border border-slate-100 rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-1">
-                                        <Link href={`/blog/${post.slug}`} className="relative h-64 overflow-hidden">
+                                        <Link href={`/blog/${post.slug}`} className="relative h-72 overflow-hidden block">
                                             <img
-                                                src={post.image}
+                                                src={post.image || "https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&q=80&w=800"}
                                                 alt={post.title}
-                                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                                             />
-                                            <div className="absolute top-4 left-4">
-                                                <span className="bg-[#37FFDB] text-[#3200C1] px-4 py-1 rounded-full text-xs font-black uppercase tracking-wider shadow-lg">
-                                                    {post.category}
+                                            <div className="absolute inset-0 bg-gradient-to-t from-[#3200C1]/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                                            <div className="absolute top-6 left-6">
+                                                <span className="bg-[#37FFDB] text-[#3200C1] px-5 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest shadow-xl backdrop-blur-sm bg-[#37FFDB]/90">
+                                                    {post.category || "Inmobiliaria"}
                                                 </span>
                                             </div>
                                         </Link>
 
-                                        <div className="p-8 flex-1 flex flex-col">
-                                            <div className="flex items-center gap-4 text-slate-400 text-sm mb-4">
-                                                <span className="flex items-center gap-1.5"><Calendar className="w-4 h-4" /> {post.date}</span>
-                                                <span className="flex items-center gap-1.5"><User className="w-4 h-4" /> {post.author}</span>
+                                        <div className="p-10 flex-1 flex flex-col">
+                                            <div className="flex items-center gap-6 text-slate-400 text-[11px] font-black uppercase tracking-widest mb-6">
+                                                <span className="flex items-center gap-2 border-r border-slate-200 pr-6"><Calendar className="w-3.5 h-3.5 text-[#37FFDB]" /> {post.date ? new Date(post.date).toLocaleDateString("es-CL", { day: 'numeric', month: 'short' }) : "Reciente"}</span>
+                                                <span className="flex items-center gap-2"><User className="w-3.5 h-3.5 text-[#37FFDB]" /> {post.author || "Redacción"}</span>
                                             </div>
 
-                                            <h2 className="text-2xl font-black text-[#3200C1] mb-4 group-hover:text-[#37FFDB] transition-colors leading-tight">
+                                            <h2 className="text-3xl font-black text-[#3200C1] mb-5 leading-[1.2] group-hover:text-[#3200C1]/80 transition-colors">
                                                 <Link href={`/blog/${post.slug}`}>{post.title}</Link>
                                             </h2>
 
-                                            <p className="text-slate-500 leading-relaxed mb-6 flex-1 line-clamp-3">
-                                                {post.excerpt}
+                                            <p className="text-slate-500 leading-relaxed mb-8 flex-1 line-clamp-3 text-lg">
+                                                {post.excerpt || "Descubre todo sobre la construcción sostenible y las mejores opciones de vivienda en Chile con solocasaschile.com."}
                                             </p>
 
                                             <Link
                                                 href={`/blog/${post.slug}`}
-                                                className="inline-flex items-center gap-2 text-[#3200C1] font-black group/btn"
+                                                className="inline-flex items-center gap-3 text-[#3200C1] font-black group/btn text-sm uppercase tracking-widest"
                                             >
-                                                Leer más
-                                                <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-2 transition-transform" />
+                                                <span className="border-b-2 border-[#37FFDB] pb-1">Leer artículo completo</span>
+                                                <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-2 transition-transform text-[#37FFDB]" />
                                             </Link>
                                         </div>
                                     </article>
