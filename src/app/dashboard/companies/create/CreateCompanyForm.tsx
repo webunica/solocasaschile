@@ -126,6 +126,24 @@ export default function CreateCompanyForm({ initialName }: { initialName?: strin
 
                 <hr className="border-slate-100" />
 
+                <section>
+                    <h3 className="text-lg font-bold text-[#3200C1] mb-6">Identidad Visual</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label className="block text-slate-700 font-bold mb-2">Logotipo Principal</label>
+                            <input name="logo" type="file" accept="image/*" className="w-full text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-[#3200C1]/10 file:text-[#3200C1] hover:file:bg-[#3200C1]/20 cursor-pointer" />
+                            <p className="text-xs text-slate-400 mt-2">Se mostrará en los modelos publicados.</p>
+                        </div>
+                        <div>
+                            <label className="block text-slate-700 font-bold mb-2">Favicon / Icono (Redes)</label>
+                            <input name="favicon" type="file" accept="image/*" className="w-full text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-[#37FFDB]/20 file:text-[#3200C1] hover:file:bg-[#37FFDB]/40 cursor-pointer" />
+                            <p className="text-xs text-slate-400 mt-2">Opcional. Se mostrará como icono corto.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <hr className="border-slate-100" />
+
                 {/* Plan */}
                 <section>
                     <h3 className="text-lg font-bold text-[#3200C1] mb-1">Plan de Suscripción</h3>

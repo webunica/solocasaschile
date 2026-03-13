@@ -18,7 +18,8 @@ export default async function EditCompanyPage({ params }: { params: Promise<{ id
         company_name,
         email,
         role,
-        "logo_url": logo.asset->url
+        "logo_url": logo.asset->url,
+        "favicon_url": favicon.asset->url
     }`;
     const companyUser = await sanityClient.fetch(query, { id });
 

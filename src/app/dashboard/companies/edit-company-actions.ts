@@ -34,11 +34,29 @@ export async function editCompanyAction(id: string, formData: FormData) {
         // Subida de logo si existe
         const logoFile = formData.get("logo") as File;
         if (logoFile && logoFile.size > 0 && logoFile.name) {
-            const asset = await sanityWriteClient.assets.upload('image', logoFile, {
+            const buffer = Buffer.from(await logoFile.arrayBuffer());
+            const asset = await sanityWriteClient.assets.upload('image', buffer, {
                 filename: logoFile.name
             });
 
             patchData.logo = {
+                _type: "image",
+                asset: {
+                    _type: "reference",
+                    _ref: asset._id
+                }
+            };
+        }
+
+        // Subida de favicon si existe
+        const faviconFile = formData.get("favicon") as File;
+        if (faviconFile && faviconFile.size > 0 && faviconFile.name) {
+            const buffer = Buffer.from(await faviconFile.arrayBuffer());
+            const asset = await sanityWriteClient.assets.upload('image', buffer, {
+                filename: faviconFile.name
+            });
+
+            patchData.favicon = {
                 _type: "image",
                 asset: {
                     _type: "reference",

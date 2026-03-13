@@ -36,6 +36,24 @@ export async function createCompanyAction(formData: FormData) {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
+        // Subida de logo si existe
+        let logoAsset;
+        const logoFile = formData.get("logo") as File;
+        if (logoFile && logoFile.size > 0 && logoFile.name) {
+            const buffer = Buffer.from(await logoFile.arrayBuffer());
+            const asset = await sanityWriteClient.assets.upload('image', buffer, { filename: logoFile.name });
+            logoAsset = { _type: "image", asset: { _type: "reference", _ref: asset._id } };
+        }
+
+        // Subida de favicon si existe
+        let faviconAsset;
+        const faviconFile = formData.get("favicon") as File;
+        if (faviconFile && faviconFile.size > 0 && faviconFile.name) {
+            const buffer = Buffer.from(await faviconFile.arrayBuffer());
+            const asset = await sanityWriteClient.assets.upload('image', buffer, { filename: faviconFile.name });
+            faviconAsset = { _type: "image", asset: { _type: "reference", _ref: asset._id } };
+        }
+
         // Crear documento en Sanity
         await sanityWriteClient.create({
             _type: "companyUser",
@@ -45,6 +63,8 @@ export async function createCompanyAction(formData: FormData) {
             plan,
             role,
             is_active: true,
+            ...(logoAsset && { logo: logoAsset }),
+            ...(faviconAsset && { favicon: faviconAsset })
         });
 
         revalidatePath("/dashboard/companies");

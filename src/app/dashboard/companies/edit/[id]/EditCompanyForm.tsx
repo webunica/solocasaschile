@@ -128,6 +128,24 @@ export default function EditCompanyForm({ companyUser }: { companyUser: any }) {
                             <p className="text-xs text-slate-400 mt-2">Formatos aceptados: JPG, PNG, WEBP. Se mostrará en sus modelos.</p>
                         </div>
                     </div>
+
+                    <div className="flex items-center gap-6 mt-6">
+                        <div className="w-16 h-16 rounded-2xl bg-slate-100 flex items-center justify-center shadow-sm border border-slate-200 overflow-hidden shrink-0">
+                            {companyUser.favicon_url ? (
+                                <div className="w-full h-full p-2">
+                                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                                    <img src={companyUser.favicon_url} alt="Favicon" className="w-full h-full object-contain" />
+                                </div>
+                            ) : (
+                                <span className="text-2xl text-slate-300">🌍</span>
+                            )}
+                        </div>
+                        <div className="flex-1">
+                            <label className="block text-slate-700 font-bold mb-2">Reemplazar Favicon / Icono (Redes)</label>
+                            <input name="favicon" type="file" accept="image/*" className="w-full text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-[#37FFDB] file:text-[#3200C1] hover:file:bg-[#37FFDB]/80 cursor-pointer" />
+                            <p className="text-xs text-slate-400 mt-2">Formatos aceptados: JPG, PNG, WEBP. Se mostrará como icono representativo corto.</p>
+                        </div>
+                    </div>
                 </section>
 
                 <div className="pt-6 border-t border-slate-100 flex justify-end gap-4">
