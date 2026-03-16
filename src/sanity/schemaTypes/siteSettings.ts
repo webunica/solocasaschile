@@ -73,6 +73,22 @@ export const siteSettingsType = defineType({
             type: 'string',
             description: 'Formato internacional sin "+" ni espacios. Ej: 56912345678',
         }),
+        // ─── Contacto / Footer ───────────────────────────────────
+        defineField({
+            name: 'contact_section',
+            title: '📞 Información de Contacto (Footer)',
+            type: 'string',
+            readOnly: true,
+            initialValue: '───────────────────────────────────',
+        }),
+        defineField({
+            name: 'contact_phones',
+            title: 'Teléfonos de Contacto (Footer)',
+            type: 'array',
+            of: [{ type: 'string' }],
+            description: 'Añade hasta 2 números de teléfono (Ej: +56 9 1234 5678). Se mostrarán en el pie de página.',
+            validation: (Rule: any) => Rule.max(2)
+        }),
     ],
     preview: {
         prepare() {

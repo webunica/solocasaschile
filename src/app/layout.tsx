@@ -15,7 +15,8 @@ const SITE_NAME = "SoloClasasChile.com";
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await sanityClient.fetch(`*[_type == "siteSettings"][0]{
     site_name,
-    "favicon_url": site_favicon.asset->url
+    "favicon_url": site_favicon.asset->url,
+    contact_phones
   }`);
 
   const title = settings?.site_name || "SolocasasChile.com";
@@ -92,11 +93,14 @@ export const viewport: Viewport = {
   minimumScale: 1,
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const settings = await sanityClient.fetch(`*[_type == "siteSettings"][0]{
+    contact_phones
+  }`);
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -151,7 +155,7 @@ export default function RootLayout({
             <main className="flex-1">
               {children}
             </main>
-            <Footer />
+            <Footer contactPhones={settings?.contact_phones || ["+56 9 1234 5678"]} />
           </NuqsAdapter>
         </NextAuthProvider>
       </body>
