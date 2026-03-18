@@ -191,18 +191,6 @@ export const Footer = ({ contactPhones = ["+56 9 1234 5678"] }: FooterProps) => 
                         >
                             Términos y Condiciones
                         </Link>
-                        <span className="text-white/20" aria-hidden="true">|</span>
-                        <div className="flex items-center gap-2 text-white/60">
-                            <span>Desarrollado por</span>
-                            <a
-                                href="https://webunica.cl"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="font-black text-[#37FFDB] hover:underline focus-visible:ring-2 focus-visible:ring-[#37FFDB] focus-visible:outline-none rounded-sm"
-                            >
-                                webunica.cl
-                            </a>
-                        </div>
                     </div>
                 </div>
             </div>

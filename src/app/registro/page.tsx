@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Hash, CheckCircle, AlertCircle, ArrowLeft, Building2, Shield, Zap, Users } from "lucide-react";
+import { Hash, CheckCircle, AlertCircle, ArrowLeft, Building2, Shield, Zap, Users, MessageCircle } from "lucide-react";
 
 const PLAN_FEATURES = {
     starter: {
@@ -223,7 +223,7 @@ export default function RegistroPage() {
                                     Upgrade
                                 </span>
                             </div>
-                            <ul className="space-y-3">
+                            <ul className="space-y-3 mb-6">
                                 {[
                                     "✨ Modelos ilimitados publicados",
                                     "✨ Hasta 15 fotos por modelo",
@@ -234,6 +234,15 @@ export default function RegistroPage() {
                                     <li key={f} className="text-sm text-slate-600 font-medium">{f}</li>
                                 ))}
                             </ul>
+                            <a
+                                href="https://wa.me/56964130601?text=Hola,%20me%20interesa%20el%20Plan%20Pro%20en%20solocasaschile.com"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="w-full mt-auto py-3 bg-[#25D366] text-white rounded-xl text-sm font-bold flex items-center justify-center gap-2 hover:bg-[#20bd5a] transition-colors"
+                            >
+                                <MessageCircle className="w-5 h-5" />
+                                Contactar por WhatsApp
+                            </a>
                         </div>
 
                         {/* Plan Elite */}
@@ -249,7 +258,7 @@ export default function RegistroPage() {
                                         Destacado
                                     </span>
                                 </div>
-                                <ul className="space-y-3">
+                                <ul className="space-y-3 mb-6">
                                     {[
                                         "🌟 Todo lo del plan Pro incluido",
                                         "🌟 Hasta 30 fotos por modelo",
@@ -260,6 +269,15 @@ export default function RegistroPage() {
                                         <li key={f} className="text-sm text-white/80 font-medium">{f}</li>
                                     ))}
                                 </ul>
+                                <a
+                                    href="https://wa.me/56964130601?text=Hola,%20me%20interesa%20el%20Plan%20Elite%20en%20solocasaschile.com"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="w-full mt-auto py-3 bg-[#25D366] text-white rounded-xl text-sm font-bold flex items-center justify-center gap-2 hover:bg-[#20bd5a] transition-colors"
+                                >
+                                    <MessageCircle className="w-5 h-5" />
+                                    Contactar por WhatsApp
+                                </a>
                             </div>
                         </div>
                     </div>
