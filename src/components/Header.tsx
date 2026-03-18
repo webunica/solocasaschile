@@ -19,7 +19,7 @@ export const Header = () => {
                             Publicaciones
                         </Link>
                         <Link href="/registro" className="text-sm font-bold text-[#3200C1] hover:text-[#37FFDB] transition-colors">
-                            Registra tu Empresa
+                            Planes y Precios
                         </Link>
                     </nav>
                 </div>
