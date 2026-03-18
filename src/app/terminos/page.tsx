@@ -10,24 +10,6 @@ export const metadata = {
 export default function TerminosPage() {
     return (
         <div className="min-h-screen bg-white">
-            {/* Header */}
-            <header className="border-b border-slate-100 bg-white/80 backdrop-blur-md sticky top-0 z-50">
-                <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-                    <div className="flex items-center gap-8">
-                        <div className="flex items-center gap-3">
-                            <SiteLogo />
-                        </div>
-                    </div>
-                    <Link
-                        href="/"
-                        className="flex items-center gap-2 text-sm font-bold text-[#3200C1] hover:text-[#37FFDB] transition-colors"
-                    >
-                        <ArrowLeft className="w-4 h-4" />
-                        Volver al inicio
-                    </Link>
-                </div>
-            </header>
-
             {/* Hero */}
             <div className="bg-[#3200C1] text-white py-16 px-6">
                 <div className="max-w-4xl mx-auto">

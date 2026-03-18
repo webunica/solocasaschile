@@ -3,6 +3,7 @@ import { Nunito } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
+import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import NextAuthProvider from "@/components/NextAuthProvider";
 import { sanityClient } from "@/lib/sanity.client";
@@ -15,7 +16,8 @@ const SITE_NAME = "SoloClasasChile.com";
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await sanityClient.fetch(`*[_type == "siteSettings"][0]{
     site_name,
-    "favicon_url": site_favicon.asset->url
+    "favicon_url": site_favicon.asset->url,
+    contact_phones
   }`);
 
   const title = settings?.site_name || "SolocasasChile.com";
@@ -92,11 +94,14 @@ export const viewport: Viewport = {
   minimumScale: 1,
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const settings = await sanityClient.fetch(`*[_type == "siteSettings"][0]{
+    contact_phones
+  }`);
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -148,10 +153,11 @@ export default function RootLayout({
       <body className={`${nunito.className} bg-white text-[#3200C1] min-h-screen selection:bg-accent-500/30 selection:text-brand-500 flex flex-col`}>
         <NextAuthProvider>
           <NuqsAdapter>
+            <Header />
             <main className="flex-1">
               {children}
             </main>
-            <Footer />
+            <Footer contactPhones={settings?.contact_phones || ["+56 9 1234 5678"]} />
           </NuqsAdapter>
         </NextAuthProvider>
       </body>

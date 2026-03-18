@@ -120,30 +120,6 @@ export default async function BlogPage({ searchParams }: { searchParams: Promise
 
     return (
         <div className="bg-white">
-            {/* Header */}
-            <header className="border-b border-slate-100 bg-white/80 backdrop-blur-md sticky top-0 z-50">
-                <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-                    <div className="flex items-center gap-8">
-                        <div className="flex items-center gap-3">
-                            <SiteLogo />
-                        </div>
-
-                        <nav className="hidden md:flex items-center gap-6">
-                            <Link href="/" className="text-sm font-bold text-[#3200C1] hover:text-[#37FFDB] transition-colors">
-                                Inicio
-                            </Link>
-                            <Link href="/blog" className="text-sm font-bold text-[#3200C1] hover:text-[#37FFDB] transition-colors">
-                                Publicaciones
-                            </Link>
-                        </nav>
-                    </div>
-
-                    <div className="text-sm font-medium text-slate-500">
-                        Blog Inmobiliario
-                    </div>
-                </div>
-            </header>
-
             {/* Blog Hero */}
             <section className="bg-[#3200C1] py-20 relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-1/3 h-full bg-[#37FFDB]/10 transform skew-x-12 translate-x-1/2" />

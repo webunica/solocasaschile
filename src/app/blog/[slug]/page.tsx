@@ -117,30 +117,6 @@ export default async function BlogPostPage({ params }: Props) {
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: finalSchemaMarkup }}
             />
-            {/* Header */}
-            <header className="border-b border-slate-100 bg-white/80 backdrop-blur-md sticky top-0 z-50">
-                <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-                    <div className="flex items-center gap-8">
-                        <div className="flex items-center gap-3">
-                            <SiteLogo />
-                        </div>
-
-                        <nav className="hidden md:flex items-center gap-6">
-                            <Link href="/" className="text-sm font-bold text-[#3200C1] hover:text-[#37FFDB] transition-colors">
-                                Inicio
-                            </Link>
-                            <Link href="/blog" className="text-sm font-bold text-[#3200C1] hover:text-[#37FFDB] transition-colors">
-                                Publicaciones
-                            </Link>
-                        </nav>
-                    </div>
-
-                    <div className="text-sm font-medium text-slate-500">
-                        Lectura Recomendada
-                    </div>
-                </div>
-            </header>
-
             {/* Article Header */}
             <header className="bg-slate-50 border-b border-slate-100 py-16">
                 <div className="max-w-[1250px] mx-auto px-6">

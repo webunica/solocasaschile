@@ -13,7 +13,11 @@ import {
     ArrowRight
 } from "lucide-react";
 
-export const Footer = () => {
+interface FooterProps {
+    contactPhones?: string[];
+}
+
+export const Footer = ({ contactPhones = ["+56 9 1234 5678"] }: FooterProps) => {
     const currentYear = new Date().getFullYear();
 
     return (
@@ -77,6 +81,7 @@ export const Footer = () => {
                             {[
                                 { name: "Inicio", href: "/" },
                                 { name: "Modelos", href: "/#results" },
+                                { name: "Planes y Precios", href: "/registro" },
                                 { name: "Blog", href: "/blog" },
                                 { name: "Términos y Condiciones", href: "/terminos" }
                             ].map((item) => (
@@ -113,10 +118,12 @@ export const Footer = () => {
                                     <Phone className="w-5 h-5 text-[#37FFDB]" />
                                 </div>
                                 <div className="flex flex-col">
-                                    <span className="text-xs font-bold uppercase tracking-wider text-white/40">Teléfono</span>
-                                    <a href="tel:+56912345678" className="text-white/80 hover:text-[#37FFDB] transition-colors focus-visible:ring-2 focus-visible:ring-[#37FFDB] focus-visible:outline-none rounded-sm">
-                                        +56 9 1234 5678
-                                    </a>
+                                    <span className="text-xs font-bold uppercase tracking-wider text-white/40">Teléfono{contactPhones.length > 1 ? 's' : ''}</span>
+                                    {contactPhones.map((phone, idx) => (
+                                        <a key={idx} href={`tel:${phone.replace(/\s+/g, '')}`} className="text-white/80 hover:text-[#37FFDB] transition-colors focus-visible:ring-2 focus-visible:ring-[#37FFDB] focus-visible:outline-none rounded-sm">
+                                            {phone}
+                                        </a>
+                                    ))}
                                 </div>
                             </li>
                             <li className="flex items-start gap-4">

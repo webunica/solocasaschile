@@ -123,29 +123,14 @@ export default function RegistroPage() {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-[#3200C1] via-[#3200C1]/90 to-[#37FFDB]/20">
-            {/* Header */}
-            <header className="sticky top-0 z-50 bg-white/10 backdrop-blur-md border-b border-white/10">
-                <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-                    <Link href="/" className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-[#37FFDB] flex items-center justify-center shadow-sm">
-                            <Hash className="w-5 h-5 text-[#3200C1]" />
-                        </div>
-                        <span className="text-lg font-black text-white">solocasaschile.com</span>
-                    </Link>
-                    <Link href="/" className="inline-flex items-center gap-2 text-white/70 hover:text-white text-sm font-bold transition-colors">
-                        <ArrowLeft className="w-4 h-4" /> Volver al inicio
-                    </Link>
-                </div>
-            </header>
-
             <div className="max-w-6xl mx-auto px-4 py-12">
                 {/* Hero Text */}
                 <div className="text-center mb-12">
-                    <span className="inline-block px-4 py-1.5 rounded-full bg-[#37FFDB]/20 text-[#37FFDB] text-xs font-black uppercase tracking-widest mb-4">
-                        🏗️ Para Constructoras y Empresas
+                    <span className="inline-block px-4 py-1.5 rounded-full bg-[#37FFDB]/20 text-[#37FFDB] text-xs font-black uppercase tracking-widest mb-4 border border-[#37FFDB]/30">
+                        🎁 Promoción Especial: 6 Meses Gratis
                     </span>
                     <h1 className="text-3xl md:text-5xl font-black text-white mb-4 [text-wrap:balance]">
-                        Publica tu primera propiedad<br />
+                        Sube hasta 3 modelos<br />
                         <span className="text-[#37FFDB]">completamente gratis</span>
                     </h1>
                     <p className="text-white/70 max-w-xl mx-auto leading-relaxed">
@@ -168,8 +153,8 @@ export default function RegistroPage() {
                                     },
                                     {
                                         icon: <Zap className="w-5 h-5" />,
-                                        title: "Tu primera propiedad, gratis",
-                                        desc: "El plan Starter te permite publicar hasta 1 modelo sin costo. Sube cuando necesites crecer.",
+                                        title: "Tu catálogo inicial, sin costo",
+                                        desc: "Te regalamos 6 meses de plan Gratuito para publicar hasta 3 modelos con imágenes y detalles.",
                                     },
                                     {
                                         icon: <Shield className="w-5 h-5" />,
@@ -199,31 +184,82 @@ export default function RegistroPage() {
                         <div className="bg-white rounded-3xl p-8 border-2 border-[#37FFDB] shadow-xl shadow-[#37FFDB]/10">
                             <div className="flex items-center justify-between mb-5">
                                 <div>
-                                    <span className="text-xs font-black uppercase tracking-widest text-slate-400">Plan Actual</span>
-                                    <h3 className="text-xl font-black text-[#3200C1]">Starter — Gratis</h3>
+                                    <span className="text-xs font-black uppercase tracking-widest text-slate-400">Promoción de Registro</span>
+                                    <h3 className="text-xl font-black text-[#3200C1]">Plan Inicial — Gratis</h3>
                                 </div>
                                 <span className="px-3 py-1.5 rounded-full bg-[#37FFDB] text-[#3200C1] text-xs font-black">
-                                    Incluido
+                                    Por 6 Meses
                                 </span>
                             </div>
                             <ul className="space-y-3">
                                 {[
-                                    "✅ 1 propiedad publicada",
-                                    "✅ Ficha de modelo con fotos",
+                                    "✅ Hasta 3 modelos publicados",
+                                    "✅ Hasta 5 fotos por modelo",
+                                    "✅ Ficha de modelo y detalles",
                                     "✅ Formulario de cotización integrado",
-                                    "✅ Visible en el comparador público",
-                                    "✅ Panel de control con métricas",
+                                    "✅ Panel de control constructor",
                                 ].map((f) => (
                                     <li key={f} className="text-sm text-slate-700 font-medium">{f}</li>
                                 ))}
                             </ul>
                             <div className="mt-6 pt-5 border-t border-slate-100">
                                 <p className="text-xs text-slate-400">
-                                    ¿Tu catálogo tiene más de 1 modelo?{" "}
-                                    <Link href="/dashboard/settings" className="text-[#3200C1] font-black hover:underline">
-                                        Conoce nuestros planes
-                                    </Link>
+                                    ¿Tu catálogo tiene más de 3 modelos o quieres destacar?{" "}
+                                    <span className="text-[#3200C1] font-black">
+                                        Consulta nuestros Planes Pro y Elite dentro del dashboard.
+                                    </span>
                                 </p>
+                            </div>
+                        </div>
+
+                        {/* Plan Pro */}
+                        <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                            <div className="flex items-center justify-between mb-5">
+                                <div>
+                                    <span className="text-xs font-black uppercase tracking-widest text-[#3200C1]">Ideal para Empresas</span>
+                                    <h3 className="text-xl font-black text-slate-800">Plan Pro</h3>
+                                </div>
+                                <span className="px-3 py-1.5 rounded-full bg-[#3200C1]/10 text-[#3200C1] text-xs font-black">
+                                    Upgrade
+                                </span>
+                            </div>
+                            <ul className="space-y-3">
+                                {[
+                                    "✨ Modelos ilimitados publicados",
+                                    "✨ Hasta 15 fotos por modelo",
+                                    "✨ 1 Video (YouTube/Vimeo) por modelo",
+                                    "✨ Leads directos a tu WhatsApp",
+                                    "✨ Panel de estadísticas",
+                                ].map((f) => (
+                                    <li key={f} className="text-sm text-slate-600 font-medium">{f}</li>
+                                ))}
+                            </ul>
+                        </div>
+
+                        {/* Plan Elite */}
+                        <div className="bg-gradient-to-br from-slate-900 to-[#3200C1] rounded-3xl p-8 border border-slate-800 shadow-xl relative overflow-hidden">
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-[#37FFDB]/10 rounded-full blur-3xl" />
+                            <div className="relative z-10">
+                                <div className="flex items-center justify-between mb-5">
+                                    <div>
+                                        <span className="text-xs font-black uppercase tracking-widest text-[#37FFDB]">Máxima Visibilidad</span>
+                                        <h3 className="text-xl font-black text-white">Plan Elite</h3>
+                                    </div>
+                                    <span className="px-3 py-1.5 rounded-full bg-[#37FFDB] text-[#3200C1] text-xs font-black">
+                                        Destacado
+                                    </span>
+                                </div>
+                                <ul className="space-y-3">
+                                    {[
+                                        "🌟 Todo lo del plan Pro incluido",
+                                        "🌟 Hasta 30 fotos por modelo",
+                                        "🌟 Videos incrustados ilimitados",
+                                        "🌟 Insignia 'Destacado' en buscador",
+                                        "🌟 Exhibición rotativa en el Home",
+                                    ].map((f) => (
+                                        <li key={f} className="text-sm text-white/80 font-medium">{f}</li>
+                                    ))}
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -249,31 +285,6 @@ export default function RegistroPage() {
                                     onChange={handleChange}
                                     className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:border-[#3200C1] focus:outline-none transition-colors text-sm"
                                 />
-                            </div>
-
-                            <div className="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1.5">
-                                        Logotipo Principal
-                                    </label>
-                                    <input
-                                        type="file"
-                                        accept="image/*"
-                                        onChange={handleLogoChange}
-                                        className="w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-[#3200C1]/10 file:text-[#3200C1] hover:file:bg-[#3200C1]/20 cursor-pointer"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1.5">
-                                        Favicon / Icono (Redes)
-                                    </label>
-                                    <input
-                                        type="file"
-                                        accept="image/*"
-                                        onChange={handleFaviconChange}
-                                        className="w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-[#37FFDB]/20 file:text-[#3200C1] hover:file:bg-[#37FFDB]/40 cursor-pointer"
-                                    />
-                                </div>
                             </div>
 
                             <div>

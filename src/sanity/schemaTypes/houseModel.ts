@@ -75,6 +75,20 @@ export const houseModelType = defineType({
         defineField({ name: 'pdf_ficha_url', title: 'Ficha PDF (URL)', type: 'url' }),
         defineField({ name: 'scrape_date', title: 'Fecha de Scrapeo', type: 'datetime' }),
         defineField({ name: 'fingerprint_hash', title: 'Hash Único', type: 'string' }),
+        // --- Suscripciones / Features ---
+        defineField({
+            name: 'video_url',
+            title: 'Video Incrustado (YouTube/Vimeo)',
+            type: 'url',
+            description: 'Solo disponible para planes Profesional y Elite. URL del video promocional.',
+        }),
+        defineField({
+            name: 'is_featured',
+            title: '¿Modelo Destacado?',
+            type: 'boolean',
+            description: 'Solo para planes Elite. Si está marcado, aparece destacado en Home y arriba en Buscador.',
+            initialValue: false,
+        }),
         // --- Campos SEO ---
         defineField({
             name: 'seo_title',

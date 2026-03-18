@@ -84,77 +84,52 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
         dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
       />
 
-      {/* Header */}
-      <header className="border-b border-slate-100 bg-white/80 backdrop-blur-md sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-8">
-            <div className="flex items-center gap-3">
-              <SiteLogo />
-            </div>
 
-            <nav className="hidden md:flex items-center gap-6" aria-label="Navegación principal">
-              <Link href="/" className="text-sm font-bold text-[#3200C1] hover:text-[#37FFDB] transition-colors">
-                Inicio
-              </Link>
-              <Link href="/blog" className="text-sm font-bold text-[#3200C1] hover:text-[#37FFDB] transition-colors">
-                Publicaciones
-              </Link>
-              <Link href="/registro" className="text-sm font-bold text-[#3200C1] hover:text-[#37FFDB] transition-colors">
-                Registra tu Empresa
-              </Link>
-            </nav>
-          </div>
-
-          <Link
-            href="/registro"
-            className="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-[4px] bg-[#3200C1] text-[#37FFDB] text-sm font-black hover:brightness-110 transition-all whitespace-nowrap"
-          >
-            Publicar Propiedad
-          </Link>
-        </div>
-      </header>
 
       {/* Hero */}
-      <div className="w-full">
+      <div className="w-full relative">
         <Suspense fallback={<div className="w-full h-[50vh] animate-pulse bg-slate-100" />}>
           <HeroSlider models={randomModels} />
         </Suspense>
+        
+        {/* Floating Categories */}
+        <div className="absolute -bottom-8 left-0 right-0 z-10 hidden md:block px-6">
+          <div className="max-w-[1000px] mx-auto bg-white/70 backdrop-blur-xl border border-white/60 shadow-xl rounded-2xl p-4 flex items-center justify-center gap-3 flex-wrap">
+            {[
+              { label: "Prefabricadas", href: "/?category=Prefabricada+Madera", emoji: "🏠" },
+              { label: "Casas SIP", href: "/?category=SIP", emoji: "🧱" },
+              { label: "Modulares", href: "/?category=Modular", emoji: "📦" },
+              { label: "Llave en Mano", href: "/?category=Llave+en+Mano", emoji: "🔑" },
+              { label: "Metalcon", href: "/?category=Metalcon", emoji: "⚙️" },
+            ].map((cat) => (
+              <Link key={cat.label} href={cat.href} className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/80 hover:bg-[#3200C1] hover:text-white text-[#3200C1] text-sm font-black shadow-sm transition-all border border-slate-200">
+                <span className="text-lg">{cat.emoji}</span> {cat.label}
+              </Link>
+            ))}
+          </div>
+        </div>
       </div>
 
-      {/* H1 SEO — visible para buscadores, estilo contenido */}
-      <section className="max-w-7xl mx-auto px-6 pt-10 pb-2">
+      {/* Social Proof */}
+      <div className="w-full bg-slate-50 border-b border-slate-100 pt-16 pb-12 px-6">
+        <p className="text-center text-xs font-black text-slate-400 uppercase tracking-widest mb-8">Empresas que confían en nosotros</p>
+        <div className="max-w-7xl mx-auto flex flex-wrap justify-center gap-x-12 gap-y-6 opacity-60 hover:opacity-100 transition-opacity duration-500">
+           {companies.slice(0, 8).map((c: { company_name: string }) => (
+              <span key={c.company_name} className="text-xl font-black text-slate-400 hover:text-[#3200C1] transition-colors">{c.company_name}</span>
+           ))}
+        </div>
+      </div>
+
+      {/* H1 SEO */}
+      <section className="max-w-7xl mx-auto px-6 pt-16 pb-2 text-center md:text-left">
         <h1 className="text-3xl md:text-4xl font-black text-[#3200C1] leading-tight [text-wrap:balance]">
           Comparador de Casas Prefabricadas en Chile
         </h1>
-        <p className="mt-2 text-base md:text-lg text-slate-600 max-w-3xl">
+        <p className="mt-4 text-base md:text-lg text-slate-600 max-w-3xl">
           Encuentra y compara modelos de <strong>casas prefabricadas</strong>, <strong>casas SIP</strong>,
-          <strong> casas modulares</strong> y <strong>casas llave en mano</strong> en Chile.
-          Más de {totalCount} opciones de las principales constructoras del país, con precios, fotos y ficha técnica.
+          <strong> casas modulares</strong> y <strong>casas llave en mano</strong> en todo el país.
+          Más de {totalCount} opciones certificadas con precios transparentes y ficha técnica.
         </p>
-      </section>
-
-      {/* Categorías SEO – H2 links internos */}
-      <section className="max-w-7xl mx-auto px-6 py-6" aria-label="Categorías de casas prefabricadas">
-        <h2 className="sr-only">Categorías de casas prefabricadas en Chile</h2>
-        <div className="flex flex-wrap gap-3">
-          {[
-            { label: "Casas Prefabricadas", href: "/?category=Prefabricada+Madera", emoji: "🏠" },
-            { label: "Casas SIP", href: "/?category=SIP", emoji: "🧱" },
-            { label: "Casas Modulares", href: "/?category=Modular", emoji: "📦" },
-            { label: "Casas Llave en Mano", href: "/?category=Llave+en+Mano", emoji: "🔑" },
-            { label: "Casas Metalcon", href: "/?category=Metalcon", emoji: "⚙️" },
-            { label: "Casas desde 36 m²", href: "/?minSurface=0&maxSurface=40", emoji: "📐" },
-          ].map((cat) => (
-            <Link
-              key={cat.label}
-              href={cat.href}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full border-2 border-[#3200C1]/20 text-sm font-bold text-[#3200C1] hover:bg-[#3200C1] hover:text-white hover:border-[#3200C1] transition-all"
-            >
-              <span>{cat.emoji}</span>
-              {cat.label}
-            </Link>
-          ))}
-        </div>
       </section>
 
       <Suspense fallback={null}>
@@ -194,137 +169,48 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
 
       <BlogCarousel />
 
-      {/* Sección SEO textual al final */}
-      <section className="max-w-4xl mx-auto px-6 py-16">
-        {/* Bloque 1: Qué encontrarás */}
-        <h2 className="text-2xl font-black text-[#3200C1] mb-4">¿Qué encontrarás en SolocasasChile?</h2>
-        <div className="grid md:grid-cols-2 gap-8 text-slate-600 mb-16">
-          <div>
-            <h3 className="text-lg font-bold text-[#3200C1] mb-2">Casas Prefabricadas</h3>
-            <p>Modelos de casas prefabricadas de madera desde 36 m² con precios actualizados. Compara kits básicos, packs completos y modalidades llave en mano de las principales constructoras de Chile.</p>
-            <Link href="/?category=Prefabricada+Madera" className="inline-flex items-center gap-1 mt-3 text-sm font-black text-[#3200C1] hover:text-[#37FFDB] transition-colors group">
-              Ver casas prefabricadas disponibles <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
-            </Link>
-          </div>
-          <div>
-            <h3 className="text-lg font-bold text-[#3200C1] mb-2">Casas SIP</h3>
-            <p>Las casas con paneles SIP ofrecen mejor aislación térmica y acústica. Encuentra empresas especializadas en construcción con paneles SIP en todo Chile.</p>
-            <Link href="/?category=SIP" className="inline-flex items-center gap-1 mt-3 text-sm font-black text-[#3200C1] hover:text-[#37FFDB] transition-colors group">
-              Ver casas SIP disponibles <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
-            </Link>
-          </div>
-          <div>
-            <h3 className="text-lg font-bold text-[#3200C1] mb-2">Casas Modulares</h3>
-            <p>Soluciones de vivienda modular e industrializada para distintos terrenos y presupuestos. Desde módulos de 15 m² hasta viviendas familiares de 169 m².</p>
-            <Link href="/?category=Modular" className="inline-flex items-center gap-1 mt-3 text-sm font-black text-[#3200C1] hover:text-[#37FFDB] transition-colors group">
-              Ver casas modulares disponibles <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
-            </Link>
-          </div>
-          <div>
-            <h3 className="text-lg font-bold text-[#3200C1] mb-2">Casas Llave en Mano</h3>
-            <p>¿Quieres tu casa lista para habitar? Compara empresas que ofrecen instalación, armado y entrega llave en mano en tu terreno en todo Chile.</p>
-            <Link href="/?category=Llave+en+Mano" className="inline-flex items-center gap-1 mt-3 text-sm font-black text-[#3200C1] hover:text-[#37FFDB] transition-colors group">
-              Ver casas llave en mano <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
-            </Link>
-          </div>
+      {/* Modern CTA & Simplified SEO */}
+      <section className="max-w-7xl mx-auto px-6 py-20 flex flex-col gap-16">
+        {/* Registration CTA - 6 Meses Gratis */}
+        <div className="relative overflow-hidden bg-gradient-to-br from-[#3200C1] to-[#1e0075] rounded-[32px] p-10 md:p-16 flex flex-col items-center text-center shadow-2xl">
+           <div className="absolute -top-24 -right-24 w-64 h-64 bg-[#37FFDB] rounded-full blur-[100px] opacity-20" />
+           <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-[#37FFDB] rounded-full blur-[100px] opacity-20" />
+           
+           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#37FFDB]/10 text-[#37FFDB] text-xs font-black uppercase tracking-widest mb-6 border border-[#37FFDB]/20">
+              🎁 Lanzamiento Exclusivo Contratistas
+           </div>
+           
+           <h2 className="text-4xl md:text-5xl font-black text-white mb-6 [text-wrap:balance]">
+              Potencia tus ventas inmobiliarias sin costo
+           </h2>
+           
+           <p className="text-lg md:text-xl text-white/80 max-w-3xl mb-10 leading-relaxed [text-wrap:balance]">
+              Únete al mayor comparador de Chile. Sube tus modelos de casas prefabricadas y recibe prospectos calificados directo a tu WhatsApp. 
+              <strong> Registra tu constructora hoy y obtén 6 meses de Plan Gratuito (Sube gratis hasta 3 modelos).</strong>
+           </p>
+           
+           <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto z-10">
+              <Link href="/registro" className="flex items-center justify-center gap-2 bg-[#37FFDB] text-[#3200C1] font-black px-8 py-4 rounded-xl hover:brightness-110 active:scale-95 transition-all text-lg shadow-lg shadow-[#37FFDB]/30">
+                 Registrar mi Empresa Gratis <ArrowRight className="w-5 h-5" />
+              </Link>
+           </div>
         </div>
 
-        {/* Bloque 2: Ventajas */}
-        <h2 className="text-2xl font-black text-[#3200C1] mb-6">Ventajas de las Casas Prefabricadas en Chile</h2>
-        <p className="text-slate-600 mb-8 max-w-3xl">Las casas prefabricadas han revolucionado el mercado inmobiliario en Chile, ofreciendo una alternativa accesible, rápida y eficiente frente a la construcción tradicional. Estas son las principales razones por las que cada vez más familias las eligen.</p>
-        <div className="grid md:grid-cols-3 gap-6 mb-16">
-          {[
-            {
-              title: "Ahorro Económico",
-              text: "Su costo es significativamente menor al de una construcción tradicional gracias a la producción industrializada y la reducción de desperdicios en fábrica. Puedes acceder a una vivienda digna sin endeudarte de por vida.",
-            },
-            {
-              title: "Construcción Rápida",
-              text: "Al fabricarse en planta y ensamblarse en terreno, los tiempos de entrega se reducen hasta en un 60% respecto a la construcción convencional. Algunas empresas entregan tu casa en menos de 30 días.",
-            },
-            {
-              title: "Eficiencia Energética",
-              text: "Las tecnologías SIP y Metalcon ofrecen excelente aislación térmica y acústica, reduciendo los costos de calefacción hasta en un 40% y haciéndolas ideales para el clima de la zona sur de Chile.",
-            },
-          ].map(({ title, text }) => (
-            <div key={title} className="bg-slate-50 rounded-xl p-6 border border-slate-100">
-              <div className="w-2 h-6 bg-[#37FFDB] rounded-full mb-3" aria-hidden="true" />
-              <h3 className="text-base font-black text-[#3200C1] mb-2">{title}</h3>
-              <p className="text-sm text-slate-600 leading-relaxed">{text}</p>
-            </div>
-          ))}
-        </div>
-
-        {/* Bloque 3: Tipos */}
-        <h2 className="text-2xl font-black text-[#3200C1] mb-6">Tipos de Casas Prefabricadas Disponibles en Chile</h2>
-        <p className="text-slate-600 mb-8 max-w-3xl">Conocer las diferencias entre los tipos de construcción prefabricada te ayudará a elegir la opción más adecuada para tu terreno, presupuesto y clima.</p>
-        <div className="grid md:grid-cols-2 gap-8 mb-16 text-slate-600">
-          <div>
-            <h3 className="text-lg font-bold text-[#3200C1] mb-2">Casas con Paneles SIP</h3>
-            <p>Los paneles SIP (Structural Insulated Panels) son la tecnología más eficiente del mercado. Combinan estructura y aislación en un solo elemento, reduciendo puentes térmicos y costos de climatización. Son ideales para zonas con temperaturas extremas como La Araucanía, Los Lagos y Los Ríos.</p>
-          </div>
-          <div>
-            <h3 className="text-lg font-bold text-[#3200C1] mb-2">Casas Modulares</h3>
-            <p>Se construyen en secciones independientes que se ensamblan en el terreno. Ofrecen flexibilidad para crecer: puedes comenzar con un módulo básico y agregar dormitorios o áreas en etapas posteriores. Son una excelente opción para terrenos con difícil acceso.</p>
-          </div>
-          <div>
-            <h3 className="text-lg font-bold text-[#3200C1] mb-2">Casas Metalcon</h3>
-            <p>Utilizan perfiles de acero galvanizado liviano como estructura principal. Son muy resistentes a sismos, lo que las hace particularmente adecuadas para Chile. Además, su estructura metálica no se pudre, no es atacada por termitas y tiene una vida útil superior a los 50 años.</p>
-          </div>
-          <div>
-            <h3 className="text-lg font-bold text-[#3200C1] mb-2">Casas de Madera Prefabricada</h3>
-            <p>La tradición constructiva chilena en madera cuenta hoy con versiones prefabricadas que combinan lo mejor de ambos mundos: la calidez del material natural con la precisión de la manufactura en fábrica. Disponibles desde 36 m² en kits de armado propio hasta entregas llave en mano.</p>
-          </div>
-        </div>
-
-        {/* Bloque 4: Cómo elegir */}
-        <h2 className="text-2xl font-black text-[#3200C1] mb-6">¿Cómo Elegir tu Casa Prefabricada Ideal?</h2>
-        <p className="text-slate-600 mb-8 max-w-3xl">Con más de {totalCount} modelos disponibles en SolocasasChile es fácil sentirse abrumado. Estos tres factores te ayudarán a filtrar las opciones y tomar una decisión informada.</p>
-        <div className="grid md:grid-cols-3 gap-6 mb-12 text-slate-600">
-          {[
-            {
-              step: "01",
-              title: "Define tu Presupuesto",
-              text: "Establece un rango de precio realista considerando el valor del kit o la casa terminada, el costo de la fundación, la instalación y los permisos municipales. Usa nuestros filtros de precio para acotar resultados al instante.",
-            },
-            {
-              step: "02",
-              title: "Considera tu Terreno",
-              text: "Las características del suelo, la pendiente y el acceso al predio determinan qué tipo de construcción es viable. Algunos fabricantes ofrecen asesoría técnica gratuita antes de cotizar.",
-            },
-            {
-              step: "03",
-              title: "Compara Fabricantes",
-              text: "Evalúa la reputación del fabricante, sus años de experiencia, los materiales que utilizan y las garantías que ofrecen. En SolocasasChile verificamos y agrupamos la información de cada empresa para que puedas comparar fácilmente.",
-            },
-          ].map(({ step, title, text }) => (
-            <div key={step} className="relative bg-white rounded-xl p-6 border border-slate-100 shadow-sm">
-              <span className="absolute -top-3 -left-3 w-8 h-8 bg-[#3200C1] text-[#37FFDB] text-xs font-black rounded-full flex items-center justify-center shadow-md" aria-hidden="true">{step}</span>
-              <h3 className="text-base font-black text-[#3200C1] mb-2 mt-1">{title}</h3>
-              <p className="text-sm leading-relaxed">{text}</p>
-            </div>
-          ))}
-        </div>
-
-        {/* CTA Final */}
-        <div className="bg-[#3200C1] rounded-2xl p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div>
-            <h2 className="text-2xl md:text-3xl font-black text-white mb-2 [text-wrap:balance]">¿Listo para comparar y cotizar?</h2>
-            <p className="text-white/70 max-w-xl">Usa nuestro comparador gratuito, aplica filtros por precio, m², dormitorios y constructora, y solicita tu cotización en minutos.</p>
-          </div>
-          <div className="flex flex-col sm:flex-row gap-3 shrink-0">
-            <Link
-              href="#results"
-              className="inline-flex items-center gap-2 bg-[#37FFDB] text-[#3200C1] font-black px-8 py-4 rounded-[4px] hover:brightness-110 active:scale-95 transition-all text-base whitespace-nowrap"
-            >
-              Usar el Comparador <ArrowRight className="w-5 h-5" aria-hidden="true" />
-            </Link>
-            <Link
-              href="/registro"
-              className="inline-flex items-center gap-2 bg-white/10 text-white border border-white/20 font-black px-8 py-4 rounded-[4px] hover:bg-white/20 active:scale-95 transition-all text-base whitespace-nowrap"
-            >
-              Publicar mi Empresa
-            </Link>
+        {/* Minimal SEO Cards */}
+        <div>
+          <h2 className="text-2xl font-black text-[#3200C1] mb-8 text-center">¿Qué tipos de casas encontrarás en la plataforma?</h2>
+          <div className="grid md:grid-cols-4 gap-6 text-slate-600">
+            {[
+              { title: "🏠 Prefabricadas", desc: "Compara modelos de maderas chilenas desde 36 m² con precios reales y actualizados directamente por la fábrica." },
+              { title: "🧱 Paneles SIP", desc: "Alta eficiencia térmica y acústica. Especiales para el clima del centro y sur de Chile, garantizando abrigo y economía." },
+              { title: "📦 Modulares", desc: "Soluciones de vanguardia industrializadas y ampliables. Llegan prearmadas y listas para montar en tu parcela." },
+              { title: "🔑 Llave en Mano", desc: "Olvídate por completo del estrés de la construcción. Cotiza empresas que te entregan la casa 100% terminada y lista." }
+            ].map(item => (
+              <div key={item.title} className="bg-slate-50 p-6 rounded-2xl border border-slate-100 hover:border-[#3200C1]/20 transition-colors">
+                  <h3 className="text-lg font-black text-[#3200C1] mb-3">{item.title}</h3>
+                  <p className="text-sm leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
