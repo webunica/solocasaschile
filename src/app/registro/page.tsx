@@ -408,6 +408,185 @@ export default function RegistroPage() {
                         </form>
                     </div>
                 </div>
+
+                {/* Pricing Table Section */}
+                <div className="mt-24 bg-white/5 backdrop-blur-sm rounded-[40px] p-8 md:p-16 border border-white/10">
+                    <div className="text-center mb-16">
+                        <h2 className="text-3xl md:text-4xl font-black text-white mb-4">Planes y Formas de Pago</h2>
+                        <p className="text-white/60 max-w-2xl mx-auto">
+                            Elige la modalidad que mejor se adapte a tu empresa. Precios transparentes para potenciar tu visibilidad.
+                        </p>
+                    </div>
+
+                    <div className="grid md:grid-cols-2 gap-12">
+                        {/* payment forms */}
+                        <div className="space-y-6">
+                            <h3 className="text-xl font-black text-[#37FFDB] flex items-center gap-3">
+                                <Zap className="w-6 h-6" />
+                                Formas de Pago
+                            </h3>
+                            <div className="grid gap-4">
+                                {[
+                                    { title: "Mensual", desc: "Pago estándar mes a mes", discount: null },
+                                    { title: "Trimestral", desc: "Pago cada 3 meses", discount: "10% OFF" },
+                                    { title: "Semestral", desc: "Pago cada 6 meses", discount: "15% OFF" },
+                                ].map((item) => (
+                                    <div key={item.title} className="bg-white/10 p-5 rounded-2xl flex items-center justify-between border border-white/5 hover:border-[#37FFDB]/30 transition-colors">
+                                        <div>
+                                            <p className="font-black text-white">{item.title}</p>
+                                            <p className="text-white/50 text-sm">{item.desc}</p>
+                                        </div>
+                                        {item.discount && (
+                                            <span className="bg-[#37FFDB] text-[#3200C1] px-3 py-1 rounded-full text-xs font-black">
+                                                {item.discount}
+                                            </span>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Referential Values */}
+                        <div className="space-y-6">
+                            <h3 className="text-xl font-black text-[#37FFDB] flex items-center gap-3">
+                                <Building2 className="w-6 h-6" />
+                                Valores Referenciales (+ IVA)
+                            </h3>
+                            <div className="overflow-hidden rounded-2xl border border-white/10">
+                                <table className="w-full text-left text-sm">
+                                    <thead className="bg-white/10 text-[#37FFDB] font-black uppercase text-[10px] tracking-widest">
+                                        <tr>
+                                            <th className="px-6 py-4">Suscripción</th>
+                                            <th className="px-6 py-4 text-right">Mensual</th>
+                                            <th className="px-6 py-4 text-right">Trimestral</th>
+                                            <th className="px-6 py-4 text-right">Semestral</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="text-white/80 divide-y divide-white/5 bg-white/5">
+                                        <tr>
+                                            <td className="px-6 py-4 font-bold text-white">Plan Pro</td>
+                                            <td className="px-6 py-4 text-right">$34.900</td>
+                                            <td className="px-6 py-4 text-right">$94.230</td>
+                                            <td className="px-6 py-4 text-right">$177.990</td>
+                                        </tr>
+                                        <tr>
+                                            <td className="px-6 py-4 font-bold text-white">Plan Elite</td>
+                                            <td className="px-6 py-4 text-right">$79.900</td>
+                                            <td className="px-6 py-4 text-right">$215.730</td>
+                                            <td className="px-6 py-4 text-right">$407.490</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <p className="text-[10px] text-white/40 italic">
+                                * Valores sujetos a cambios. El descuento ya se encuentra aplicado en los montos trimestrales y semestrales.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Commercial Conditions */}
+                <div className="mt-24 grid md:grid-cols-2 gap-16 items-center">
+                    <div>
+                        <h2 className="text-3xl font-black text-white mb-6">Condiciones Comerciales</h2>
+                        <div className="space-y-6">
+                            {[
+                                "Activación en 24 a 48 horas hábiles tras validación",
+                                "Cada empresa administra sus publicaciones desde su panel",
+                                "Los leads llegan directo al WhatsApp o formulario del constructor",
+                                "La plataforma puede validar publicaciones antes de ser visibles",
+                                "El soporte es sobre uso de plataforma, no incluye gestión comercial externa",
+                            ].map((condition, idx) => (
+                                <div key={idx} className="flex gap-4">
+                                    <div className="w-6 h-6 rounded-full bg-[#37FFDB]/20 flex items-center justify-center text-[#37FFDB] shrink-0">
+                                        <CheckCircle className="w-4 h-4" />
+                                    </div>
+                                    <p className="text-white/70 text-sm leading-relaxed">{condition}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                    <div className="bg-gradient-to-br from-[#37FFDB]/20 to-transparent p-12 rounded-[40px] border border-[#37FFDB]/20 relative">
+                        <div className="absolute -top-6 -right-6 w-24 h-24 bg-[#37FFDB] rounded-full blur-[80px] opacity-20" />
+                        <h3 className="text-xl font-black text-[#37FFDB] mb-4">¿Todo Claro?</h3>
+                        <p className="text-white/60 text-sm leading-relaxed mb-8">
+                            Nuestro objetivo es simplificar la conexión entre constructoras y clientes. Al unirte, accedes a una plataforma optimizada para la conversión.
+                        </p>
+                        <a 
+                            href="https://wa.me/56964130601" 
+                            target="_blank" 
+                            className="inline-flex items-center gap-2 text-sm font-black text-[#37FFDB] hover:underline"
+                        >
+                            Hablar con un ejecutivo <ArrowLeft className="w-4 h-4 rotate-180" />
+                        </a>
+                    </div>
+                </div>
+
+                {/* FAQ Section */}
+                <div className="mt-32">
+                    <div className="text-center mb-16">
+                        <h2 className="text-3xl md:text-4xl font-black text-white mb-4">Preguntas Frecuentes</h2>
+                        <p className="text-white/60">Resolvemos tus dudas antes de comenzar</p>
+                    </div>
+                    <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+                        {[
+                            {
+                                q: "¿Puedo comenzar gratis?",
+                                a: "¡Sí! Ofrecemos un plan inicial completamente gratuito por 6 meses que te permite subir hasta 3 modelos para probar la plataforma."
+                            },
+                            {
+                                q: "¿Qué pasa después de los 6 meses del plan inicial?",
+                                a: "Podrás elegir entre mantenerte en una versión básica o actualizar a uno de nuestros planes Pro o Elite para seguir disfrutando de todos los beneficios."
+                            },
+                            {
+                                q: "¿Puedo cambiar de plan después?",
+                                a: "Por supuesto. Puedes subir o bajar de nivel tu suscripción en cualquier momento desde tu panel de administración."
+                            },
+                            {
+                                q: "¿Los leads llegan directo a mi WhatsApp?",
+                                a: "En los planes Pro y Elite, los botones de contacto pueden dirigir al cliente directamente a tu WhatsApp comercial."
+                            },
+                            {
+                                q: "¿Ustedes suben mis modelos o lo hago yo?",
+                                a: "Tendrás un panel de control intuitivo para gestionar tus propios modelos, fotos y descripciones de forma inmediata."
+                            },
+                            {
+                                q: "¿Cuánto demora la activación?",
+                                a: "Una vez completado el registro y validada la información, tu cuenta estará activa en un plazo de 24 a 48 horas hábiles."
+                            }
+                        ].map((item, idx) => (
+                            <div key={idx} className="bg-white/5 border border-white/10 p-8 rounded-3xl hover:bg-white/[0.07] transition-colors">
+                                <h4 className="font-black text-white mb-3 text-lg">{item.q}</h4>
+                                <p className="text-white/50 text-sm leading-relaxed">{item.a}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Final CTA */}
+                <div className="mt-32 mb-20">
+                    <div className="relative overflow-hidden bg-gradient-to-r from-[#3200C1] to-[#37FFDB]/40 rounded-[40px] p-12 md:p-24 text-center border border-white/20">
+                        <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 pointer-events-none" />
+                        <h2 className="text-4xl md:text-6xl font-black text-white mb-8 relative z-10 [text-wrap:balance]">
+                            Comienza hoy y muestra tus modelos de forma profesional
+                        </h2>
+                        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 relative z-10">
+                            <button 
+                                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                                className="w-full sm:w-auto px-10 py-5 bg-white text-[#3200C1] font-black rounded-2xl hover:scale-105 transition-transform shadow-xl"
+                            >
+                                Crear cuenta gratis
+                            </button>
+                            <a 
+                                href="https://wa.me/56964130601"
+                                target="_blank"
+                                className="w-full sm:w-auto px-10 py-5 bg-transparent border-2 border-white/30 text-white font-black rounded-2xl hover:bg-white/10 transition-colors"
+                            >
+                                Solicitar información
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     );
