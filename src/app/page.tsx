@@ -114,8 +114,8 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
       <div className="w-full bg-slate-50 border-b border-slate-100 pt-16 pb-12 px-6">
         <p className="text-center text-xs font-black text-slate-400 uppercase tracking-widest mb-8">Empresas que confían en nosotros</p>
         <div className="max-w-7xl mx-auto flex flex-wrap justify-center gap-x-12 gap-y-6 opacity-60 hover:opacity-100 transition-opacity duration-500">
-           {companies.slice(0, 8).map((c: string) => (
-              <span key={c} className="text-xl font-black text-slate-400 hover:text-[#3200C1] transition-colors">{c}</span>
+           {companies.slice(0, 8).map((c: { company_name: string }) => (
+              <span key={c.company_name} className="text-xl font-black text-slate-400 hover:text-[#3200C1] transition-colors">{c.company_name}</span>
            ))}
         </div>
       </div>
