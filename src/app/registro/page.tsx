@@ -141,11 +141,11 @@ export default function RegistroPage() {
             <div className="max-w-6xl mx-auto px-4 py-12">
                 {/* Hero Text */}
                 <div className="text-center mb-12">
-                    <span className="inline-block px-4 py-1.5 rounded-full bg-[#37FFDB]/20 text-[#37FFDB] text-xs font-black uppercase tracking-widest mb-4">
-                        🏗️ Para Constructoras y Empresas
+                    <span className="inline-block px-4 py-1.5 rounded-full bg-[#37FFDB]/20 text-[#37FFDB] text-xs font-black uppercase tracking-widest mb-4 border border-[#37FFDB]/30">
+                        🎁 Promoción Especial: 6 Meses Gratis
                     </span>
                     <h1 className="text-3xl md:text-5xl font-black text-white mb-4 [text-wrap:balance]">
-                        Publica tu primera propiedad<br />
+                        Sube hasta 3 modelos<br />
                         <span className="text-[#37FFDB]">completamente gratis</span>
                     </h1>
                     <p className="text-white/70 max-w-xl mx-auto leading-relaxed">
@@ -168,8 +168,8 @@ export default function RegistroPage() {
                                     },
                                     {
                                         icon: <Zap className="w-5 h-5" />,
-                                        title: "Tu primera propiedad, gratis",
-                                        desc: "El plan Starter te permite publicar hasta 1 modelo sin costo. Sube cuando necesites crecer.",
+                                        title: "Tu catálogo inicial, sin costo",
+                                        desc: "Te regalamos 6 meses de plan Gratuito para publicar hasta 3 modelos con imágenes y detalles.",
                                     },
                                     {
                                         icon: <Shield className="w-5 h-5" />,
@@ -199,30 +199,30 @@ export default function RegistroPage() {
                         <div className="bg-white rounded-3xl p-8 border-2 border-[#37FFDB] shadow-xl shadow-[#37FFDB]/10">
                             <div className="flex items-center justify-between mb-5">
                                 <div>
-                                    <span className="text-xs font-black uppercase tracking-widest text-slate-400">Plan Actual</span>
-                                    <h3 className="text-xl font-black text-[#3200C1]">Starter — Gratis</h3>
+                                    <span className="text-xs font-black uppercase tracking-widest text-slate-400">Promoción de Registro</span>
+                                    <h3 className="text-xl font-black text-[#3200C1]">Plan Inicial — Gratis</h3>
                                 </div>
                                 <span className="px-3 py-1.5 rounded-full bg-[#37FFDB] text-[#3200C1] text-xs font-black">
-                                    Incluido
+                                    Por 6 Meses
                                 </span>
                             </div>
                             <ul className="space-y-3">
                                 {[
-                                    "✅ 1 propiedad publicada",
-                                    "✅ Ficha de modelo con fotos",
+                                    "✅ Hasta 3 modelos publicados",
+                                    "✅ Hasta 5 fotos por modelo",
+                                    "✅ Ficha de modelo y detalles",
                                     "✅ Formulario de cotización integrado",
-                                    "✅ Visible en el comparador público",
-                                    "✅ Panel de control con métricas",
+                                    "✅ Panel de control constructor",
                                 ].map((f) => (
                                     <li key={f} className="text-sm text-slate-700 font-medium">{f}</li>
                                 ))}
                             </ul>
                             <div className="mt-6 pt-5 border-t border-slate-100">
                                 <p className="text-xs text-slate-400">
-                                    ¿Tu catálogo tiene más de 1 modelo?{" "}
-                                    <Link href="/dashboard/settings" className="text-[#3200C1] font-black hover:underline">
-                                        Conoce nuestros planes
-                                    </Link>
+                                    ¿Tu catálogo tiene más de 3 modelos o quieres destacar?{" "}
+                                    <span className="text-[#3200C1] font-black">
+                                        Consulta nuestros Planes Pro y Elite dentro del dashboard.
+                                    </span>
                                 </p>
                             </div>
                         </div>

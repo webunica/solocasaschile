@@ -31,12 +31,18 @@ export const companyUserType = defineType({
             type: 'string',
             options: {
                 list: [
-                    { title: '🟢 Plan Starter — 3 UF | Hasta 5 modelos, visibilidad estándar', value: 'starter' },
-                    { title: '🔵 Plan Crecer — 6 UF | Catálogo ilimitado + prioridad en buscador + leads calificados', value: 'builder' },
-                    { title: '🟣 Plan Destacado — 14 UF | Todo Crecer + banners destacados + Blog exclusivo', value: 'constructor' },
+                    { title: '🌟 Plan Gratuito — 6 Meses Gratis | Máx. 3 modelos, 5 fotos/modelo', value: 'free' },
+                    { title: '🚀 Plan Profesional — Modelos ilimitados, 15 fotos/modelo, 1 Video', value: 'pro' },
+                    { title: '👑 Plan Elite — Todo Pro + 30 fotos, Home Destacado', value: 'elite' },
                 ],
             },
-            initialValue: 'starter',
+            initialValue: 'free',
+        }),
+        defineField({
+            name: 'trial_ends_at',
+            title: 'Fecha Fin de Prueba (Plan Gratuito)',
+            type: 'datetime',
+            description: 'Calculado automáticamente al registrarse (6 meses). Si la fecha pasa y el plan es free, la cuenta se pausa.',
         }),
         defineField({
             name: 'is_active',
@@ -66,9 +72,9 @@ export const companyUserType = defineType({
         select: { title: 'company_name', subtitle: 'plan', media: 'logo' },
         prepare({ title, subtitle, media }) {
             const planLabels: Record<string, string> = {
-                starter: '🟢 Starter',
-                builder: '🔵 Builder',
-                constructor: '🟣 Constructor',
+                free: '🌟 Inicial (Gratis)',
+                pro: '🚀 Profesional',
+                elite: '👑 Elite',
             };
             return {
                 title,

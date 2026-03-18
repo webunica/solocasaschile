@@ -59,13 +59,17 @@ export async function POST(req: NextRequest) {
         }
 
         // Create the company user doc
+        const sixMonthsFromNow = new Date();
+        sixMonthsFromNow.setMonth(sixMonthsFromNow.getMonth() + 6);
+
         await client.create({
             _type: "companyUser",
             company_name,
             email,
             contact_phone: contact_phone || "",
             role: "company",
-            plan: "starter",
+            plan: "free",
+            trial_ends_at: sixMonthsFromNow.toISOString(),
             is_active: true,
             password: hashedPassword,
             ...(logoAsset && { logo: logoAsset }),

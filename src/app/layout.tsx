@@ -3,6 +3,7 @@ import { Nunito } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
+import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import NextAuthProvider from "@/components/NextAuthProvider";
 import { sanityClient } from "@/lib/sanity.client";
@@ -152,6 +153,7 @@ export default async function RootLayout({
       <body className={`${nunito.className} bg-white text-[#3200C1] min-h-screen selection:bg-accent-500/30 selection:text-brand-500 flex flex-col`}>
         <NextAuthProvider>
           <NuqsAdapter>
+            <Header />
             <main className="flex-1">
               {children}
             </main>
