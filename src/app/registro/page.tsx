@@ -226,6 +226,57 @@ export default function RegistroPage() {
                                 </p>
                             </div>
                         </div>
+
+                        {/* Plan Pro */}
+                        <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                            <div className="flex items-center justify-between mb-5">
+                                <div>
+                                    <span className="text-xs font-black uppercase tracking-widest text-[#3200C1]">Ideal para Empresas</span>
+                                    <h3 className="text-xl font-black text-slate-800">Plan Pro</h3>
+                                </div>
+                                <span className="px-3 py-1.5 rounded-full bg-[#3200C1]/10 text-[#3200C1] text-xs font-black">
+                                    Upgrade
+                                </span>
+                            </div>
+                            <ul className="space-y-3">
+                                {[
+                                    "✨ Modelos ilimitados publicados",
+                                    "✨ Hasta 15 fotos por modelo",
+                                    "✨ 1 Video (YouTube/Vimeo) por modelo",
+                                    "✨ Leads directos a tu WhatsApp",
+                                    "✨ Panel de estadísticas",
+                                ].map((f) => (
+                                    <li key={f} className="text-sm text-slate-600 font-medium">{f}</li>
+                                ))}
+                            </ul>
+                        </div>
+
+                        {/* Plan Elite */}
+                        <div className="bg-gradient-to-br from-slate-900 to-[#3200C1] rounded-3xl p-8 border border-slate-800 shadow-xl relative overflow-hidden">
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-[#37FFDB]/10 rounded-full blur-3xl" />
+                            <div className="relative z-10">
+                                <div className="flex items-center justify-between mb-5">
+                                    <div>
+                                        <span className="text-xs font-black uppercase tracking-widest text-[#37FFDB]">Máxima Visibilidad</span>
+                                        <h3 className="text-xl font-black text-white">Plan Elite</h3>
+                                    </div>
+                                    <span className="px-3 py-1.5 rounded-full bg-[#37FFDB] text-[#3200C1] text-xs font-black">
+                                        Destacado
+                                    </span>
+                                </div>
+                                <ul className="space-y-3">
+                                    {[
+                                        "🌟 Todo lo del plan Pro incluido",
+                                        "🌟 Hasta 30 fotos por modelo",
+                                        "🌟 Videos incrustados ilimitados",
+                                        "🌟 Insignia 'Destacado' en buscador",
+                                        "🌟 Exhibición rotativa en el Home",
+                                    ].map((f) => (
+                                        <li key={f} className="text-sm text-white/80 font-medium">{f}</li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </div>
                     </div>
 
                     {/* Registration Form */}
