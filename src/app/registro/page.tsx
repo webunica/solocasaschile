@@ -194,10 +194,12 @@ export default function RegistroPage() {
                             <ul className="space-y-3">
                                 {[
                                     "✅ Hasta 3 modelos publicados",
-                                    "✅ Hasta 5 fotos por modelo",
+                                    "✅ Hasta 4 fotos por modelo",
                                     "✅ Ficha de modelo y detalles",
                                     "✅ Formulario de cotización integrado",
                                     "✅ Panel de control constructor",
+                                    "✅ Botón WhatsApp con mensaje precargado",
+                                    "✅ Link público compartible del perfil",
                                 ].map((f) => (
                                     <li key={f} className="text-sm text-slate-700 font-medium">{f}</li>
                                 ))}
@@ -225,11 +227,14 @@ export default function RegistroPage() {
                             </div>
                             <ul className="space-y-3 mb-6">
                                 {[
-                                    "✨ Modelos ilimitados publicados",
-                                    "✨ Hasta 15 fotos por modelo",
+                                    "✨ Hasta 20 modelos publicados",
+                                    "✨ Hasta 10 fotos por modelo",
                                     "✨ 1 Video (YouTube/Vimeo) por modelo",
                                     "✨ Leads directos a tu WhatsApp",
                                     "✨ Panel de estadísticas",
+                                    "✨ Empresa verificada",
+                                    "✨ PDF automático por modelo",
+                                    "✨ Botón agendar reunión",
                                 ].map((f) => (
                                     <li key={f} className="text-sm text-slate-600 font-medium">{f}</li>
                                 ))}
@@ -261,10 +266,13 @@ export default function RegistroPage() {
                                 <ul className="space-y-3 mb-6">
                                     {[
                                         "🌟 Todo lo del plan Pro incluido",
-                                        "🌟 Hasta 30 fotos por modelo",
-                                        "🌟 Videos incrustados ilimitados",
-                                        "🌟 Insignia 'Destacado' en buscador",
+                                        "🌟 Modelos ilimitados",
+                                        "🌟 Hasta 20 fotos por modelo",
                                         "🌟 Exhibición rotativa en el Home",
+                                        "🌟 Comparador de modelos",
+                                        "🌟 Modelo destacado semanal",
+                                        "🌟 Estadísticas avanzadas",
+                                        "🌟 Landing premium de empresa",
                                     ].map((f) => (
                                         <li key={f} className="text-sm text-white/80 font-medium">{f}</li>
                                     ))}
@@ -536,7 +544,7 @@ export default function RegistroPage() {
                             },
                             {
                                 q: "¿Qué pasa después de los 6 meses del plan inicial?",
-                                a: "Podrás elegir entre mantenerte en una versión básica o actualizar a uno de nuestros planes Pro o Elite para seguir disfrutando de todos los beneficios."
+                                a: "Podrás elegir entre mantenerte en la versión Inicial o actualizar a uno de nuestros planes Pro o Elite para disfrutar o mantener esos beneficios ampliados."
                             },
                             {
                                 q: "¿Puedo cambiar de plan después?",
