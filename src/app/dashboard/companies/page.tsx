@@ -249,7 +249,7 @@ export default async function CompaniesManagementPage() {
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100">
-                        <tr className="hover:bg-slate-50"><td className="px-6 py-4 font-black text-emerald-600">🟢 Plan Inicial</td><td className="px-6 py-4 font-bold text-right">Gratis (6m)</td><td className="px-6 py-4 text-slate-500 text-right">$0</td><td className="px-6 py-4 text-slate-500">Hasta 3 modelos, botón WhatsApp con mensaje y perfil público.</td></tr>
+                        <tr className="hover:bg-slate-50"><td className="px-6 py-4 font-black text-emerald-600">🟢 Plan Inicial</td><td className="px-6 py-4 font-bold text-right">Gratis (4m)</td><td className="px-6 py-4 text-slate-500 text-right">$0</td><td className="px-6 py-4 text-slate-500">Hasta 3 modelos, botón WhatsApp con mensaje y perfil público.</td></tr>
                         <tr className="hover:bg-slate-50"><td className="px-6 py-4 font-black text-blue-600">🔵 Plan Pro</td><td className="px-6 py-4 font-bold text-right">-</td><td className="px-6 py-4 text-slate-500 text-right">$34.900 /mes</td><td className="px-6 py-4 text-slate-500">20 modelos, leads a WhatsApp, empresa verificada, PDF automático.</td></tr>
                         <tr className="hover:bg-slate-50"><td className="px-6 py-4 font-black text-purple-600">🟣 Plan Elite</td><td className="px-6 py-4 font-bold text-right">-</td><td className="px-6 py-4 text-slate-500 text-right">$79.900 /mes</td><td className="px-6 py-4 text-slate-500">Ilimitados, corporativo, comparador destacado, landing premium.</td></tr>
                     </tbody>
