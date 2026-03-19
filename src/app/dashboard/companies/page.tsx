@@ -52,7 +52,14 @@ export default async function CompaniesManagementPage() {
     const b2bMap: Record<string, any> = {};
     b2bAccounts.forEach((acc) => { b2bMap[acc.company_name] = acc; });
 
-    // 5. Métricas
+    // 5. Lista unificada: empresas con modelos + cuentas B2B (aunque no tengan modelos)
+    const allNamesSet = new Set<string>([
+        ...allCompanyNames,
+        ...b2bAccounts.map(acc => acc.company_name).filter(Boolean),
+    ]);
+    const allNames = Array.from(allNamesSet).sort((a, b) => a.localeCompare(b, "es"));
+
+    // 6. Métricas
     const registeredActive = b2bAccounts.filter(u => u.is_active !== false && u.role !== "admin");
     const ingresos_uf = registeredActive.reduce((sum, u) => {
         return sum + (u.plan === "constructor" ? 14 : u.plan === "builder" ? 6 : 3);
@@ -61,27 +68,27 @@ export default async function CompaniesManagementPage() {
     return (
         <div className="space-y-6">
             {/* Alerta de empresas sin cuenta + botón masivo */}
-            {allCompanyNames.filter(n => !b2bMap[n]).length > 0 && (
+            {allNames.filter(n => !b2bMap[n]).length > 0 && (
                 <div className="bg-amber-50 border border-amber-200 rounded-2xl p-5">
                     <div className="flex items-start gap-3 mb-4">
                         <div className="w-8 h-8 rounded-lg bg-amber-400 flex items-center justify-center shrink-0">
                             <Zap className="w-4 h-4 text-amber-900" />
                         </div>
                         <div>
-                            <p className="font-black text-amber-900">{allCompanyNames.filter(n => !b2bMap[n]).length} empresas sin cuenta B2B</p>
+                            <p className="font-black text-amber-900">{allNames.filter(n => !b2bMap[n]).length} empresas sin cuenta B2B</p>
                             <p className="text-xs text-amber-700 mt-0.5">
                                 Se crearán con <strong>Plan Starter activo</strong>, email <code className="bg-amber-100 px-1 rounded">admin@nombre-empresa.cl</code> y contraseña temporal <strong>Starter2025!</strong>
                             </p>
                         </div>
                     </div>
-                    <BulkCreateButton pendingCount={allCompanyNames.filter(n => !b2bMap[n]).length} />
+                    <BulkCreateButton pendingCount={allNames.filter(n => !b2bMap[n]).length} />
                 </div>
             )}
             {/* Métricas */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                 <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
                     <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Total Empresas en BD</p>
-                    <p className="text-3xl font-black text-[#3200C1]">{allCompanyNames.length}</p>
+                    <p className="text-3xl font-black text-[#3200C1]">{allNames.length}</p>
                 </div>
                 <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
                     <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Cuentas B2B Activas</p>
@@ -90,7 +97,7 @@ export default async function CompaniesManagementPage() {
                 <div className="bg-[#37FFDB]/10 rounded-2xl border border-[#37FFDB]/30 p-5 shadow-sm">
                     <p className="text-xs font-bold text-[#3200C1]/60 uppercase tracking-widest mb-1">Sin Cuenta B2B</p>
                     <p className="text-3xl font-black text-[#3200C1]">
-                        {allCompanyNames.filter(n => !b2bMap[n]).length}
+                        {allNames.filter(n => !b2bMap[n]).length}
                     </p>
                     <p className="text-xs text-[#3200C1]/50 mt-1">Potenciales clientes</p>
                 </div>
@@ -103,7 +110,7 @@ export default async function CompaniesManagementPage() {
             {/* Tabla unificada: todas las empresas */}
             <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
                 <div className="px-6 py-4 border-b border-slate-200 flex items-center justify-between">
-                    <h3 className="font-bold text-slate-800">Todas las Empresas ({allCompanyNames.length})</h3>
+                    <h3 className="font-bold text-slate-800">Todas las Empresas ({allNames.length})</h3>
                     <span className="text-xs text-slate-400">Empresas con modelos en la base de datos</span>
                 </div>
 
@@ -119,7 +126,7 @@ export default async function CompaniesManagementPage() {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100">
-                            {allCompanyNames.map((companyName) => {
+                            {allNames.map((companyName) => {
                                 const b2b = b2bMap[companyName];
                                 const hasB2B = !!b2b;
                                 const isActive = hasB2B ? b2b.is_active !== false : null;
