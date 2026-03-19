@@ -67,6 +67,18 @@ export const companyUserType = defineType({
         defineField({ name: 'logo', title: 'Logotipo Corporativo', type: 'image', options: { hotspot: true } }),
         defineField({ name: 'favicon', title: 'Favicon / Icono (Redes)', type: 'image', options: { hotspot: true }, description: 'Símbolo o icono de tu empresa para la web y redes.' }),
         defineField({ name: 'contact_phone', title: 'Teléfono Comercial (Receptor Leads)', type: 'string' }),
+        defineField({
+            name: 'reset_password_token',
+            title: 'Token de Recuperación',
+            type: 'string',
+            hidden: true
+        }),
+        defineField({
+            name: 'reset_password_expires',
+            title: 'Expiración del Token',
+            type: 'datetime',
+            hidden: true
+        }),
     ],
     preview: {
         select: { title: 'company_name', subtitle: 'plan', media: 'logo' },

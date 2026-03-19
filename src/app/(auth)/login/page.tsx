@@ -4,6 +4,7 @@ import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Lock, Mail, ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 export default function LoginPage() {
     const router = useRouter();
@@ -75,9 +76,9 @@ export default function LoginPage() {
                 </div>
                 <div className="flex items-center justify-end mt-2">
                     <div className="text-sm">
-                        <a href="#" className="font-bold text-[#3200C1] hover:text-[#37FFDB] hover:underline">
+                        <Link href="/forgot-password" className="font-bold text-[#3200C1] hover:text-[#37FFDB] hover:underline">
                             ¿Olvidaste tu contraseña?
-                        </a>
+                        </Link>
                     </div>
                 </div>
             </div>
