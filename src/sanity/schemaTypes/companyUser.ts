@@ -42,7 +42,7 @@ export const companyUserType = defineType({
             name: 'trial_ends_at',
             title: 'Fecha Fin de Prueba',
             type: 'datetime',
-            description: 'Calculado al registrarse. Para cuentas y planes gratuitos permanentes, este campo puede ser opcional o ignorado.',
+            description: 'Calculado automáticamente al registrarse (4 meses). Si la fecha pasa y el plan es free, la cuenta se pausa.',
         }),
         defineField({
             name: 'is_active',

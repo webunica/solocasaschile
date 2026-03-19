@@ -127,7 +127,7 @@ export default function RegistroPage() {
                 {/* Hero Text */}
                 <div className="text-center mb-12">
                     <span className="inline-block px-4 py-1.5 rounded-full bg-[#37FFDB]/20 text-[#37FFDB] text-xs font-black uppercase tracking-widest mb-4 border border-[#37FFDB]/30">
-                        🎁 Plan Inicial: 100% Gratis
+                        🎁 Promoción Especial: 4 Meses Gratis
                     </span>
                     <h1 className="text-3xl md:text-5xl font-black text-white mb-4 [text-wrap:balance]">
                         Sube hasta 3 modelos<br />
@@ -154,7 +154,7 @@ export default function RegistroPage() {
                                     {
                                         icon: <Zap className="w-5 h-5" />,
                                         title: "Tu catálogo inicial, sin costo",
-                                        desc: "Crea tu cuenta gratuita para publicar hasta 3 modelos con imágenes y detalles.",
+                                        desc: "Te regalamos 4 meses de plan Inicial para publicar hasta 3 modelos de prueba.",
                                     },
                                     {
                                         icon: <Shield className="w-5 h-5" />,
@@ -188,7 +188,7 @@ export default function RegistroPage() {
                                     <h3 className="text-xl font-black text-[#3200C1]">Plan Inicial — Gratis</h3>
                                 </div>
                                 <span className="px-3 py-1.5 rounded-full bg-[#37FFDB] text-[#3200C1] text-xs font-black">
-                                    Siempre Gratis
+                                    Por 4 Meses
                                 </span>
                             </div>
                             <ul className="space-y-3">
@@ -540,11 +540,11 @@ export default function RegistroPage() {
                         {[
                             {
                                 q: "¿Puedo comenzar gratis?",
-                                a: "¡Sí! Ofrecemos un plan inicial completamente gratuito que te permite subir hasta 3 modelos para empezar en la plataforma."
+                                a: "¡Sí! Ofrecemos un plan inicial completamente gratuito por 4 meses que te permite subir hasta 3 modelos para probar la plataforma."
                             },
                             {
-                                q: "¿Puedo mantener mi plan gratuito para siempre?",
-                                a: "Sí, puedes mantenerte en la versión Inicial todo el tiempo que desees, o actualizar a un plan Pro o Elite para descubrir funcionalidades ampliadas."
+                                q: "¿Qué pasa después de los 4 meses del plan inicial?",
+                                a: "Podrás elegir entre una versión básica de mantenimiento o actualizar a uno de nuestros planes Pro o Elite para retener todos tus beneficios y leads."
                             },
                             {
                                 q: "¿Puedo cambiar de plan después?",

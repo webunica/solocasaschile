@@ -186,7 +186,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
            
            <p className="text-lg md:text-xl text-white/80 max-w-3xl mb-10 leading-relaxed [text-wrap:balance]">
               Únete al mayor comparador de Chile. Sube tus modelos de casas prefabricadas y recibe prospectos calificados directo a tu WhatsApp. 
-              <strong> Registra tu constructora hoy y obtén el Plan Inicial Gratuito para siempre (Sube hasta 3 modelos).</strong>
+              <strong> Registra tu constructora hoy y obtén 4 meses de Plan Inicial Gratuito (Sube hasta 3 modelos).</strong>
            </p>
            
            <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto z-10">
