@@ -77,6 +77,31 @@ export default function EditCompanyForm({ companyUser }: { companyUser: any }) {
 
                 <hr className="border-slate-100" />
 
+                <section>
+                    <h3 className="text-lg font-bold text-[#3200C1] mb-6">Información de Contacto</h3>
+                    <div className="space-y-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label className="block text-slate-700 font-bold mb-2">Teléfono Comercial</label>
+                                <input defaultValue={companyUser.contact_phone} name="contact_phone" type="text" placeholder="Ej: +56912345678" className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:border-[#3200C1] focus:outline-none bg-slate-50 focus:bg-white" />
+                                <p className="text-xs text-slate-400 mt-1">Teléfono principal de contacto.</p>
+                            </div>
+                            <div>
+                                <label className="block text-slate-700 font-bold mb-2">WhatsApp Ficha Proyecto</label>
+                                <input defaultValue={companyUser.whatsapp_number} name="whatsapp_number" type="text" placeholder="Ej: 56912345678" className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:border-[#3200C1] focus:outline-none bg-slate-50 focus:bg-white" />
+                                <p className="text-xs text-slate-400 mt-1">Habilita el botón flotante en modelos.</p>
+                            </div>
+                        </div>
+                        <div>
+                            <label className="block text-slate-700 font-bold mb-2">Enlace de Agendar Reunión (Ej: Calendly)</label>
+                            <input defaultValue={companyUser.meeting_url} name="meeting_url" type="url" placeholder="Ej: https://calendly.com/mi-empresa" className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:border-[#3200C1] focus:outline-none bg-slate-50 focus:bg-white" />
+                            <p className="text-xs text-slate-400 mt-1">Requiere Plan Pro o Elite para mostrarse.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <hr className="border-slate-100" />
+
                 {/* ─── Sección Plan ─────────────────────────────────── */}
                 <section>
                     <h3 className="text-lg font-bold text-[#3200C1] mb-1">Plan de Suscripción</h3>

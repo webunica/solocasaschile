@@ -28,19 +28,23 @@ export async function createModelAction(formData: FormData) {
         // Obtenemos los campos simples
         const company_name = formData.get("company_name")?.toString() || "";
 
-        // ── Validar límite de plan Starter ────────────────────────
+        // ── Validar límite de plan Inicial / Pro ────────────────────────
         const companyUser = await sanityWriteClient.fetch(
             `*[_type == "companyUser" && company_name == $name][0]{ plan }`,
             { name: company_name }
         );
-        if (companyUser?.plan === "starter" || !companyUser?.plan) {
-            const modelCount: number = await sanityWriteClient.fetch(
-                `count(*[_type == "houseModel" && company_name == $name])`,
-                { name: company_name }
-            );
-            if (modelCount >= 5) {
-                return { error: "Has alcanzado el límite de 5 modelos del Plan Starter. Actualiza tu plan a Builder para publicar más." };
-            }
+        const currentPlan = companyUser?.plan || "free";
+
+        const modelCount: number = await sanityWriteClient.fetch(
+            `count(*[_type == "houseModel" && company_name == $name])`,
+            { name: company_name }
+        );
+
+        if (currentPlan === "free" && modelCount >= 3) {
+            return { error: "Has alcanzado el límite de 3 modelos del Plan Inicial. Acércate a un plan superior para publicar más." };
+        }
+        if (currentPlan === "pro" && modelCount >= 20) {
+            return { error: "Has alcanzado el límite de 20 modelos de tu Plan Pro. Pásate a Elite para modelos ilimitados." };
         }
 
         const model_name = formData.get("model_name")?.toString() || "";
@@ -66,7 +70,17 @@ export async function createModelAction(formData: FormData) {
         const seo_keywords = formData.get("seo_keywords")?.toString() || "";
 
         // Procesar fotos subidas (múltiples archivos bajo el name "photos")
-        const photos = formData.getAll("photos") as File[];
+        let photos = formData.getAll("photos") as File[];
+        
+        // Aplicar límite por plan
+        let maxPhotos = 4;
+        if (currentPlan === "pro") maxPhotos = 10;
+        if (currentPlan === "elite") maxPhotos = 20;
+        
+        if (photos.length > maxPhotos) {
+            photos = photos.slice(0, maxPhotos);
+        }
+
         const imageAssets = [];
 
         for (const [idx, file] of photos.entries()) {

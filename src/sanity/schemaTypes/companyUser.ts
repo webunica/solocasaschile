@@ -68,6 +68,18 @@ export const companyUserType = defineType({
         defineField({ name: 'favicon', title: 'Favicon / Icono (Redes)', type: 'image', options: { hotspot: true }, description: 'Símbolo o icono de tu empresa para la web y redes.' }),
         defineField({ name: 'contact_phone', title: 'Teléfono Comercial (Receptor Leads)', type: 'string' }),
         defineField({
+            name: 'whatsapp_number',
+            title: 'Número WhatsApp para Ficha (Formato internacional, ej: 56912345678)',
+            type: 'string',
+            description: 'Se mostrará como botón flotante en los modelos'
+        }),
+        defineField({
+            name: 'meeting_url',
+            title: 'Enlace para Agendar Reunión (ej: Calendly)',
+            type: 'url',
+            description: 'Se habilitará el botón "Agendar Reunión" en la ficha del modelo.'
+        }),
+        defineField({
             name: 'reset_password_token',
             title: 'Token de Recuperación',
             type: 'string',

@@ -9,6 +9,7 @@ import VisitPublicationButton from "@/components/VisitPublicationButton";
 import { Suspense } from "react";
 import SimilarPropertiesSection from "@/components/SimilarPropertiesSection";
 import ModelGallery from "./components/ModelGallery";
+import PrintPdfButton from "./components/PrintPdfButton";
 
 type Props = {
     params: Promise<{ slug: string }>
@@ -34,6 +35,9 @@ const MODEL_QUERY = `*[_type == "houseModel" && (_id == $slug || slug.current ==
     seo_title,
     seo_description,
     "contact_phone": *[_type == "companyUser" && company_name == ^.company_name][0].contact_phone,
+    "whatsapp_number": *[_type == "companyUser" && company_name == ^.company_name][0].whatsapp_number,
+    "meeting_url": *[_type == "companyUser" && company_name == ^.company_name][0].meeting_url,
+    "company_plan": *[_type == "companyUser" && company_name == ^.company_name][0].plan,
     "company_email": *[_type == "companyUser" && company_name == ^.company_name][0].email,
     "images": coalesce(
         images[]{ "url": asset->url, "alt": alt },
@@ -93,7 +97,14 @@ export default async function ModelPage({ params }: Props) {
                             <span className="w-6 h-6 rounded-md bg-[#37FFDB]/20 flex items-center justify-center text-[#3200C1]">
                                 <Factory className="w-3 h-3" />
                             </span>
-                            <span className="text-sm font-bold text-slate-700">{model.company_name}</span>
+                            <span className="text-sm font-bold text-slate-700 flex items-center gap-1">
+                                {model.company_name}
+                                {(model.company_plan === 'pro' || model.company_plan === 'elite') && (
+                                    <span title="Empresa Verificada">
+                                        <ShieldCheck className="w-4 h-4 text-emerald-500" />
+                                    </span>
+                                )}
+                            </span>
                         </div>
                         {model.model_url && (
                             <VisitPublicationButton
@@ -252,6 +263,33 @@ export default async function ModelPage({ params }: Props) {
                             companyEmail={model.company_email}
                             contactPhone={model.contact_phone}
                         />
+
+                        {/* Botones de Acción (Planes) */}
+                        <div className="p-6 bg-slate-50 border-t border-slate-100 flex flex-col gap-3">
+                            {model.whatsapp_number && (
+                                <a
+                                    href={`https://wa.me/${model.whatsapp_number.replace(/\+/g, '')}?text=Hola,%20me%20interesa%20el%20modelo%20${encodeURIComponent(model.model_name)}%20visto%20en%20SoloCasasChile.`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="w-full flex items-center justify-center gap-2 bg-[#25D366] text-white py-3 rounded-xl font-bold hover:bg-[#20bd5a] transition-colors"
+                                >
+                                    WhatsApp Directo
+                                </a>
+                            )}
+                            {(model.company_plan === 'pro' || model.company_plan === 'elite') && model.meeting_url && (
+                                <a
+                                    href={model.meeting_url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="w-full flex items-center justify-center gap-2 bg-slate-800 text-white py-3 rounded-xl font-bold hover:bg-slate-700 transition-colors"
+                                >
+                                    <Calendar className="w-4 h-4" /> Agendar Reunión
+                                </a>
+                            )}
+                            {(model.company_plan === 'pro' || model.company_plan === 'elite') && (
+                                <PrintPdfButton />
+                            )}
+                        </div>
                     </div>
                 </aside>
 

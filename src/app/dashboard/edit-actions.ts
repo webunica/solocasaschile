@@ -30,8 +30,37 @@ export async function editModelAction(id: string, formData: FormData) {
         const seo_keywords = formData.get("seo_keywords")?.toString() || "";
 
         // Procesar fotos subidas nuevas si vienen (opcional en edición)
-        const photos = formData.getAll("photos") as File[];
+        let photos = formData.getAll("photos") as File[];
         const imageAssets: any[] = [];
+
+        // ── Validar límite de fotos por plan ────────────────────────
+        if (photos.some(f => f.size > 0 && f.name)) {
+            const currentModel = await sanityWriteClient.fetch(`*[_id == $id][0]{ company_name, images }`, { id });
+            
+            if (currentModel) {
+                const companyUser = await sanityWriteClient.fetch(
+                    `*[_type == "companyUser" && company_name == $name][0]{ plan }`,
+                    { name: currentModel.company_name }
+                );
+                const currentPlan = companyUser?.plan || "free";
+                let maxPhotos = 4;
+                if (currentPlan === "pro") maxPhotos = 10;
+                if (currentPlan === "elite") maxPhotos = 20;
+
+                const currentPhotosCount = currentModel.images ? currentModel.images.length : 0;
+                const availableSlots = Math.max(0, maxPhotos - currentPhotosCount);
+
+                const validPhotos = photos.filter(f => f.size > 0 && f.name);
+
+                if (availableSlots <= 0 && validPhotos.length > 0) {
+                    return { error: `Has alcanzado el límite de ${maxPhotos} fotos para tu plan actual. Si deseas subir nuevas, primero elimina fotos anteriores o actualiza tu plan.` };
+                }
+
+                if (validPhotos.length > availableSlots) {
+                    photos = validPhotos.slice(0, availableSlots);
+                }
+            }
+        }
 
         for (const [idx, file] of photos.entries()) {
             if (file.size > 0 && file.name) {

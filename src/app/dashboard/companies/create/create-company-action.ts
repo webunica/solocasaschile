@@ -15,6 +15,9 @@ export async function createCompanyAction(formData: FormData) {
         const password = formData.get("password")?.toString() || "";
         const plan = formData.get("plan")?.toString() || "free";
         const role = formData.get("role")?.toString() || "company";
+        const contact_phone = formData.get("contact_phone")?.toString() || "";
+        const whatsapp_number = formData.get("whatsapp_number")?.toString() || "";
+        const meeting_url = formData.get("meeting_url")?.toString() || "";
 
         if (!company_name || !email || !password) {
             return { error: "Nombre, correo y contraseña son obligatorios." };
@@ -63,6 +66,9 @@ export async function createCompanyAction(formData: FormData) {
             plan,
             role,
             is_active: true,
+            contact_phone,
+            whatsapp_number,
+            meeting_url,
             ...(logoAsset && { logo: logoAsset }),
             ...(faviconAsset && { favicon: faviconAsset })
         });

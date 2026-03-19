@@ -14,6 +14,10 @@ export async function editCompanyAction(id: string, formData: FormData) {
         const email = formData.get("email")?.toString() || "";
         const role = formData.get("role")?.toString() || "company";
         const plan = formData.get("plan")?.toString() || "free";
+        const contact_phone = formData.get("contact_phone")?.toString() || "";
+        const whatsapp_number = formData.get("whatsapp_number")?.toString() || "";
+        const meeting_url = formData.get("meeting_url")?.toString() || "";
+
         const new_password = formData.get("new_password")?.toString() || "";
 
         // Preparamos los datos base
