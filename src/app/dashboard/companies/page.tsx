@@ -8,9 +8,9 @@ import ToggleStatusButton from "./ToggleStatusButton";
 import BulkCreateButton from "./BulkCreateButton";
 
 const PLAN_CONFIG: Record<string, { label: string; uf: string; clp: string; color: string }> = {
-    starter: { label: "Plan Starter", uf: "3 UF", clp: "$119.340", color: "bg-emerald-100 text-emerald-700 border-emerald-200" },
-    builder: { label: "Plan Crecer", uf: "6 UF", clp: "$238.680", color: "bg-blue-100 text-blue-700 border-blue-200" },
-    constructor: { label: "Plan Destacado", uf: "14 UF", clp: "$556.920", color: "bg-purple-100 text-purple-700 border-purple-200" },
+    free: { label: "Plan Inicial", uf: "0 UF", clp: "$0", color: "bg-emerald-100 text-emerald-700 border-emerald-200" },
+    pro: { label: "Plan Pro", uf: "-", clp: "$34.900", color: "bg-blue-100 text-blue-700 border-blue-200" },
+    elite: { label: "Plan Elite", uf: "-", clp: "$79.900", color: "bg-purple-100 text-purple-700 border-purple-200" },
 };
 
 export default async function CompaniesManagementPage() {
@@ -61,8 +61,8 @@ export default async function CompaniesManagementPage() {
 
     // 6. Métricas
     const registeredActive = b2bAccounts.filter(u => u.is_active !== false && u.role !== "admin");
-    const ingresos_uf = registeredActive.reduce((sum, u) => {
-        return sum + (u.plan === "constructor" ? 14 : u.plan === "builder" ? 6 : 3);
+    const ingresos_clp = registeredActive.reduce((sum, u) => {
+        return sum + (u.plan === "elite" ? 79900 : u.plan === "pro" ? 34900 : 0);
     }, 0);
 
     return (
@@ -77,7 +77,7 @@ export default async function CompaniesManagementPage() {
                         <div>
                             <p className="font-black text-amber-900">{allNames.filter(n => !b2bMap[n]).length} empresas sin cuenta B2B</p>
                             <p className="text-xs text-amber-700 mt-0.5">
-                                Se crearán con <strong>Plan Starter activo</strong>, email <code className="bg-amber-100 px-1 rounded">admin@nombre-empresa.cl</code> y contraseña temporal <strong>Starter2025!</strong>
+                                Se crearán con <strong>Plan Inicial activo</strong>, email <code className="bg-amber-100 px-1 rounded">admin@nombre-empresa.cl</code> y contraseña temporal <strong>Starter2025!</strong>
                             </p>
                         </div>
                     </div>
@@ -102,8 +102,8 @@ export default async function CompaniesManagementPage() {
                     <p className="text-xs text-[#3200C1]/50 mt-1">Potenciales clientes</p>
                 </div>
                 <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
-                    <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Ingresos B2B</p>
-                    <p className="text-3xl font-black text-[#3200C1]">{ingresos_uf} <span className="text-base font-bold text-slate-400">UF/mes</span></p>
+                    <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Ingresos B2B Mensuales</p>
+                    <p className="text-3xl font-black text-[#3200C1]">${ingresos_clp.toLocaleString("es-CL")} <span className="text-base font-bold text-slate-400">CLP</span></p>
                 </div>
             </div>
 
@@ -131,7 +131,7 @@ export default async function CompaniesManagementPage() {
                                 const hasB2B = !!b2b;
                                 const isActive = hasB2B ? b2b.is_active !== false : null;
                                 const isAdminRole = hasB2B && b2b.role === "admin";
-                                const plan = b2b ? (PLAN_CONFIG[b2b.plan] || PLAN_CONFIG.starter) : null;
+                                const plan = b2b ? (PLAN_CONFIG[b2b.plan] || PLAN_CONFIG.free) : null;
                                 const count = modelCounts[companyName] || b2b?.model_count || 0;
 
                                 return (
@@ -166,7 +166,7 @@ export default async function CompaniesManagementPage() {
                                                         <span className="px-2.5 py-1 text-xs font-black rounded-full border bg-amber-100 text-amber-700 border-amber-200">Superadmin</span>
                                                     ) : plan ? (
                                                         <span className={`px-2.5 py-1 text-xs font-black rounded-full border ${plan.color}`}>
-                                                            {plan.label} — {plan.uf}
+                                                            {plan.label}
                                                         </span>
                                                     ) : null}
                                                 </div>
@@ -178,8 +178,11 @@ export default async function CompaniesManagementPage() {
                                         {/* Modelos */}
                                         <td className="px-6 py-4 text-center">
                                             <span className="font-black text-lg text-slate-700">{count}</span>
-                                            {hasB2B && !isAdminRole && b2b.plan === "starter" && (
-                                                <span className="block text-[10px] text-slate-400">de 5 máx.</span>
+                                            {hasB2B && !isAdminRole && (!b2b.plan || b2b.plan === "free") && (
+                                                <span className="block text-[10px] text-slate-400">de 3 máx.</span>
+                                            )}
+                                            {hasB2B && !isAdminRole && b2b.plan === "pro" && (
+                                                <span className="block text-[10px] text-slate-400">de 20 máx.</span>
                                             )}
                                         </td>
 
@@ -246,9 +249,9 @@ export default async function CompaniesManagementPage() {
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100">
-                        <tr className="hover:bg-slate-50"><td className="px-6 py-4 font-black text-emerald-600">🟢 Plan Starter</td><td className="px-6 py-4 font-bold text-right">3 UF</td><td className="px-6 py-4 text-slate-500 text-right">$119.340</td><td className="px-6 py-4 text-slate-500">Hasta 5 modelos, recepción de cotizaciones, visibilidad estándar.</td></tr>
-                        <tr className="hover:bg-slate-50"><td className="px-6 py-4 font-black text-blue-600">🔵 Plan Crecer</td><td className="px-6 py-4 font-bold text-right">6 UF</td><td className="px-6 py-4 text-slate-500 text-right">$238.680</td><td className="px-6 py-4 text-slate-500">Catálogo ilimitado, prioridad en el buscador, menciones en RRSS del HUB, leads calificados.</td></tr>
-                        <tr className="hover:bg-slate-50"><td className="px-6 py-4 font-black text-purple-600">🟣 Plan Destacado</td><td className="px-6 py-4 font-bold text-right">14 UF</td><td className="px-6 py-4 text-slate-500 text-right">$556.920</td><td className="px-6 py-4 text-slate-500">Todo lo anterior + banners destacados + artículos exclusivos en el Blog.</td></tr>
+                        <tr className="hover:bg-slate-50"><td className="px-6 py-4 font-black text-emerald-600">🟢 Plan Inicial</td><td className="px-6 py-4 font-bold text-right">Gratis (6m)</td><td className="px-6 py-4 text-slate-500 text-right">$0</td><td className="px-6 py-4 text-slate-500">Hasta 3 modelos, botón WhatsApp con mensaje y perfil público.</td></tr>
+                        <tr className="hover:bg-slate-50"><td className="px-6 py-4 font-black text-blue-600">🔵 Plan Pro</td><td className="px-6 py-4 font-bold text-right">-</td><td className="px-6 py-4 text-slate-500 text-right">$34.900 /mes</td><td className="px-6 py-4 text-slate-500">20 modelos, leads a WhatsApp, empresa verificada, PDF automático.</td></tr>
+                        <tr className="hover:bg-slate-50"><td className="px-6 py-4 font-black text-purple-600">🟣 Plan Elite</td><td className="px-6 py-4 font-bold text-right">-</td><td className="px-6 py-4 text-slate-500 text-right">$79.900 /mes</td><td className="px-6 py-4 text-slate-500">Ilimitados, corporativo, comparador destacado, landing premium.</td></tr>
                     </tbody>
                 </table>
             </div>

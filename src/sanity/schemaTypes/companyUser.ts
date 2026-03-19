@@ -31,9 +31,9 @@ export const companyUserType = defineType({
             type: 'string',
             options: {
                 list: [
-                    { title: '🌟 Plan Gratuito — 6 Meses Gratis | Máx. 3 modelos, 5 fotos/modelo', value: 'free' },
-                    { title: '🚀 Plan Profesional — Modelos ilimitados, 15 fotos/modelo, 1 Video', value: 'pro' },
-                    { title: '👑 Plan Elite — Todo Pro + 30 fotos, Home Destacado', value: 'elite' },
+                    { title: '🌟 Plan Inicial — 3 modelos, 4 fotos, WhatsApp Link', value: 'free' },
+                    { title: '🚀 Plan Pro — 20 modelos, 10 fotos, Video, PDF, Reunión', value: 'pro' },
+                    { title: '👑 Plan Elite — Ilimitados, 20 fotos, Comparador, Landing, Home', value: 'elite' },
                 ],
             },
             initialValue: 'free',
@@ -85,8 +85,8 @@ export const companyUserType = defineType({
         prepare({ title, subtitle, media }) {
             const planLabels: Record<string, string> = {
                 free: '🌟 Inicial (Gratis)',
-                pro: '🚀 Profesional',
-                elite: '👑 Elite',
+                pro: '🚀 Plan Pro',
+                elite: '👑 Plan Elite',
             };
             return {
                 title,
