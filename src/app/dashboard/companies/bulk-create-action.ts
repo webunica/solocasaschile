@@ -73,7 +73,7 @@ export async function bulkCreateCompaniesAction() {
                 company_name: name,
                 email,
                 password: hashedPassword,
-                plan: "starter",
+                plan: "free",
                 role: "company",
                 is_active: true,
             });

@@ -150,15 +150,15 @@ export default function CreateCompanyForm({ initialName }: { initialName?: strin
                     <p className="text-xs text-slate-400 mb-5">Define los límites y beneficios de la empresa en el portal.</p>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                         {[
-                            { value: "starter", emoji: "🟢", label: "Plan Starter", uf: "3 UF", desc: "Hasta 5 modelos, visibilidad estándar." },
-                            { value: "builder", emoji: "🔵", label: "Plan Crecer", uf: "6 UF", desc: "Catálogo ilimitado + prioridad + leads." },
-                            { value: "constructor", emoji: "🟣", label: "Plan Destacado", uf: "14 UF", desc: "Todo Crecer + banners + Blog exclusivo." },
+                            { value: "free", emoji: "🟢", label: "Plan Inicial", uf: "Gratis (4m)", desc: "Hasta 3 modelos, botón WhatsApp, link perfil." },
+                            { value: "pro", emoji: "🔵", label: "Plan Pro", uf: "Pro", desc: "20 modelos max, leads WhatsApp, verificado." },
+                            { value: "elite", emoji: "🟣", label: "Plan Elite", uf: "Elite", desc: "Ilimitados, comparador, destacados, landing." },
                         ].map((plan) => (
                             <label key={plan.value} className="relative cursor-pointer">
-                                <input type="radio" name="plan" value={plan.value} defaultChecked={plan.value === "starter"} className="sr-only peer" />
+                                <input type="radio" name="plan" value={plan.value} defaultChecked={plan.value === "free"} className="sr-only peer" />
                                 <div className="p-4 border-2 border-slate-200 rounded-xl peer-checked:border-[#3200C1] peer-checked:bg-[#3200C1]/5 transition-all hover:border-slate-300 h-full">
                                     <p className="font-black text-slate-800 mb-1">{plan.emoji} {plan.label}</p>
-                                    <p className="text-lg font-black text-[#3200C1]">{plan.uf}<span className="text-xs font-bold text-slate-400">/mes</span></p>
+                                    <p className="text-lg font-black text-[#3200C1]">{plan.uf}{plan.value !== 'free' && <span className="text-xs font-bold text-slate-400">/mes</span>}</p>
                                     <p className="text-xs text-slate-500 mt-2 leading-relaxed">{plan.desc}</p>
                                 </div>
                             </label>

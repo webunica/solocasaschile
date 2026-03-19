@@ -83,16 +83,16 @@ export default function EditCompanyForm({ companyUser }: { companyUser: any }) {
                     <p className="text-xs text-slate-400 mb-5">El plan define los límites y beneficios de la empresa en el portal.</p>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                         {[
-                            { value: "starter", emoji: "🟢", label: "Plan Starter", uf: "3 UF", clp: "$119.340/mes", desc: "Hasta 5 modelos, visibilidad estándar." },
-                            { value: "builder", emoji: "🔵", label: "Plan Crecer", uf: "6 UF", clp: "$238.680/mes", desc: "Catálogo ilimitado + prioridad + leads calificados." },
-                            { value: "constructor", emoji: "🟣", label: "Plan Destacado", uf: "14 UF", clp: "$556.920/mes", desc: "Todo Crecer + banners + Blog exclusivo." },
+                            { value: "free", emoji: "🟢", label: "Plan Inicial", uf: "Gratis (4m)", clp: "$0", desc: "Hasta 3 modelos, botón WhatsApp, link perfil." },
+                            { value: "pro", emoji: "🔵", label: "Plan Pro", uf: "Pro", clp: "$34.900/mes", desc: "20 modelos, leads WhatsApp, empresa verificada." },
+                            { value: "elite", emoji: "🟣", label: "Plan Elite", uf: "Elite", clp: "$79.900/mes", desc: "Ilimitados, comparador destacado, landing premium." },
                         ].map((plan) => (
                             <label key={plan.value} className="relative cursor-pointer">
                                 <input
                                     type="radio"
                                     name="plan"
                                     value={plan.value}
-                                    defaultChecked={(companyUser.plan || "starter") === plan.value}
+                                    defaultChecked={(companyUser.plan || "free") === plan.value}
                                     className="sr-only peer"
                                 />
                                 <div className="p-4 border-2 border-slate-200 rounded-xl peer-checked:border-[#3200C1] peer-checked:bg-[#3200C1]/5 transition-all hover:border-slate-300 h-full">

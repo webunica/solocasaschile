@@ -13,7 +13,7 @@ export async function editCompanyAction(id: string, formData: FormData) {
         const company_name = formData.get("company_name")?.toString() || "";
         const email = formData.get("email")?.toString() || "";
         const role = formData.get("role")?.toString() || "company";
-        const plan = formData.get("plan")?.toString() || "starter";
+        const plan = formData.get("plan")?.toString() || "free";
         const new_password = formData.get("new_password")?.toString() || "";
 
         // Preparamos los datos base

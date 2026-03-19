@@ -13,7 +13,7 @@ export async function createCompanyAction(formData: FormData) {
         const company_name = formData.get("company_name")?.toString().trim() || "";
         const email = formData.get("email")?.toString().trim() || "";
         const password = formData.get("password")?.toString() || "";
-        const plan = formData.get("plan")?.toString() || "starter";
+        const plan = formData.get("plan")?.toString() || "free";
         const role = formData.get("role")?.toString() || "company";
 
         if (!company_name || !email || !password) {
