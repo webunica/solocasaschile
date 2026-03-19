@@ -8,6 +8,7 @@ import LeadGeneratorForm from "./components/LeadGeneratorForm";
 import VisitPublicationButton from "@/components/VisitPublicationButton";
 import { Suspense } from "react";
 import SimilarPropertiesSection from "@/components/SimilarPropertiesSection";
+import ModelGallery from "./components/ModelGallery";
 
 type Props = {
     params: Promise<{ slug: string }>
@@ -75,7 +76,7 @@ export default async function ModelPage({ params }: Props) {
     }
 
     // Datos que se caen atrás
-    const thumbnail = (model.images && model.images.length > 0) ? model.images[0] : null;
+    const images = model.images && model.images.length > 0 ? model.images : [];
 
     return (
         <div className="bg-slate-50 min-h-screen pb-20">
@@ -149,26 +150,13 @@ export default async function ModelPage({ params }: Props) {
                             </div>
                         </div>
 
-                        {/* Imagen Principal */}
-                        {thumbnail ? (
-                            <div className="aspect-[16/9] w-full bg-slate-200 rounded-3xl overflow-hidden relative shadow-lg">
-                                <Image
-                                    src={thumbnail.url}
-                                    alt={thumbnail.alt || `${model.model_name} - ${model.company_name} | Casa prefabricada en Chile`}
-                                    fill
-                                    sizes="(max-width: 1024px) 100vw, calc(100vw - 440px)"
-                                    className="object-cover"
-                                    priority
-                                    quality={85}
-                                />
-
-                                <div className="absolute top-4 left-4 flex gap-2 z-10">
-                                    <div className="bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-lg text-sm font-bold text-[#3200C1] flex items-center gap-2 shadow-sm">
-                                        <ShieldCheck className="w-4 h-4 text-[#37FFDB]" />
-                                        Empresa Verificada
-                                    </div>
-                                </div>
-                            </div>
+                        {/* Galería de fotos */}
+                        {images.length > 0 ? (
+                            <ModelGallery
+                                images={images}
+                                modelName={model.model_name}
+                                companyName={model.company_name}
+                            />
                         ) : (
                             <div className="aspect-[16/9] w-full bg-slate-100 rounded-3xl flex items-center justify-center border-2 border-dashed border-slate-200">
                                 <span className="text-slate-400 font-medium flex items-center gap-2">

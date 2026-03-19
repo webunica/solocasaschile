@@ -2,19 +2,35 @@
 
 import { useTransition, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Save, UploadCloud } from "lucide-react";
+import { ArrowLeft, Save, UploadCloud, AlertTriangle } from "lucide-react";
 import Link from "next/link";
 import { editModelAction } from "../../edit-actions";
+
+const MAX_PHOTO_MB = 3;
+const MAX_PHOTO_BYTES = MAX_PHOTO_MB * 1024 * 1024;
 
 export default function EditModelForm({ model }: { model: any }) {
     const router = useRouter();
     const [isPending, startTransition] = useTransition();
+    const [photoError, setPhotoError] = useState<string | null>(null);
 
-    // Estado para las miniaturas antiguas y pre-visualización de borrado si quisieras en el futuro
     const oldImages = model.images || [];
+
+    const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = Array.from(e.target.files || []);
+        const oversized = files.filter(f => f.size > MAX_PHOTO_BYTES);
+        if (oversized.length > 0) {
+            setPhotoError(
+                `${oversized.length} foto${oversized.length > 1 ? 's' : ''} supera${oversized.length === 1 ? '' : 'n'} los ${MAX_PHOTO_MB}MB permitidos: ${oversized.map(f => f.name).join(", ")}`
+            );
+        } else {
+            setPhotoError(null);
+        }
+    };
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        if (photoError) return;
         const formData = new FormData(e.currentTarget);
 
         startTransition(async () => {
@@ -107,12 +123,30 @@ export default function EditModelForm({ model }: { model: any }) {
                             </div>
                         </div>
                     )}
-                    <div className="border-2 border-dashed border-[#37FFDB] bg-[#37FFDB]/5 rounded-2xl p-8 text-center cursor-pointer hover:bg-[#37FFDB]/10 transition-colors">
+                    <div className={`border-2 border-dashed rounded-2xl p-8 text-center cursor-pointer transition-colors ${
+                        photoError
+                            ? 'border-red-400 bg-red-50'
+                            : 'border-[#37FFDB] bg-[#37FFDB]/5 hover:bg-[#37FFDB]/10'
+                    }`}>
                         <UploadCloud className="w-10 h-10 text-[#3200C1] mx-auto mb-4" />
                         <h4 className="font-bold text-[#3200C1] mb-2">Subir fotos nuevas</h4>
-                        <p className="text-slate-500 mb-6">Se agregarán a la galería existente.</p>
-                        <input name="photos" type="file" multiple accept="image/*" className="w-full text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#3200C1] file:text-white hover:file:bg-[#3200C1]/90 cursor-pointer" />
+                        <p className="text-slate-500 mb-1">Se agregarán a la galería existente.</p>
+                        <p className="text-xs font-bold text-slate-400 mb-6">Máximo <span className="text-[#3200C1]">3 MB</span> por foto.</p>
+                        <input
+                            name="photos"
+                            type="file"
+                            multiple
+                            accept="image/*"
+                            onChange={handlePhotoChange}
+                            className="w-full text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#3200C1] file:text-white hover:file:bg-[#3200C1]/90 cursor-pointer"
+                        />
                     </div>
+                    {photoError && (
+                        <div className="mt-3 flex items-start gap-2 bg-red-50 border border-red-200 rounded-xl px-4 py-3">
+                            <AlertTriangle className="w-4 h-4 text-red-500 mt-0.5 shrink-0" />
+                            <p className="text-sm font-semibold text-red-600">{photoError}. Por favor elige fotos más pequeñas o comprímilas antes de subir.</p>
+                        </div>
+                    )}
                 </section>
 
                 <hr className="border-slate-100" />
@@ -139,7 +173,11 @@ export default function EditModelForm({ model }: { model: any }) {
                     <Link href="/dashboard" className="px-6 py-3 font-bold text-slate-500 hover:bg-slate-50 rounded-xl transition-colors">
                         Cancelar
                     </Link>
-                    <button disabled={isPending} type="submit" className={`px-6 py-3 bg-[#3200C1] text-white font-bold rounded-xl flex items-center gap-2 hover:bg-[#3200C1]/90 transition-colors ${isPending ? 'opacity-50 cursor-not-allowed' : ''}`}>
+                    <button
+                        disabled={isPending || !!photoError}
+                        type="submit"
+                        className={`px-6 py-3 bg-[#3200C1] text-white font-bold rounded-xl flex items-center gap-2 hover:bg-[#3200C1]/90 transition-colors ${(isPending || photoError) ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    >
                         {isPending ? 'Guardando Cambios...' : <><Save className="w-5 h-5" /> Guardar Modelo</>}
                     </button>
                 </div>
