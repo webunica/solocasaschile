@@ -98,6 +98,12 @@ export default async function ProjectsDashboardPage() {
                                 </div>
 
                                 <div className="flex gap-2 pt-6">
+                                    <Link 
+                                        href={`/dashboard/projects/edit/${proj._id}`}
+                                        className="flex-1 text-center py-2.5 rounded-xl border-2 border-slate-100 text-slate-600 font-bold text-xs hover:bg-slate-50 transition-all flex items-center justify-center gap-2"
+                                    >
+                                        Editar
+                                    </Link>
                                     <DeleteProjectButton id={proj._id} />
                                 </div>
                             </div>

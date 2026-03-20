@@ -18,6 +18,65 @@ export async function deleteProjectAction(id: string) {
     }
 }
 
+export async function updateProjectAction(projectId: string, formData: FormData) {
+    if (!process.env.SANITY_API_WRITE_TOKEN) {
+        throw new Error("No hay token de escritura configurado.");
+    }
+
+    try {
+        console.log("Iniciando updateProjectAction para:", projectId);
+        const title = formData.get("title")?.toString() || "";
+        const description = formData.get("description")?.toString() || "";
+        const location_name = formData.get("location_name")?.toString() || "";
+        const completion_date = formData.get("completion_date")?.toString() || "";
+        const lat = parseFloat(formData.get("lat")?.toString() || "0");
+        const lng = parseFloat(formData.get("lng")?.toString() || "0");
+
+        // Fotos nuevas
+        let newPhotos = formData.getAll("photos") as File[];
+        const imageAssets = [];
+
+        for (const [idx, file] of newPhotos.entries()) {
+            if (file.size > 0 && file.name && file.name !== "undefined") {
+                const asset = await sanityWriteClient.assets.upload('image', file, {
+                    filename: file.name
+                });
+                imageAssets.push({
+                    _key: `img-${Date.now()}-${idx}`,
+                    _type: "image",
+                    asset: { _type: "reference", _ref: asset._id }
+                });
+            }
+        }
+
+        const patchData: any = {
+            title,
+            description,
+            location_name,
+            completion_date,
+        };
+
+        if (lat !== 0 && lng !== 0) {
+            patchData.location = { _type: 'geopoint', lat, lng };
+        }
+
+        let patch = sanityWriteClient.patch(projectId).set(patchData);
+
+        // Si hay fotos nuevas, las añadimos
+        if (imageAssets.length > 0) {
+            patch = patch.append('images', imageAssets);
+        }
+
+        await patch.commit();
+
+        revalidatePath("/dashboard/projects");
+        return { success: true };
+    } catch (error: any) {
+        console.error("Update Project Error:", error);
+        return { error: error.message || "Error al actualizar el proyecto." };
+    }
+}
+
 export async function createProjectAction(formData: FormData) {
     if (!process.env.SANITY_API_WRITE_TOKEN) {
         throw new Error("No hay token de escritura configurado.");
