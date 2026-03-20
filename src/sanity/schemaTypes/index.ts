@@ -4,5 +4,6 @@ import { companyUserType } from './companyUser'
 import { leadType } from './lead'
 import { siteSettingsType } from './siteSettings'
 import { propertyClickType } from './propertyClick'
+import { modelViewType } from './modelView'
 
-export const schemaTypes = [houseModelType, blogPostType, companyUserType, leadType, siteSettingsType, propertyClickType]
+export const schemaTypes = [houseModelType, blogPostType, companyUserType, leadType, siteSettingsType, propertyClickType, modelViewType]

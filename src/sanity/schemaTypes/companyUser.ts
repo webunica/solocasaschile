@@ -7,6 +7,37 @@ export const companyUserType = defineType({
     fields: [
         defineField({ name: 'company_name', title: 'Nombre Oficial de la Empresa', type: 'string', validation: Rule => Rule.required() }),
         defineField({
+            name: 'slug',
+            title: 'URL Pública (Slug)',
+            type: 'slug',
+            options: {
+                source: 'company_name',
+                maxLength: 96,
+            },
+            validation: Rule => Rule.required(),
+        }),
+        defineField({
+            name: 'is_verified',
+            title: '¿Empresa Verificada?',
+            type: 'boolean',
+            description: 'Solo disponible para planes Pro y Elite. Muestra un sello de verificación en el perfil.',
+            initialValue: false,
+        }),
+        defineField({
+            name: 'description',
+            title: 'Descripción de la Empresa',
+            type: 'text',
+            description: 'Un resumen de quiénes son y qué ofrecen (Max 500 caracteres).',
+            validation: Rule => Rule.max(500),
+        }),
+        defineField({
+            name: 'cover_image',
+            title: 'Imagen de Portada',
+            type: 'image',
+            options: { hotspot: true },
+            description: 'Solo disponible para plan Elite. Se usará en la Landing Premium.'
+        }),
+        defineField({
             name: 'email',
             title: 'Correo de Acceso (Usuario)',
             type: 'string',
