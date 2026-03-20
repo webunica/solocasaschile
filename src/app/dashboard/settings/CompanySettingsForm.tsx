@@ -16,6 +16,20 @@ export default function CompanySettingsForm({ company }: Props) {
     const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
     const router = useRouter();
 
+    const slugify = (text: string) => {
+        return text
+            .toString()
+            .toLowerCase()
+            .trim()
+            .replace(/\s+/g, '-')     // Replace spaces with -
+            .replace(/[^\w-]+/g, '')     // Remove all non-word chars
+            .replace(/--+/g, '-');       // Replace multiple - with single -
+    };
+
+    const currentSlug = company.slug?.current || slugify(company.company_name || "");
+    const publicUrl = `https://www.solocasaschile.com/profesional/${currentSlug}`;
+
+    const [copied, setCopied] = useState(false);
     const [formData, setFormData] = useState({
         description: company.description || "",
         whatsapp_number: company.whatsapp_number || "",
@@ -23,11 +37,8 @@ export default function CompanySettingsForm({ company }: Props) {
         years_experience: company.years_experience || 0,
         projects_completed_count: company.projects_completed_count || 0,
         badges: company.badges || [],
+        slug: currentSlug, // Para que se guarde si no existía
     });
-
-    const [copied, setCopied] = useState(false);
-
-    const publicUrl = `https://www.solocasaschile.com/profesional/${company.slug?.current || ""}`;
 
     const copyUrl = () => {
         navigator.clipboard.writeText(publicUrl);

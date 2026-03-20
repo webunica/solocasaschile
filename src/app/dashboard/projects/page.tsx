@@ -2,7 +2,8 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../../api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 import { sanityClient } from "@/lib/sanity.client";
-import { MapPin, Plus, Image as ImageIcon, Calendar, Building2, Trash2, ExternalLink } from "lucide-react";
+import { MapPin, Plus, Image as ImageIcon, Calendar, Building2, ExternalLink } from "lucide-react";
+import DeleteProjectButton from "./components/DeleteProjectButton";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -37,13 +38,12 @@ export default async function ProjectsDashboardPage() {
                     <h1 className="text-2xl font-black text-slate-800 uppercase tracking-tight">Obras Realizadas</h1>
                     <p className="text-xs text-slate-400 mt-1">Gestiona las fotos y ubicaciones de tus proyectos entregados.</p>
                 </div>
-                <a 
-                    href="/studio/desk/project" 
-                    target="_blank"
+                <Link 
+                    href="/dashboard/projects/create" 
                     className="px-6 py-3 bg-[#3200C1] text-white rounded-xl font-bold flex items-center gap-2 hover:bg-[#250091] transition-all shadow-lg shadow-[#3200C1]/20"
                 >
                     <Plus className="w-4 h-4" /> Nuevo Proyecto
-                </a>
+                </Link>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -54,13 +54,12 @@ export default async function ProjectsDashboardPage() {
                         <p className="text-sm mt-1 max-w-xs text-center leading-relaxed">
                             Agrega tus proyectos terminados para que aparezcan en tu perfil público y en el mapa de instalaciones.
                         </p>
-                        <a 
-                            href="/studio/desk/project" 
-                            target="_blank"
+                        <Link 
+                            href="/dashboard/projects/create" 
                             className="mt-6 px-4 py-2 text-[#3200C1] font-black text-xs uppercase hover:underline"
                         >
                             Ir al Gestor de Proyectos
-                        </a>
+                        </Link>
                     </div>
                 ) : (
                     projects.map((proj: any) => (
@@ -99,16 +98,7 @@ export default async function ProjectsDashboardPage() {
                                 </div>
 
                                 <div className="flex gap-2 pt-6">
-                                    <a 
-                                        href={`/studio/desk/project;${proj._id}`}
-                                        target="_blank"
-                                        className="flex-1 text-center py-2.5 rounded-xl border-2 border-slate-100 text-slate-600 font-bold text-xs hover:bg-slate-50 transition-all flex items-center justify-center gap-2"
-                                    >
-                                        Editar
-                                    </a>
-                                    <button className="p-2.5 rounded-xl bg-red-50 text-red-500 hover:bg-red-100 transition-all">
-                                        <Trash2 className="w-4 h-4" />
-                                    </button>
+                                    <DeleteProjectButton id={proj._id} />
                                 </div>
                             </div>
                         </div>

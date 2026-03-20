@@ -15,7 +15,8 @@ export async function updateCompanyProfileAction(companyId: string, data: any) {
                 meeting_url: data.meeting_url,
                 years_experience: data.years_experience,
                 projects_completed_count: data.projects_completed_count,
-                badges: data.badges
+                badges: data.badges,
+                slug: { _type: 'slug', current: data.slug }
             })
             .commit();
 
