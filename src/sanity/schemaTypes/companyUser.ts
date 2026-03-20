@@ -122,6 +122,56 @@ export const companyUserType = defineType({
             type: 'datetime',
             hidden: true
         }),
+
+        // ─── Información de Autoridad y Confianza ────────────────
+        defineField({
+            name: 'authority_section',
+            title: '🏆 Autoridad y Confianza',
+            type: 'string',
+            readOnly: true,
+            initialValue: '───────────────────────────────────',
+        }),
+        defineField({
+            name: 'years_experience',
+            title: 'Años de Experiencia',
+            type: 'number',
+            description: 'Años operando en el mercado.',
+        }),
+        defineField({
+            name: 'projects_completed_count',
+            title: 'Casas/Proyectos Realizados',
+            type: 'number',
+            description: 'Número total de proyectos finalizados.',
+        }),
+        defineField({
+            name: 'badges',
+            title: 'Insignias de Calidad',
+            type: 'array',
+            of: [{ type: 'string' }],
+            options: {
+                list: [
+                    { title: 'ISO 9001', value: 'iso_9001' },
+                    { title: 'Calidad Certificada', value: 'quality_cert' },
+                    { title: 'Construcción Sustentable', value: 'sustainable' },
+                    { title: 'Empresa Destacada', value: 'featured_company' },
+                    { title: 'Garantía Extendida', value: 'extended_warranty' },
+                ]
+            },
+            description: 'Sellos que se mostrarán en tu perfil público.'
+        }),
+        defineField({
+            name: 'certifications',
+            title: 'Galería de Certificaciones/Logros',
+            type: 'array',
+            of: [
+                {
+                    type: 'image',
+                    options: { hotspot: true },
+                    fields: [{ name: 'title', type: 'string', title: 'Título del Logro' }]
+                }
+            ],
+            description: 'Diplomas, sellos ISO oficiales, etc.'
+        }),
     ],
     preview: {
         select: { title: 'company_name', subtitle: 'plan', media: 'logo' },

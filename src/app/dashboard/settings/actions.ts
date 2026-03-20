@@ -12,7 +12,10 @@ export async function updateCompanyProfileAction(companyId: string, data: any) {
             .set({
                 description: data.description,
                 whatsapp_number: data.whatsapp_number,
-                meeting_url: data.meeting_url
+                meeting_url: data.meeting_url,
+                years_experience: data.years_experience,
+                projects_completed_count: data.projects_completed_count,
+                badges: data.badges
             })
             .commit();
 
