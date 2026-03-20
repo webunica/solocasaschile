@@ -55,9 +55,9 @@ export default async function CompanyProfilePage({ params }: Props) {
         <div className="min-h-screen bg-slate-50 pb-20">
             {/* Top Banner (Elite) or Simple Header */}
             <div className="relative h-[300px] md:h-[400px] w-full bg-[#3200C1]">
-                {isElite && company.cover_image ? (
+                {isElite && company.cover_image?.asset ? (
                     <Image 
-                        src={company.cover_image.asset ? urlFor(company.cover_image).url() : ""} 
+                        src={urlFor(company.cover_image).url()} 
                         alt={company.company_name}
                         fill
                         className="object-cover opacity-60"
@@ -73,7 +73,7 @@ export default async function CompanyProfilePage({ params }: Props) {
                     <div className="max-w-7xl mx-auto px-6 w-full flex flex-col md:flex-row items-center md:items-end gap-6 md:translate-y-20">
                         {/* Logo */}
                         <div className="relative w-32 h-32 md:w-48 md:h-48 rounded-3xl bg-white shadow-2xl p-4 flex items-center justify-center overflow-hidden border-4 border-white">
-                            {company.logo ? (
+                            {company.logo?.asset ? (
                                 <Image 
                                     src={urlFor(company.logo).url()} 
                                     alt={company.company_name}
@@ -187,7 +187,7 @@ export default async function CompanyProfilePage({ params }: Props) {
                                 {projects.map((proj: any) => (
                                     <div key={proj._id} className="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm group">
                                         <div className="relative aspect-video overflow-hidden">
-                                            {proj.images?.[0] ? (
+                                            {proj.images?.[0]?.asset ? (
                                                 <Image 
                                                     src={urlFor(proj.images[0]).url()} 
                                                     alt={proj.title}
@@ -310,7 +310,7 @@ export default async function CompanyProfilePage({ params }: Props) {
 
                                         <div className="pt-4 mt-auto flex gap-2">
                                             <Link 
-                                                href={`/modelo/${house.slug.current}`}
+                                                href={`/modelo/${house.slug?.current || house._id}`}
                                                 className="flex-1 text-center py-2.5 rounded-xl border-2 border-[#3200C1] text-[#3200C1] font-black text-xs hover:bg-[#3200C1] hover:text-white transition-all"
                                             >
                                                 Ver Detalles
