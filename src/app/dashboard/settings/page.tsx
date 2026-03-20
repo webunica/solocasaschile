@@ -38,7 +38,8 @@ export default async function SettingsPage() {
     // Para Empresas
     const company = await sanityClient.fetch(
         `*[_type == "companyUser" && email == $email][0]{
-            _id, company_name, logo, plan, whatsapp_number, meeting_url, description, is_verified
+            _id, company_name, logo, plan, whatsapp_number, meeting_url, description, is_verified,
+            years_experience, projects_completed_count, badges, slug
         }`,
         { email: companyEmail },
         { cache: "no-store" }

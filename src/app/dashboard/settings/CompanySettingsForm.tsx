@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { Save, Upload, Loader2, Info, CheckCircle2, Copy, Check, ExternalLink } from "lucide-react";
+import { Save, Upload, Loader2, Info, CheckCircle2, Copy, Check, ExternalLink, Camera } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { updateCompanyProfileAction } from "./actions";
+import { urlFor } from "@/lib/sanity.client";
 
 interface Props {
     company: any;
@@ -21,15 +22,17 @@ export default function CompanySettingsForm({ company }: Props) {
             .toString()
             .toLowerCase()
             .trim()
-            .replace(/\s+/g, '-')     // Replace spaces with -
-            .replace(/[^\w-]+/g, '')     // Remove all non-word chars
-            .replace(/--+/g, '-');       // Replace multiple - with single -
+            .replace(/\s+/g, '-')
+            .replace(/[^\w-]+/g, '')
+            .replace(/--+/g, '-');
     };
 
     const currentSlug = company.slug?.current || slugify(company.company_name || "");
     const publicUrl = `https://www.solocasaschile.com/profesional/${currentSlug}`;
 
     const [copied, setCopied] = useState(false);
+    const [logoPreview, setLogoPreview] = useState<string | null>(company.logo ? urlFor(company.logo).url() : null);
+
     const [formData, setFormData] = useState({
         description: company.description || "",
         whatsapp_number: company.whatsapp_number || "",
@@ -37,7 +40,7 @@ export default function CompanySettingsForm({ company }: Props) {
         years_experience: company.years_experience || 0,
         projects_completed_count: company.projects_completed_count || 0,
         badges: company.badges || [],
-        slug: currentSlug, // Para que se guarde si no existía
+        slug: currentSlug,
     });
 
     const copyUrl = () => {
@@ -49,13 +52,30 @@ export default function CompanySettingsForm({ company }: Props) {
     const isElite = company.plan === 'elite';
     const isPro = company.plan === 'pro' || isElite;
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setLogoPreview(reader.result as string);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setLoading(true);
         setMessage(null);
 
         try {
-            const result = await updateCompanyProfileAction(company._id, formData);
+            const data = new FormData(e.currentTarget);
+            // Aseguramos que los badges se envíen
+            data.delete("badges");
+            formData.badges.forEach((b: string) => data.append("badges", b));
+            data.set("slug", formData.slug);
+
+            const result = await updateCompanyProfileAction(company._id, data);
             if (result.success) {
                 setMessage({ type: 'success', text: "Perfil actualizado correctamente." });
                 router.refresh();
@@ -91,6 +111,28 @@ export default function CompanySettingsForm({ company }: Props) {
                              <p className="text-sm font-black text-emerald-600 flex items-center gap-1 justify-end">
                                 <CheckCircle2 className="w-4 h-4" /> Activo
                              </p>
+                        </div>
+                    </div>
+
+                    {/* LOGO UPLOAD */}
+                    <div className="flex flex-col md:flex-row items-center gap-8 p-6 bg-slate-50 rounded-2xl border border-slate-100">
+                        <div className="relative group">
+                            <div className="w-32 h-32 rounded-3xl bg-white shadow-md border-4 border-white overflow-hidden flex items-center justify-center">
+                                {logoPreview ? (
+                                    <Image src={logoPreview} alt="Logo Preview" fill className="object-contain p-4" />
+                                ) : (
+                                    <Upload className="w-8 h-8 text-slate-300" />
+                                )}
+                            </div>
+                            <label className="absolute -bottom-2 -right-2 w-10 h-10 bg-[#3200C1] text-white rounded-full flex items-center justify-center cursor-pointer shadow-lg hover:scale-110 transition-all">
+                                <Camera className="w-5 h-5" />
+                                <input type="file" name="logo" accept="image/*" className="hidden" onChange={handleLogoChange} />
+                            </label>
+                        </div>
+                        <div className="flex-1 space-y-2">
+                            <h4 className="font-black text-slate-800 uppercase text-xs">Logo de la Empresa</h4>
+                            <p className="text-xs text-slate-500 leading-relaxed">Sube tu logo oficial en formato PNG o JPG. Se recomienda un fondo transparente o blanco y forma cuadrada.</p>
+                            <p className="text-[10px] font-bold text-[#3200C1] uppercase tracking-widest">Tamaño máximo: 2MB</p>
                         </div>
                     </div>
 
@@ -136,6 +178,7 @@ export default function CompanySettingsForm({ company }: Props) {
                                 )}
                             </label>
                             <textarea
+                                name="description"
                                 value={formData.description}
                                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                                 placeholder="Cuéntanos sobre tu constructora, años de experiencia, zonas de cobertura..."
@@ -150,6 +193,7 @@ export default function CompanySettingsForm({ company }: Props) {
                             <label className="text-sm font-black text-slate-700 uppercase">Años de Experiencia</label>
                             <input
                                 type="number"
+                                name="years_experience"
                                 value={formData.years_experience}
                                 onChange={(e) => setFormData({ ...formData, years_experience: parseInt(e.target.value) || 0 })}
                                 placeholder="Ej: 15"
@@ -162,6 +206,7 @@ export default function CompanySettingsForm({ company }: Props) {
                             <label className="text-sm font-black text-slate-700 uppercase">Casas/Proyectos Realizados</label>
                             <input
                                 type="number"
+                                name="projects_completed_count"
                                 value={formData.projects_completed_count}
                                 onChange={(e) => setFormData({ ...formData, projects_completed_count: parseInt(e.target.value) || 0 })}
                                 placeholder="Ej: 80"
@@ -174,6 +219,7 @@ export default function CompanySettingsForm({ company }: Props) {
                             <label className="text-sm font-black text-slate-700 uppercase">WhatsApp de Contacto</label>
                             <input
                                 type="text"
+                                name="whatsapp_number"
                                 value={formData.whatsapp_number}
                                 onChange={(e) => setFormData({ ...formData, whatsapp_number: e.target.value })}
                                 placeholder="Ej: 56912345678"
@@ -191,6 +237,7 @@ export default function CompanySettingsForm({ company }: Props) {
                             </label>
                             <input
                                 type="url"
+                                name="meeting_url"
                                 disabled={!isPro}
                                 value={formData.meeting_url}
                                 onChange={(e) => setFormData({ ...formData, meeting_url: e.target.value })}

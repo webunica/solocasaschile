@@ -29,7 +29,7 @@ export default async function CompanyProfilePage({ params }: Props) {
 
     // 2. Fetch Models for this company
     const models = await sanityClient.fetch(
-        `*[_type == "houseModel" && company_name == $companyName && is_active == true] | order(is_featured desc, price_from asc){
+        `*[_type == "houseModel" && (company_name == $companyName || lower(company_name) == lower($companyName)) && is_active == true] | order(is_featured desc, price_from asc){
             _id, model_name, slug, price_from, currency, surface_m2, bedrooms, bathrooms, category, delivery_modes, images, is_featured, model_url
         }`,
         { companyName: company.company_name },
