@@ -1,23 +1,49 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
     Facebook, Instagram, Send, Image as ImageIcon, 
-    CheckCircle, AlertCircle, ExternalLink, Info
+    CheckCircle, AlertCircle, ExternalLink, Info, Link as LinkIcon,
+    RefreshCw
 } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 
 const MAX_FB = 63206;
 const MAX_IG = 2200;
 
 type Network = "facebook" | "instagram";
 
-export default function SocialPublishForm() {
+interface Props {
+    settings: {
+        fb_page_id?: string;
+        fb_page_access_token?: string;
+        ig_account_id?: string;
+    } | null;
+}
+
+export default function SocialPublishForm({ settings }: Props) {
+    const searchParams = useSearchParams();
     const [network, setNetwork] = useState<Network>("facebook");
     const [text, setText] = useState("");
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [imagePreview, setImagePreview] = useState<string | null>(null);
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const [errorMsg, setErrorMsg] = useState("");
+
+    const isConnected = !!settings?.fb_page_id && !!settings?.fb_page_access_token;
+
+    useEffect(() => {
+        const connected = searchParams.get("connected");
+        const error = searchParams.get("error");
+        if (connected) {
+            setStatus("success");
+            setTimeout(() => setStatus("idle"), 5000);
+        }
+        if (error) {
+            setStatus("error");
+            setErrorMsg(decodeURIComponent(error));
+        }
+    }, [searchParams]);
 
     const maxChars = network === "facebook" ? MAX_FB : MAX_IG;
     const isOverLimit = text.length > maxChars;
@@ -208,41 +234,67 @@ export default function SocialPublishForm() {
                 </div>
             </form>
 
-            {/* Config Section */}
-            <div className="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 space-y-5">
-                <h3 className="font-black text-lg text-[#3200C1] border-b pb-4">⚙️ Cómo conectar tus cuentas</h3>
-                <div className="grid md:grid-cols-2 gap-6 text-sm text-slate-600">
-                    <div className="space-y-3">
-                        <div className="flex items-center gap-2 font-bold text-[#1877F2]">
-                            <Facebook className="w-5 h-5" /> Facebook Pages API
-                        </div>
-                        <ol className="space-y-2 text-slate-500">
-                            <li className="flex gap-2"><span className="font-bold text-[#3200C1]">1.</span> Crea una App en <a href="https://developers.facebook.com" target="_blank" className="underline hover:text-[#3200C1]">developers.facebook.com</a></li>
-                            <li className="flex gap-2"><span className="font-bold text-[#3200C1]">2.</span> Agrega el permiso <code className="bg-slate-100 px-1 rounded">pages_manage_posts</code></li>
-                            <li className="flex gap-2"><span className="font-bold text-[#3200C1]">3.</span> Genera un Page Access Token y cópialo en el .env como <code className="bg-slate-100 px-1 rounded">FB_PAGE_ACCESS_TOKEN</code></li>
-                            <li className="flex gap-2"><span className="font-bold text-[#3200C1]">4.</span> Agrega tu Page ID en <code className="bg-slate-100 px-1 rounded">FB_PAGE_ID</code></li>
-                        </ol>
+            {/* New Auto Connect Section */}
+            <div className="bg-white rounded-3xl border border-slate-200 shadow-sm p-8 space-y-6">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                    <div className="space-y-2">
+                        <h3 className="font-black text-xl text-[#3200C1] flex items-center gap-2">
+                            <LinkIcon className="w-6 h-6" /> 
+                            Conexión con Redes Sociales
+                        </h3>
+                        <p className="text-slate-500 text-sm max-w-md">
+                            Conecta tu página de Facebook e Instagram con un solo clic para publicar automáticamente desde este panel.
+                        </p>
                     </div>
-                    <div className="space-y-3">
-                        <div className="flex items-center gap-2 font-bold text-pink-600">
-                            <Instagram className="w-5 h-5" /> Instagram Graph API
-                        </div>
-                        <ol className="space-y-2 text-slate-500">
-                            <li className="flex gap-2"><span className="font-bold text-[#3200C1]">1.</span> Conecta tu cuenta de Instagram a una Página de Facebook</li>
-                            <li className="flex gap-2"><span className="font-bold text-[#3200C1]">2.</span> Usa el mismo Token de Facebook y agrega permisos <code className="bg-slate-100 px-1 rounded">instagram_basic</code>, <code className="bg-slate-100 px-1 rounded">instagram_content_publish</code></li>
-                            <li className="flex gap-2"><span className="font-bold text-[#3200C1]">3.</span> Agrega tu IG Account ID en <code className="bg-slate-100 px-1 rounded">IG_ACCOUNT_ID</code></li>
-                            <li className="flex gap-2"><span className="font-bold text-[#3200C1]">4.</span> Instagram solo permite publicar imágenes hospedadas en URL pública</li>
-                        </ol>
+
+                    <a
+                        href="/api/social/connect"
+                        className={`flex items-center gap-3 px-6 py-4 rounded-2xl font-bold transition-all shadow-lg ${
+                            isConnected 
+                            ? "bg-green-500 text-white hover:bg-green-600 shadow-green-100" 
+                            : "bg-[#1877F2] text-white hover:brightness-110 shadow-blue-100"
+                        }`}
+                    >
+                        {isConnected ? (
+                            <>
+                                <CheckCircle className="w-5 h-5" />
+                                Cuenta Conectada
+                            </>
+                        ) : (
+                            <>
+                                <Facebook className="w-5 h-5" />
+                                Conectar con Facebook
+                            </>
+                        )}
+                    </a>
+                </div>
+
+                <div className="pt-6 border-t border-slate-100 grid md:grid-cols-3 gap-6">
+                    <div className="p-4 bg-slate-50 rounded-2xl">
+                        <p className="text-xs font-black text-slate-400 uppercase mb-1">Facebook Page ID</p>
+                        <p className="font-mono text-sm text-slate-700 truncate">{settings?.fb_page_id || "No configurado"}</p>
+                    </div>
+                    <div className="p-4 bg-slate-50 rounded-2xl">
+                        <p className="text-xs font-black text-slate-400 uppercase mb-1">Instagram Account ID</p>
+                        <p className="font-mono text-sm text-slate-700 truncate">{settings?.ig_account_id || "No configurado"}</p>
+                    </div>
+                    <div className="p-4 bg-slate-50 rounded-2xl">
+                        <p className="text-xs font-black text-slate-400 uppercase mb-1">Estado de Token</p>
+                        <p className={`text-sm font-bold flex items-center gap-2 ${isConnected ? "text-green-600" : "text-amber-600"}`}>
+                            {isConnected ? <CheckCircle className="w-4 h-4" /> : <AlertCircle className="w-4 h-4" />}
+                            {isConnected ? "Válido y Activo" : "Pendiente de conexión"}
+                        </p>
                     </div>
                 </div>
-                <a
-                    href="https://developers.facebook.com/docs/graph-api/reference/page/feed"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-[#3200C1] text-sm font-bold hover:underline"
-                >
-                    Ver documentación oficial de Meta Graph API <ExternalLink className="w-4 h-4" />
-                </a>
+
+                {!isConnected && (
+                    <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 flex gap-3 text-amber-800 text-sm">
+                        <Info className="w-5 h-5 shrink-0" />
+                        <p>
+                            <strong>Nota importante:</strong> Asegúrate de estar logueado en Facebook con una cuenta que sea Administradora de la página que quieres conectar.
+                        </p>
+                    </div>
+                )}
             </div>
         </div>
     );

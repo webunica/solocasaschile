@@ -13,6 +13,7 @@ import { formatPrice } from "@/lib/utils";
 import { Bed, Bath, Hash, Scale, MapPin, Inbox, Star, Crown, ArrowRight, ExternalLink } from "lucide-react";
 import VisitPublicationButton from "@/components/VisitPublicationButton";
 import SiteLogo from "@/components/SiteLogo";
+import CompareButton from "@/components/CompareButton";
 
 import { BlogCarousel } from "@/components/BlogCarousel";
 import { ConstructorBanner } from "@/components/ConstructorBanner";
@@ -343,6 +344,7 @@ function ModelsGrid({ models }: { models: ModelRow[] }) {
                       label="Ver Publicación"
                     />
                   )}
+                  <CompareButton modelId={house.id} />
                 </div>
               </div>
             </div>

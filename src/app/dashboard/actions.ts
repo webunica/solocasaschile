@@ -68,6 +68,7 @@ export async function createModelAction(formData: FormData) {
         const seo_title = formData.get("seo_title")?.toString() || "";
         const seo_description = formData.get("seo_description")?.toString() || "";
         const seo_keywords = formData.get("seo_keywords")?.toString() || "";
+        const video_url = formData.get("video_url")?.toString() || "";
 
         // Procesar fotos subidas (múltiples archivos bajo el name "photos")
         let photos = formData.getAll("photos") as File[];
@@ -117,7 +118,8 @@ export async function createModelAction(formData: FormData) {
             seo_title,
             seo_description,
             seo_keywords,
-            ...(imageAssets.length > 0 && { images: imageAssets })
+            ...(imageAssets.length > 0 && { images: imageAssets }),
+            ...((currentPlan === "pro" || currentPlan === "elite") && video_url ? { video_url } : {})
         };
 
         await sanityWriteClient.create(doc);

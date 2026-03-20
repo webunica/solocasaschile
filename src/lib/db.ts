@@ -44,8 +44,12 @@ function formatSanityHouse(doc: any): ModelRow {
 
 // Límite de modelos visibles por plan
 const PLAN_LIMITS: Record<string, number> = {
-    starter: 5,
-    builder: Infinity,
+    free: 3,
+    pro: 20,
+    elite: Infinity,
+    // Compatibilidad con nombres antiguos
+    starter: 3,
+    builder: 20,
     constructor: Infinity,
 };
 
@@ -142,10 +146,22 @@ export async function getModels(filters: {
     // ── Filtro JS 1: excluir empresas desactivadas ────────────────
     allModels = allModels.filter((m: ModelRow) => !disabledSet.has(m.company_name));
 
-    // ── Filtro JS 2: prioridad por plan (Constructor > Builder > Starter) ─
+    // ── Filtro JS 2: prioridad por plan (Elite > Pro > Free) ─
     allModels.sort((a: ModelRow, b: ModelRow) => {
-        const rank = (p?: string) => p === "constructor" ? 0 : p === "builder" ? 1 : 2;
-        return rank(a.company_plan) - rank(b.company_plan);
+        const rank = (p?: string) => {
+            if (p === "elite" || p === "constructor") return 0;
+            if (p === "pro" || p === "builder") return 1;
+            return 2; // free / starter
+        };
+        
+        const rankDiff = rank(a.company_plan) - rank(b.company_plan);
+        if (rankDiff !== 0) return rankDiff;
+
+        // Si el plan es el mismo, priorizar destacados
+        if ((a as any).is_featured && !(b as any).is_featured) return -1;
+        if (!(a as any).is_featured && (b as any).is_featured) return 1;
+
+        return 0;
     });
 
     // ── Filtro JS 3: límite de modelos visibles por plan ──────────

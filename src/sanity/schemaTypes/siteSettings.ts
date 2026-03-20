@@ -89,6 +89,33 @@ export const siteSettingsType = defineType({
             description: 'Añade hasta 2 números de teléfono (Ej: +56 9 1234 5678). Se mostrarán en el pie de página.',
             validation: (Rule: any) => Rule.max(2)
         }),
+
+        // ─── Redes Sociales (Meta API) ───────────────────────────
+        defineField({
+            name: 'social_section',
+            title: '📱 Redes Sociales (Meta API)',
+            type: 'string',
+            readOnly: true,
+            initialValue: '───────────────────────────────────',
+        }),
+        defineField({
+            name: 'fb_page_id',
+            title: 'Facebook Page ID',
+            type: 'string',
+            description: 'ID de la página de Facebook conectada.',
+        }),
+        defineField({
+            name: 'fb_page_access_token',
+            title: 'Facebook Page Access Token',
+            type: 'string',
+            description: 'Token de acceso de larga duración. Se genera automáticamente al conectar.',
+        }),
+        defineField({
+            name: 'ig_account_id',
+            title: 'Instagram Business Account ID',
+            type: 'string',
+            description: 'ID de la cuenta de Instagram Business vinculada.',
+        }),
     ],
     preview: {
         prepare() {

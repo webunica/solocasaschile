@@ -7,6 +7,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import NextAuthProvider from "@/components/NextAuthProvider";
 import { sanityClient } from "@/lib/sanity.client";
+import CompareBar from "@/components/CompareBar";
 
 const nunito = Nunito({ subsets: ["latin"], display: "swap" });
 
@@ -157,6 +158,7 @@ export default async function RootLayout({
             <main className="flex-1">
               {children}
             </main>
+            <CompareBar />
             <Footer contactPhones={settings?.contact_phones || ["+56 9 1234 5678"]} />
           </NuqsAdapter>
         </NextAuthProvider>

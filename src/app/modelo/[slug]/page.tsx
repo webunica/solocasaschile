@@ -10,6 +10,10 @@ import { Suspense } from "react";
 import SimilarPropertiesSection from "@/components/SimilarPropertiesSection";
 import ModelGallery from "./components/ModelGallery";
 import PrintPdfButton from "./components/PrintPdfButton";
+import VideoPlayer from "./components/VideoPlayer";
+import ViewTracker from "./components/ViewTracker";
+import VisitWhatsAppButton from "@/components/VisitWhatsAppButton";
+import VisitExternalLinkButton from "@/components/VisitExternalLinkButton";
 
 type Props = {
     params: Promise<{ slug: string }>
@@ -34,6 +38,7 @@ const MODEL_QUERY = `*[_type == "houseModel" && (_id == $slug || slug.current ==
     description,
     seo_title,
     seo_description,
+    video_url,
     "contact_phone": *[_type == "companyUser" && company_name == ^.company_name][0].contact_phone,
     "whatsapp_number": *[_type == "companyUser" && company_name == ^.company_name][0].whatsapp_number,
     "meeting_url": *[_type == "companyUser" && company_name == ^.company_name][0].meeting_url,
@@ -84,6 +89,13 @@ export default async function ModelPage({ params }: Props) {
 
     return (
         <div className="bg-slate-50 min-h-screen pb-20">
+            {/* Tracker invisible de vistas */}
+            <ViewTracker 
+                modelId={model._id} 
+                modelName={model.model_name} 
+                companyName={model.company_name} 
+            />
+
             {/* Header / Breadcrumb */}
             <div className="bg-white border-b border-slate-200">
                 <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
@@ -239,6 +251,11 @@ export default async function ModelPage({ params }: Props) {
                                 </ul>
                             </div>
                         </div>
+
+                        {/* Video incrustado de Youtube (Solo si hay y la empresa es PRO/ELITE) */}
+                        {model.video_url && (model.company_plan === 'pro' || model.company_plan === 'elite') && (
+                            <VideoPlayer url={model.video_url} />
+                        )}
                     </div>
                 </div>
 
@@ -262,29 +279,29 @@ export default async function ModelPage({ params }: Props) {
                             modelId={model._id}
                             companyEmail={model.company_email}
                             contactPhone={model.contact_phone}
+                            whatsappNumber={model.whatsapp_number}
                         />
 
                         {/* Botones de Acción (Planes) */}
                         <div className="p-6 bg-slate-50 border-t border-slate-100 flex flex-col gap-3">
                             {model.whatsapp_number && (
-                                <a
-                                    href={`https://wa.me/${model.whatsapp_number.replace(/\+/g, '')}?text=Hola,%20me%20interesa%20el%20modelo%20${encodeURIComponent(model.model_name)}%20visto%20en%20SoloCasasChile.`}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="w-full flex items-center justify-center gap-2 bg-[#25D366] text-white py-3 rounded-xl font-bold hover:bg-[#20bd5a] transition-colors"
-                                >
-                                    WhatsApp Directo
-                                </a>
+                                <VisitWhatsAppButton
+                                    modelId={model._id}
+                                    modelName={model.model_name}
+                                    companyName={model.company_name}
+                                    whatsappNumber={model.whatsapp_number}
+                                />
                             )}
                             {(model.company_plan === 'pro' || model.company_plan === 'elite') && model.meeting_url && (
-                                <a
-                                    href={model.meeting_url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="w-full flex items-center justify-center gap-2 bg-slate-800 text-white py-3 rounded-xl font-bold hover:bg-slate-700 transition-colors"
-                                >
-                                    <Calendar className="w-4 h-4" /> Agendar Reunión
-                                </a>
+                                <VisitExternalLinkButton 
+                                    modelId={model._id}
+                                    modelName={model.model_name}
+                                    companyName={model.company_name}
+                                    targetUrl={model.meeting_url}
+                                    label="Agendar Reunión"
+                                    icon="calendar"
+                                    source="meeting"
+                                />
                             )}
                             {(model.company_plan === 'pro' || model.company_plan === 'elite') && (
                                 <PrintPdfButton />

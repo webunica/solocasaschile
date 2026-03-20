@@ -28,37 +28,40 @@ export async function editModelAction(id: string, formData: FormData) {
         const seo_title = formData.get("seo_title")?.toString() || "";
         const seo_description = formData.get("seo_description")?.toString() || "";
         const seo_keywords = formData.get("seo_keywords")?.toString() || "";
+        const video_url = formData.get("video_url")?.toString() || "";
+
+        // Obtenemos el plan de la empresa
+        const currentModel = await sanityWriteClient.fetch(`*[_id == $id][0]{ company_name, images }`, { id });
+        let currentPlan = "free";
+        if (currentModel) {
+            const companyUser = await sanityWriteClient.fetch(
+                `*[_type == "companyUser" && company_name == $name][0]{ plan }`,
+                { name: currentModel.company_name }
+            );
+            currentPlan = companyUser?.plan || "free";
+        }
 
         // Procesar fotos subidas nuevas si vienen (opcional en edición)
         let photos = formData.getAll("photos") as File[];
         const imageAssets: any[] = [];
 
         // ── Validar límite de fotos por plan ────────────────────────
-        if (photos.some(f => f.size > 0 && f.name)) {
-            const currentModel = await sanityWriteClient.fetch(`*[_id == $id][0]{ company_name, images }`, { id });
-            
-            if (currentModel) {
-                const companyUser = await sanityWriteClient.fetch(
-                    `*[_type == "companyUser" && company_name == $name][0]{ plan }`,
-                    { name: currentModel.company_name }
-                );
-                const currentPlan = companyUser?.plan || "free";
-                let maxPhotos = 4;
-                if (currentPlan === "pro") maxPhotos = 10;
-                if (currentPlan === "elite") maxPhotos = 20;
+        if (photos.some(f => f.size > 0 && f.name) && currentModel) {
+            let maxPhotos = 4;
+            if (currentPlan === "pro") maxPhotos = 10;
+            if (currentPlan === "elite") maxPhotos = 20;
 
-                const currentPhotosCount = currentModel.images ? currentModel.images.length : 0;
-                const availableSlots = Math.max(0, maxPhotos - currentPhotosCount);
+            const currentPhotosCount = currentModel.images ? currentModel.images.length : 0;
+            const availableSlots = Math.max(0, maxPhotos - currentPhotosCount);
 
-                const validPhotos = photos.filter(f => f.size > 0 && f.name);
+            const validPhotos = photos.filter(f => f.size > 0 && f.name);
 
-                if (availableSlots <= 0 && validPhotos.length > 0) {
-                    return { error: `Has alcanzado el límite de ${maxPhotos} fotos para tu plan actual. Si deseas subir nuevas, primero elimina fotos anteriores o actualiza tu plan.` };
-                }
+            if (availableSlots <= 0 && validPhotos.length > 0) {
+                return { error: `Has alcanzado el límite de ${maxPhotos} fotos para tu plan actual. Si deseas subir nuevas, primero elimina fotos anteriores o actualiza tu plan.` };
+            }
 
-                if (validPhotos.length > availableSlots) {
-                    photos = validPhotos.slice(0, availableSlots);
-                }
+            if (validPhotos.length > availableSlots) {
+                photos = validPhotos.slice(0, availableSlots);
             }
         }
 
@@ -94,6 +97,7 @@ export async function editModelAction(id: string, formData: FormData) {
             seo_title,
             seo_description,
             seo_keywords,
+            ...((currentPlan === "pro" || currentPlan === "elite") ? { video_url } : {})
         };
 
         const mutation = sanityWriteClient.patch(id).set(patchData);

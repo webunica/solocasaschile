@@ -9,9 +9,10 @@ type Props = {
     modelId: string;
     contactPhone?: string;
     companyEmail?: string;
+    whatsappNumber?: string;
 };
 
-export default function LeadGeneratorForm({ companyName, modelName, modelId, companyEmail }: Props) {
+export default function LeadGeneratorForm({ companyName, modelName, modelId, companyEmail, whatsappNumber }: Props) {
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const [errorMsg, setErrorMsg] = useState("");
 
@@ -65,6 +66,19 @@ export default function LeadGeneratorForm({ companyName, modelName, modelId, com
                     Un ejecutivo de <span className="font-bold text-slate-700">{companyName}</span> recibirá tu solicitud y se pondrá en contacto contigo a la brevedad.
                 </p>
                 <p className="text-xs text-slate-400 italic">Revisa tu bandeja de entrada — también te enviamos un resumen.</p>
+                {whatsappNumber && (
+                    <div className="mt-4 pt-4 border-t border-slate-100 w-full animate-fade-in">
+                        <p className="text-xs font-bold text-slate-500 mb-3">¿Prefieres atención inmediata?</p>
+                        <a
+                            href={`https://wa.me/${whatsappNumber.replace(/\+/g, '')}?text=Hola,%20acabo%20de%20enviar%20una%20solicitud%20por%20el%20modelo%20${encodeURIComponent(modelName)}.%20Busco%20más%20información.`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="w-full py-3 bg-[#25D366] text-white font-bold rounded-xl shadow-md hover:bg-[#20bd5a] transition-colors flex items-center justify-center gap-2 text-sm"
+                        >
+                            Continuar conversación por WhatsApp
+                        </a>
+                    </div>
+                )}
             </div>
         );
     }

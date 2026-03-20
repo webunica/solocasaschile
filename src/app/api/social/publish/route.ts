@@ -18,6 +18,20 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: "Faltan datos requeridos." }, { status: 400 });
         }
 
+        // Obtener tokens desde Sanity (prioridad sobre .env)
+        const { sanityClient } = await import("@/lib/sanity.client");
+        const settings = await sanityClient.fetch(`*[_type == "siteSettings"][0]{
+            fb_page_id,
+            fb_page_access_token,
+            ig_account_id
+        }`);
+
+        const tokens = {
+            fb_id: settings?.fb_page_id || process.env.FB_PAGE_ID,
+            fb_token: settings?.fb_page_access_token || process.env.FB_PAGE_ACCESS_TOKEN,
+            ig_id: settings?.ig_account_id || process.env.IG_ACCOUNT_ID
+        };
+
         // Upload de imagen a Sanity si viene
         let imageUrl: string | null = null;
         if (imageFile && imageFile.size > 0) {
@@ -28,9 +42,9 @@ export async function POST(req: NextRequest) {
         }
 
         if (network === "facebook") {
-            return await publishToFacebook(text, imageUrl);
+            return await publishToFacebook(text, imageUrl, tokens.fb_id, tokens.fb_token);
         } else if (network === "instagram") {
-            return await publishToInstagram(text, imageUrl);
+            return await publishToInstagram(text, imageUrl, tokens.ig_id, tokens.fb_token);
         }
 
         return NextResponse.json({ error: "Red social no soportada." }, { status: 400 });
@@ -39,13 +53,10 @@ export async function POST(req: NextRequest) {
     }
 }
 
-async function publishToFacebook(text: string, imageUrl: string | null) {
-    const PAGE_ID = process.env.FB_PAGE_ID;
-    const ACCESS_TOKEN = process.env.FB_PAGE_ACCESS_TOKEN;
-
+async function publishToFacebook(text: string, imageUrl: string | null, PAGE_ID?: string, ACCESS_TOKEN?: string) {
     if (!PAGE_ID || !ACCESS_TOKEN) {
         return NextResponse.json({
-            error: "Faltan las variables de entorno FB_PAGE_ID y FB_PAGE_ACCESS_TOKEN. Configúralas primero."
+            error: "Meta API no conectada. Usa el botón 'Conectar con Facebook' en el dashboard."
         }, { status: 503 });
     }
 
@@ -77,13 +88,10 @@ async function publishToFacebook(text: string, imageUrl: string | null) {
     return NextResponse.json({ success: true, postId: data.id });
 }
 
-async function publishToInstagram(caption: string, imageUrl: string | null) {
-    const IG_ID = process.env.IG_ACCOUNT_ID;
-    const ACCESS_TOKEN = process.env.FB_PAGE_ACCESS_TOKEN;
-
+async function publishToInstagram(caption: string, imageUrl: string | null, IG_ID?: string, ACCESS_TOKEN?: string) {
     if (!IG_ID || !ACCESS_TOKEN) {
         return NextResponse.json({
-            error: "Faltan las variables de entorno IG_ACCOUNT_ID y FB_PAGE_ACCESS_TOKEN."
+            error: "Cuenta de Instagram no vinculada o Meta API no conectada."
         }, { status: 503 });
     }
 

@@ -152,6 +152,17 @@ export default function EditModelForm({ model }: { model: any }) {
                 <hr className="border-slate-100" />
 
                 <section>
+                    <h3 className="text-lg font-bold text-[#3200C1] mb-6">Contenido Multimedia Especial</h3>
+                    <div>
+                        <label className="block text-slate-700 font-bold mb-2">Video de Recorrido (YouTube/Vimeo)</label>
+                        <input defaultValue={model.video_url} name="video_url" type="url" placeholder="Ej. https://www.youtube.com/watch?v=..." className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:border-[#3200C1] focus:outline-none bg-slate-50 focus:bg-white" />
+                        <p className="text-xs text-slate-400 mt-2 font-medium">Nota: Esta función requiere contar con un Plan Pro o Plan Elite.</p>
+                    </div>
+                </section>
+
+                <hr className="border-slate-100" />
+
+                <section>
                     <h3 className="text-lg font-bold text-amber-600 mb-6">Optimización para Buscadores (SEO)</h3>
                     <div className="space-y-6">
                         <div>
