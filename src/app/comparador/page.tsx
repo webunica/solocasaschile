@@ -1,4 +1,4 @@
-import { sanityClient } from "@/lib/sanity.client";
+import { sanityClient, urlFor } from "@/lib/sanity.client";
 import Image from "next/image";
 import Link from "next/link";
 import { Check, X, ArrowLeft, Scale, Bed, Bath, Hash, Info, ExternalLink } from "lucide-react";
@@ -62,7 +62,7 @@ export default async function ComparatorPage({ searchParams }: Props) {
                                                     <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-inner bg-slate-100">
                                                         {m.images?.[0] ? (
                                                             <Image 
-                                                                src={(sanityClient as any).imageUrlFor(m.images[0]).url()} 
+                                                                src={urlFor(m.images[0]).url()} 
                                                                 alt={m.model_name}
                                                                 fill
                                                                 className="object-cover"

@@ -1,4 +1,4 @@
-import { sanityClient } from "@/lib/sanity.client";
+import { sanityClient, urlFor } from "@/lib/sanity.client";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -54,7 +54,7 @@ export default async function CompanyProfilePage({ params }: Props) {
             <div className="relative h-[300px] md:h-[400px] w-full bg-[#3200C1]">
                 {isElite && company.cover_image ? (
                     <Image 
-                        src={company.cover_image.asset ? (sanityClient as any).imageUrlFor(company.cover_image).url() : ""} 
+                        src={company.cover_image.asset ? urlFor(company.cover_image).url() : ""} 
                         alt={company.company_name}
                         fill
                         className="object-cover opacity-60"
@@ -72,7 +72,7 @@ export default async function CompanyProfilePage({ params }: Props) {
                         <div className="relative w-32 h-32 md:w-48 md:h-48 rounded-3xl bg-white shadow-2xl p-4 flex items-center justify-center overflow-hidden border-4 border-white">
                             {company.logo ? (
                                 <Image 
-                                    src={(sanityClient as any).imageUrlFor(company.logo).url()} 
+                                    src={urlFor(company.logo).url()} 
                                     alt={company.company_name}
                                     fill
                                     className="object-contain p-4"
@@ -186,7 +186,7 @@ export default async function CompanyProfilePage({ params }: Props) {
                                         <div className="relative aspect-video overflow-hidden">
                                             {proj.images?.[0] ? (
                                                 <Image 
-                                                    src={(sanityClient as any).imageUrlFor(proj.images[0]).url()} 
+                                                    src={urlFor(proj.images[0]).url()} 
                                                     alt={proj.title}
                                                     fill
                                                     className="object-cover group-hover:scale-105 transition-transform duration-500"
@@ -255,7 +255,7 @@ export default async function CompanyProfilePage({ params }: Props) {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {models.map((house: any) => {
-                            const imageUrl = house.images?.[0]?.asset ? (sanityClient as any).imageUrlFor(house.images[0]).url() : null;
+                            const imageUrl = house.images?.[0]?.asset ? urlFor(house.images[0]).url() : null;
                             return (
                                 <article key={house._id} className="group relative rounded-3xl overflow-hidden bg-white border border-slate-200 transition-all duration-500 hover:shadow-xl flex flex-col">
                                     <div className="relative w-full aspect-video overflow-hidden">

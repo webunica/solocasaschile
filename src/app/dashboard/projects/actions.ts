@@ -24,12 +24,19 @@ export async function createProjectAction(formData: FormData) {
     }
 
     try {
+        console.log("Iniciando createProjectAction...");
         const companyId = formData.get("companyId")?.toString() || "";
         const title = formData.get("title")?.toString() || "";
         const description = formData.get("description")?.toString() || "";
         const location_name = formData.get("location_name")?.toString() || "";
         const completion_date = formData.get("completion_date")?.toString() || "";
         
+        console.log("Datos recibidos:", { companyId, title, location_name });
+
+        if (!companyId) {
+            return { error: "ID de empresa no encontrado en la petición." };
+        }
+
         // Coordenadas
         const lat = parseFloat(formData.get("lat")?.toString() || "0");
         const lng = parseFloat(formData.get("lng")?.toString() || "0");
@@ -38,24 +45,32 @@ export async function createProjectAction(formData: FormData) {
         let photos = formData.getAll("photos") as File[];
         const imageAssets = [];
 
-        for (const [idx, file] of photos.entries()) {
-            if (file.size > 0 && file.name) {
-                const asset = await sanityWriteClient.assets.upload('image', file, {
-                    filename: file.name
-                });
+        console.log(`Subiendo ${photos.length} fotos...`);
 
-                imageAssets.push({
-                    _key: `img-${Date.now()}-${idx}`,
-                    _type: "image",
-                    asset: {
-                        _type: "reference",
-                        _ref: asset._id
-                    }
-                });
+        for (const [idx, file] of photos.entries()) {
+            if (file.size > 0 && file.name && file.name !== "undefined") {
+                try {
+                    console.log(`Subiendo foto ${idx + 1}: ${file.name}`);
+                    const asset = await sanityWriteClient.assets.upload('image', file, {
+                        filename: file.name
+                    });
+
+                    imageAssets.push({
+                        _key: `img-${Date.now()}-${idx}`,
+                        _type: "image",
+                        asset: {
+                            _type: "reference",
+                            _ref: asset._id
+                        }
+                    });
+                } catch (uploadErr: any) {
+                    console.error(`Error subiendo foto ${idx}:`, uploadErr);
+                    // Continuamos con las demás fotos
+                }
             }
         }
 
-        const doc = {
+        const doc: any = {
             _type: 'project',
             company: {
                 _type: 'reference',
@@ -65,25 +80,28 @@ export async function createProjectAction(formData: FormData) {
             description,
             location_name,
             completion_date,
-            ...(lat !== 0 && lng !== 0 && {
-                location: {
-                    _type: 'geopoint',
-                    lat,
-                    lng
-                }
-            }),
             ...(imageAssets.length > 0 && { images: imageAssets }),
         };
 
-        await sanityWriteClient.create(doc);
+        if (lat !== 0 && lng !== 0) {
+            doc.location = {
+                _type: 'geopoint',
+                lat,
+                lng
+            };
+        }
+
+        console.log("Creando documento en Sanity...");
+        const result = await sanityWriteClient.create(doc);
+        console.log("Proyecto creado éxito:", result._id);
 
         revalidatePath("/dashboard/projects");
-        revalidatePath("/profesional"); // Revalidar perfiles públicos
+        revalidatePath("/profesional"); 
 
         return { success: true };
 
     } catch (error: any) {
-        console.error("Create Project Error:", error);
-        return { error: error.message || "Error al publicar el proyecto." };
+        console.error("CRITICAL: Create Project Error:", error);
+        return { error: `Error del servidor: ${error.message || "Error desconocido"}` };
     }
 }

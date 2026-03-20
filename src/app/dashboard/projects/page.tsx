@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
-import { sanityClient } from "@/lib/sanity.client";
+import { sanityClient, urlFor } from "@/lib/sanity.client";
 import { MapPin, Plus, Image as ImageIcon, Calendar, Building2, ExternalLink } from "lucide-react";
 import DeleteProjectButton from "./components/DeleteProjectButton";
 import Link from "next/link";
@@ -67,7 +67,7 @@ export default async function ProjectsDashboardPage() {
                             <div className="relative aspect-video bg-slate-100">
                                 {proj.images?.[0] ? (
                                     <Image 
-                                        src={(sanityClient as any).imageUrlFor(proj.images[0]).url()} 
+                                        src={urlFor(proj.images[0]).url()} 
                                         alt={proj.title}
                                         fill
                                         className="object-cover group-hover:scale-110 transition-transform duration-700"

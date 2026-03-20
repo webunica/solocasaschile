@@ -1,4 +1,4 @@
-import { sanityClient } from "@/lib/sanity.client";
+import { sanityClient, urlFor } from "@/lib/sanity.client";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { formatPrice } from "@/lib/utils";
@@ -51,7 +51,7 @@ export default async function ModelPdfPage({ params }: Props) {
                 <div className="relative w-32 h-32 bg-slate-50 rounded-xl overflow-hidden shadow-inner flex items-center justify-center p-4">
                     {house.company?.logo ? (
                         <Image 
-                            src={(sanityClient as any).imageUrlFor(house.company.logo).url()} 
+                            src={urlFor(house.company.logo).url()} 
                             alt={house.company_name}
                             fill
                             className="object-contain p-2"
@@ -66,7 +66,7 @@ export default async function ModelPdfPage({ params }: Props) {
             <div className="relative aspect-video w-full rounded-2xl overflow-hidden mb-10 bg-slate-100 border border-slate-200">
                 {house.images?.[0] ? (
                     <Image 
-                        src={(sanityClient as any).imageUrlFor(house.images[0]).url()} 
+                        src={urlFor(house.images[0]).url()} 
                         alt={house.model_name}
                         fill
                         className="object-cover"
