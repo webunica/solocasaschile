@@ -28,13 +28,16 @@ export default async function CompanyProfilePage({ params }: Props) {
     if (!company) return notFound();
 
     // 2. Fetch Models for this company
+    // Usamos is_active != false para que si el campo no está definido (null), se muestre por defecto
     const models = await sanityClient.fetch(
-        `*[_type == "houseModel" && (company_name == $companyName || lower(company_name) == lower($companyName)) && is_active == true] | order(is_featured desc, price_from asc){
+        `*[_type == "houseModel" && (company_name match $companyName) && is_active != false] | order(is_featured desc, price_from asc){
             _id, model_name, slug, price_from, currency, surface_m2, bedrooms, bathrooms, category, delivery_modes, images, is_featured, model_url
         }`,
         { companyName: company.company_name },
         { cache: "no-store" }
     );
+
+    console.log(`[PROFILE DEBUG] Company: ${company.company_name}, Models found: ${models.length}`);
 
     // 3. Fetch Completed Projects
     const projects = await sanityClient.fetch(
