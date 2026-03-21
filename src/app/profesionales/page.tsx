@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     description: "Encuentra las mejores constructoras de casas prefabricadas y sólidas en Chile. Revisa su catálogo, años de experiencia y proyectos realizados.",
 };
 
-const COMPANIES_QUERY = `*[_type == "companyUser" && is_active == true] | order(plan desc, company_name asc){
+const COMPANIES_QUERY = `*[_type == "companyUser" && (is_active != false) && defined(slug)] | order(plan desc, company_name asc){
     _id,
     company_name,
     "slug": slug.current,
