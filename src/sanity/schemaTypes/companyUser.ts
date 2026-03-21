@@ -160,6 +160,34 @@ export const companyUserType = defineType({
             description: 'Sellos que se mostrarán en tu perfil público.'
         }),
         defineField({
+            name: 'coverage_areas',
+            title: 'Zonas de Cobertura / Regiones',
+            type: 'array',
+            of: [{ type: 'string' }],
+            options: {
+                list: [
+                    { title: 'Arica y Parinacota', value: 'arica_parinacota' },
+                    { title: 'Tarapacá', value: 'tarapaca' },
+                    { title: 'Antofagasta', value: 'antofagasta' },
+                    { title: 'Atacama', value: 'atacama' },
+                    { title: 'Coquimbo', value: 'coquimbo' },
+                    { title: 'Valparaíso', value: 'valparaiso' },
+                    { title: 'Metropolitana', value: 'metropolitana' },
+                    { title: 'O\'Higgins', value: 'ohiggins' },
+                    { title: 'Maule', value: 'maule' },
+                    { title: 'Ñuble', value: 'nuble' },
+                    { title: 'Biobío', value: 'biobio' },
+                    { title: 'Araucanía', value: 'araucania' },
+                    { title: 'Los Ríos', value: 'los_rios' },
+                    { title: 'Los Lagos', value: 'los_lagos' },
+                    { title: 'Aysén', value: 'aysen' },
+                    { title: 'Magallanes', value: 'magallanes' },
+                    { title: 'Todo Chile', value: 'todo_chile' },
+                ]
+            },
+            description: 'Regiones donde la empresa realiza obras.'
+        }),
+        defineField({
             name: 'certifications',
             title: 'Galería de Certificaciones/Logros',
             type: 'array',

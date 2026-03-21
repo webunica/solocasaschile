@@ -19,7 +19,7 @@ export default async function CompanyProfilePage({ params }: Props) {
     const company = await sanityClient.fetch(
         `*[_type == "companyUser" && slug.current == $slug][0]{
             _id, company_name, logo, cover_image, plan, whatsapp_number, meeting_url, 
-            description, is_verified, years_experience, projects_completed_count, badges, certifications
+            description, is_verified, years_experience, projects_completed_count, badges, certifications, coverage_areas
         }`,
         { slug },
         { cache: "no-store" }
@@ -155,6 +155,30 @@ export default async function CompanyProfilePage({ params }: Props) {
                              )}
                         </div>
                     </section>
+                    
+                    {/* Coverage Areas */}
+                    {company.coverage_areas && company.coverage_areas.length > 0 && (
+                        <div className="pt-4">
+                            <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Zonas de Cobertura</h4>
+                            <div className="flex flex-wrap gap-1.5">
+                                {company.coverage_areas.map((area: string) => {
+                                    const labels: Record<string, string> = {
+                                        arica_parinacota: 'Arica', tarapaca: 'Tarapacá', antofagasta: 'Antofagasta',
+                                        atacama: 'Atacama', coquimbo: 'Coquimbo', valparaiso: 'Valparaíso',
+                                        metropolitana: 'RM', ohiggins: 'O\'Higgins', maule: 'Maule',
+                                        nuble: 'Ñuble', biobio: 'Biobío', araucania: 'Araucanía',
+                                        los_rios: 'Los Ríos', los_lagos: 'Los Lagos', aysen: 'Aysén',
+                                        magallanes: 'Magallanes', todo_chile: '🇨🇱 Todo Chile'
+                                    };
+                                    return (
+                                        <span key={area} className="px-2 py-0.5 bg-slate-100 text-slate-500 rounded text-[10px] font-bold border border-slate-200">
+                                            {labels[area] || area}
+                                        </span>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    )}
 
                     {/* Stats summary */}
                     <section className="bg-slate-900 rounded-3xl p-8 text-white">

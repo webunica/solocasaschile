@@ -14,6 +14,7 @@ export async function updateCompanyProfileAction(companyId: string, formData: Fo
         const years_experience = parseInt(formData.get("years_experience")?.toString() || "0");
         const projects_completed_count = parseInt(formData.get("projects_completed_count")?.toString() || "0");
         const badges = formData.getAll("badges") as string[];
+        const coverage_areas = formData.getAll("coverage_areas") as string[];
         
         const logoFile = formData.get("logo") as File;
         const coverFile = formData.get("cover") as File;
@@ -41,6 +42,7 @@ export async function updateCompanyProfileAction(companyId: string, formData: Fo
             years_experience,
             projects_completed_count,
             badges,
+            coverage_areas,
             slug: { _type: 'slug', current: slug }
         };
 

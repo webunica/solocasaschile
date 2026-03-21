@@ -41,6 +41,7 @@ export default function CompanySettingsForm({ company }: Props) {
         years_experience: company.years_experience || 0,
         projects_completed_count: company.projects_completed_count || 0,
         badges: company.badges || [],
+        coverage_areas: company.coverage_areas || [],
         slug: currentSlug,
     });
 
@@ -71,9 +72,13 @@ export default function CompanySettingsForm({ company }: Props) {
 
         try {
             const data = new FormData(e.currentTarget);
-            // Aseguramos que los badges se envíen
+            // Aseguramos que los badges y zonas se envíen
             data.delete("badges");
             formData.badges.forEach((b: string) => data.append("badges", b));
+            
+            data.delete("coverage_areas");
+            formData.coverage_areas.forEach((c: string) => data.append("coverage_areas", c));
+
             data.set("slug", formData.slug);
 
             const result = await updateCompanyProfileAction(company._id, data);
@@ -323,6 +328,62 @@ export default function CompanySettingsForm({ company }: Props) {
                                             {formData.badges?.includes(badge.id) && <Check className="w-3 h-3 text-white" />}
                                         </div>
                                         <span className="text-xs font-bold">{badge.label}</span>
+                                    </label>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Coverage Areas - Checkboxes */}
+                        <div className="col-span-1 md:col-span-2 space-y-4 pt-8 border-t border-slate-100">
+                             <label className="text-sm font-black text-slate-700 uppercase flex items-center gap-2">
+                                Regiones de Cobertura
+                                <span className="text-[10px] bg-[#37FFDB] text-[#3200C1] px-2 py-0.5 rounded-full uppercase">Nuevo</span>
+                            </label>
+                            <p className="text-xs text-slate-400">Selecciona las regiones donde tu empresa realiza obras y despachos.</p>
+                            
+                            <div className="flex flex-wrap gap-2">
+                                {[
+                                    { value: 'arica_parinacota', label: 'XV - Arica' },
+                                    { value: 'tarapaca', label: 'I - Tarapacá' },
+                                    { value: 'antofagasta', label: 'II - Antofagasta' },
+                                    { value: 'atacama', label: 'III - Atacama' },
+                                    { value: 'coquimbo', label: 'IV - Coquimbo' },
+                                    { value: 'valparaiso', label: 'V - Valparaíso' },
+                                    { value: 'metropolitana', label: 'RM - Metropolitana' },
+                                    { value: 'ohiggins', label: 'VI - O\'Higgins' },
+                                    { value: 'maule', label: 'VII - Maule' },
+                                    { value: 'nuble', label: 'XVI - Ñuble' },
+                                    { value: 'biobio', label: 'VIII - Biobío' },
+                                    { value: 'araucania', label: 'IX - Araucanía' },
+                                    { value: 'los_rios', label: 'XIV - Los Ríos' },
+                                    { value: 'los_lagos', label: 'X - Los Lagos' },
+                                    { value: 'aysen', label: 'XI - Aysén' },
+                                    { value: 'magallanes', label: 'XII - Magallanes' },
+                                    { value: 'todo_chile', label: '🇨🇱 Todo Chile' },
+                                ].map((region) => (
+                                    <label 
+                                        key={region.value}
+                                        className={`flex-1 min-w-[140px] flex items-center gap-3 p-3 rounded-xl border-2 cursor-pointer transition-all ${
+                                            formData.coverage_areas.includes(region.value)
+                                                ? 'border-[#3200C1] bg-[#3200C1]/5 shadow-sm'
+                                                : 'border-slate-100 bg-white hover:border-slate-200'
+                                        }`}
+                                    >
+                                        <input
+                                            type="checkbox"
+                                            className="w-4 h-4 rounded border-slate-300 text-[#3200C1] focus:ring-[#3200C1]"
+                                            checked={formData.coverage_areas.includes(region.value)}
+                                            onChange={(e) => {
+                                                const current = formData.coverage_areas;
+                                                const updated = e.target.checked 
+                                                    ? [...current, region.value]
+                                                    : current.filter((b: string) => b !== region.value);
+                                                setFormData({ ...formData, coverage_areas: updated });
+                                            }}
+                                        />
+                                        <div className="flex flex-col">
+                                            <span className="text-xs font-black text-slate-800">{region.label}</span>
+                                        </div>
                                     </label>
                                 ))}
                             </div>

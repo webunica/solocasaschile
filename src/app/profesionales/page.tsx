@@ -20,6 +20,7 @@ const COMPANIES_QUERY = `*[_type == "companyUser" && (is_active != false) && def
     description,
     years_experience,
     projects_completed_count,
+    coverage_areas,
     "modelCount": count(*[_type == "houseModel" && company_name == ^.company_name])
 }`;
 
@@ -89,7 +90,12 @@ export default async function ProfessionalsPage() {
                                                 </span>
                                             )}
                                             <span className="flex items-center gap-1 text-[10px] font-black text-slate-400 uppercase tracking-tighter">
-                                                <MapPin className="w-3.5 h-3.5" /> Chile
+                                                <MapPin className="w-3.5 h-3.5" /> 
+                                                {company.coverage_areas?.includes('todo_chile') 
+                                                    ? 'Todo Chile' 
+                                                    : company.coverage_areas?.length > 0 
+                                                        ? `${company.coverage_areas.length} Regiones`
+                                                        : 'Chile'}
                                             </span>
                                         </div>
                                     </div>
