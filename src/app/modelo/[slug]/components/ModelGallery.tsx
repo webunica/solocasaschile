@@ -10,10 +10,12 @@ export default function ModelGallery({
     images,
     modelName,
     companyName,
+    isVerified = false,
 }: {
     images: GalleryImage[];
     modelName: string;
     companyName: string;
+    isVerified?: boolean;
 }) {
     const [active, setActive] = useState(0);
     const [lightbox, setLightbox] = useState<number | null>(null);
@@ -72,12 +74,14 @@ export default function ModelGallery({
                     />
 
                     {/* Badge empresa verificada */}
-                    <div className="absolute top-4 left-4 flex gap-2 z-10">
-                        <div className="bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-lg text-sm font-bold text-[#3200C1] flex items-center gap-2 shadow-sm">
-                            <ShieldCheck className="w-4 h-4 text-[#37FFDB]" />
-                            Empresa Verificada
+                    {isVerified && (
+                        <div className="absolute top-4 left-4 flex gap-2 z-10">
+                            <div className="bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-lg text-sm font-bold text-[#3200C1] flex items-center gap-2 shadow-sm">
+                                <ShieldCheck className="w-4 h-4 text-[#37FFDB]" />
+                                Empresa Verificada
+                            </div>
                         </div>
-                    </div>
+                    )}
 
                     {/* Zoom hint */}
                     <div className="absolute bottom-4 right-4 bg-black/40 backdrop-blur-sm text-white text-xs font-bold px-3 py-1.5 rounded-lg flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">

@@ -16,13 +16,22 @@ export async function updateCompanyProfileAction(companyId: string, formData: Fo
         const badges = formData.getAll("badges") as string[];
         
         const logoFile = formData.get("logo") as File;
+        const coverFile = formData.get("cover") as File;
         let logoAssetId = "";
+        let coverAssetId = "";
 
         if (logoFile && logoFile.size > 0 && logoFile.name !== "undefined") {
             const asset = await sanityWriteClient.assets.upload('image', logoFile, {
                 filename: logoFile.name
             });
             logoAssetId = asset._id;
+        }
+
+        if (coverFile && coverFile.size > 0 && coverFile.name !== "undefined") {
+            const asset = await sanityWriteClient.assets.upload('image', coverFile, {
+                filename: coverFile.name
+            });
+            coverAssetId = asset._id;
         }
 
         const patch: any = {
@@ -38,10 +47,14 @@ export async function updateCompanyProfileAction(companyId: string, formData: Fo
         if (logoAssetId) {
             patch.logo = {
                 _type: 'image',
-                asset: {
-                    _type: 'reference',
-                    _ref: logoAssetId
-                }
+                asset: { _type: 'reference', _ref: logoAssetId }
+            };
+        }
+
+        if (coverAssetId) {
+            patch.cover_image = {
+                _type: 'image',
+                asset: { _type: 'reference', _ref: coverAssetId }
             };
         }
 

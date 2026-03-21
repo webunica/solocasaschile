@@ -38,12 +38,13 @@ const MODEL_QUERY = `*[_type == "houseModel" && (_id == $slug || slug.current ==
     description,
     seo_title,
     seo_description,
+    seo_keywords,
     video_url,
-    "contact_phone": *[_type == "companyUser" && company_name == ^.company_name][0].contact_phone,
-    "whatsapp_number": *[_type == "companyUser" && company_name == ^.company_name][0].whatsapp_number,
-    "meeting_url": *[_type == "companyUser" && company_name == ^.company_name][0].meeting_url,
-    "company_plan": *[_type == "companyUser" && company_name == ^.company_name][0].plan,
-    "company_email": *[_type == "companyUser" && company_name == ^.company_name][0].email,
+    "contact_phone": *[_type == "companyUser" && (company_name == ^.company_name || lower(company_name) == lower(^.company_name))][0].contact_phone,
+    "whatsapp_number": *[_type == "companyUser" && (company_name == ^.company_name || lower(company_name) == lower(^.company_name))][0].whatsapp_number,
+    "meeting_url": *[_type == "companyUser" && (company_name == ^.company_name || lower(company_name) == lower(^.company_name))][0].meeting_url,
+    "company_plan": *[_type == "companyUser" && (company_name == ^.company_name || lower(company_name) == lower(^.company_name))][0].plan,
+    "company_email": *[_type == "companyUser" && (company_name == ^.company_name || lower(company_name) == lower(^.company_name))][0].email,
     "images": coalesce(
         images[]{ "url": asset->url, "alt": alt },
         image_urls[]{ "url": @, "alt": "" }
@@ -85,7 +86,7 @@ export default async function ModelPage({ params }: Props) {
     }
 
     // Datos que se caen atrás
-    const images = model.images && model.images.length > 0 ? model.images : [];
+    const images = (model.images || []).filter((img: any) => img && img.url);
 
     return (
         <div className="bg-slate-50 min-h-screen pb-20">
@@ -179,6 +180,7 @@ export default async function ModelPage({ params }: Props) {
                                 images={images}
                                 modelName={model.model_name}
                                 companyName={model.company_name}
+                                isVerified={model.company_plan === 'pro' || model.company_plan === 'elite'}
                             />
                         ) : (
                             <div className="aspect-[16/9] w-full bg-slate-100 rounded-3xl flex items-center justify-center border-2 border-dashed border-slate-200">

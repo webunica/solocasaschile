@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Save, Upload, Loader2, Info, CheckCircle2, Copy, Check, ExternalLink, Camera } from "lucide-react";
+import { Save, Upload, Loader2, Info, CheckCircle2, Copy, Check, ExternalLink, Camera, ImageIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -31,7 +31,8 @@ export default function CompanySettingsForm({ company }: Props) {
     const publicUrl = `https://www.solocasaschile.com/profesional/${currentSlug}`;
 
     const [copied, setCopied] = useState(false);
-    const [logoPreview, setLogoPreview] = useState<string | null>(company.logo ? urlFor(company.logo).url() : null);
+    const [logoPreview, setLogoPreview] = useState<string | null>(company.logo?.asset ? urlFor(company.logo).url() : null);
+    const [coverPreview, setCoverPreview] = useState<string | null>(company.cover_image?.asset ? urlFor(company.cover_image).url() : null);
 
     const [formData, setFormData] = useState({
         description: company.description || "",
@@ -115,24 +116,56 @@ export default function CompanySettingsForm({ company }: Props) {
                     </div>
 
                     {/* LOGO UPLOAD */}
-                    <div className="flex flex-col md:flex-row items-center gap-8 p-6 bg-slate-50 rounded-2xl border border-slate-100">
-                        <div className="relative group">
-                            <div className="w-32 h-32 rounded-3xl bg-white shadow-md border-4 border-white overflow-hidden flex items-center justify-center">
-                                {logoPreview ? (
-                                    <Image src={logoPreview} alt="Logo Preview" fill className="object-contain p-4" />
-                                ) : (
-                                    <Upload className="w-8 h-8 text-slate-300" />
-                                )}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 bg-slate-50 rounded-2xl border border-slate-100">
+                        <div className="flex items-center gap-6">
+                            <div className="relative group shrink-0">
+                                <div className="w-24 h-24 rounded-2xl bg-white shadow-md border-2 border-white overflow-hidden flex items-center justify-center">
+                                    {logoPreview ? (
+                                        <Image src={logoPreview} alt="Logo Preview" fill className="object-contain p-2" />
+                                    ) : (
+                                        <Upload className="w-8 h-8 text-slate-300" />
+                                    )}
+                                </div>
+                                <label className="absolute -bottom-2 -right-2 w-8 h-8 bg-[#3200C1] text-white rounded-full flex items-center justify-center cursor-pointer shadow-lg hover:scale-110 transition-all">
+                                    <Camera className="w-4 h-4" />
+                                    <input type="file" name="logo" accept="image/*" className="hidden" onChange={handleLogoChange} />
+                                </label>
                             </div>
-                            <label className="absolute -bottom-2 -right-2 w-10 h-10 bg-[#3200C1] text-white rounded-full flex items-center justify-center cursor-pointer shadow-lg hover:scale-110 transition-all">
-                                <Camera className="w-5 h-5" />
-                                <input type="file" name="logo" accept="image/*" className="hidden" onChange={handleLogoChange} />
-                            </label>
+                            <div className="space-y-1">
+                                <h4 className="font-black text-slate-800 uppercase text-[10px] tracking-widest">Logo (Ficha)</h4>
+                                <p className="text-[10px] text-slate-500 leading-tight pr-4">PNG/JPG. Cuadrado recomendado.</p>
+                            </div>
                         </div>
-                        <div className="flex-1 space-y-2">
-                            <h4 className="font-black text-slate-800 uppercase text-xs">Logo de la Empresa</h4>
-                            <p className="text-xs text-slate-500 leading-relaxed">Sube tu logo oficial en formato PNG o JPG. Se recomienda un fondo transparente o blanco y forma cuadrada.</p>
-                            <p className="text-[10px] font-bold text-[#3200C1] uppercase tracking-widest">Tamaño máximo: 2MB</p>
+
+                        {/* COVER UPLOAD (Elite Only) */}
+                        <div className={`flex items-center gap-6 ${!isElite ? 'opacity-40 grayscale pointer-events-none' : ''}`}>
+                            <div className="relative group shrink-0">
+                                <div className="w-24 h-24 rounded-2xl bg-white shadow-md border-2 border-white overflow-hidden flex items-center justify-center">
+                                    {coverPreview ? (
+                                        <Image src={coverPreview} alt="Cover Preview" fill className="object-cover" />
+                                    ) : (
+                                        <ImageIcon className="w-8 h-8 text-slate-300" />
+                                    )}
+                                </div>
+                                <label className="absolute -bottom-2 -right-2 w-8 h-8 bg-[#3200C1] text-white rounded-full flex items-center justify-center cursor-pointer shadow-lg hover:scale-110 transition-all">
+                                    <Camera className="w-4 h-4" />
+                                    <input type="file" name="cover" accept="image/*" disabled={!isElite} className="hidden" onChange={(e) => {
+                                        const file = e.target.files?.[0];
+                                        if (file) {
+                                            const reader = new FileReader();
+                                            reader.onloadend = () => setCoverPreview(reader.result as string);
+                                            reader.readAsDataURL(file);
+                                        }
+                                    }} />
+                                </label>
+                            </div>
+                            <div className="space-y-1">
+                                <div className="flex items-center gap-2">
+                                    <h4 className="font-black text-slate-800 uppercase text-[10px] tracking-widest">Portada</h4>
+                                    <span className="text-[8px] bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded font-black uppercase">Elite</span>
+                                </div>
+                                <p className="text-[10px] text-slate-500 leading-tight">Solo visible en Plan Elite.</p>
+                            </div>
                         </div>
                     </div>
 
