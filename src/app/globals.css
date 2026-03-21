@@ -19,13 +19,14 @@
 
   html {
     @apply antialiased scroll-smooth;
+    overflow-x: hidden;
   }
 
   body {
     background-color: var(--background);
     color: var(--foreground);
     font-size: var(--body-size, 18px);
-    /* 22px might be too much for all, but I'll set it in specific places or as optional */
+    overflow-x: hidden;
     @apply min-h-screen selection:bg-accent-500/30 selection:text-brand-500;
   }
 }
@@ -49,6 +50,15 @@
 
   .glass-card {
     @apply bg-white border border-slate-200 rounded-[4px] hover:border-accent-500 transition-all duration-300 shadow-sm;
+  }
+
+  /* Ocultar scrollbar manteniendo scroll funcional */
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
   }
 }
 
