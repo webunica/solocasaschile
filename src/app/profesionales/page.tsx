@@ -10,22 +10,52 @@ export const metadata: Metadata = {
     description: "Encuentra las mejores constructoras de casas prefabricadas y sólidas en Chile. Revisa su catálogo, años de experiencia y proyectos realizados.",
 };
 
-const COMPANIES_QUERY = `*[_type == "companyUser" && (is_active != false) && defined(slug)] | order(plan desc, company_name asc){
-    _id,
-    company_name,
-    "slug": slug.current,
-    logo,
-    plan,
-    is_verified,
-    description,
-    years_experience,
-    projects_completed_count,
-    coverage_areas,
-    "modelCount": count(*[_type == "houseModel" && company_name == ^.company_name])
-}`;
+const REGIONS = [
+    { value: 'all', label: 'Todas las Regiones' },
+    { value: 'arica_parinacota', label: 'Arica' },
+    { value: 'tarapaca', label: 'Tarapacá' },
+    { value: 'antofagasta', label: 'Antofagasta' },
+    { value: 'atacama', label: 'Atacama' },
+    { value: 'coquimbo', label: 'Coquimbo' },
+    { value: 'valparaiso', label: 'Valparaíso' },
+    { value: 'metropolitana', label: 'Metropolitana' },
+    { value: 'ohiggins', label: "O'Higgins" },
+    { value: 'maule', label: 'Maule' },
+    { value: 'nuble', label: 'Ñuble' },
+    { value: 'biobio', label: 'Biobío' },
+    { value: 'araucania', label: 'Araucanía' },
+    { value: 'los_rios', label: 'Los Ríos' },
+    { value: 'los_lagos', label: 'Los Lagos' },
+    { value: 'aysen', label: 'Aysén' },
+    { value: 'magallanes', label: 'Magallanes' },
+];
 
-export default async function ProfessionalsPage() {
-    const companies = await sanityClient.fetch(COMPANIES_QUERY, {}, { cache: 'no-store' });
+export default async function ProfessionalsPage({
+    searchParams
+}: {
+    searchParams: { region?: string }
+}) {
+    const selectedRegion = searchParams.region || 'all';
+
+    const COMPANIES_QUERY = `*[_type == "companyUser" && (is_active != false) && defined(slug) ${
+        selectedRegion !== 'all' 
+            ? `&& ('todo_chile' in coverage_areas || $region in coverage_areas)` 
+            : ''
+    }] | order(select(plan == 'elite' => 1, plan == 'pro' => 2, 3) asc, company_name asc){
+        _id,
+        company_name,
+        "slug": slug.current,
+        logo,
+        plan,
+        is_verified,
+        description,
+        years_experience,
+        projects_completed_count,
+        coverage_areas,
+        "modelCount": count(*[_type == "houseModel" && company_name == ^.company_name])
+    }`;
+
+    const companies = await sanityClient.fetch(COMPANIES_QUERY, { region: selectedRegion }, { cache: 'no-store' });
 
     return (
         <div className="min-h-screen bg-slate-50 pb-20">
@@ -55,10 +85,30 @@ export default async function ProfessionalsPage() {
 
             <main className="max-w-4xl mx-auto px-6 -translate-y-16">
                 <div className="bg-white rounded-[2rem] border border-slate-200 shadow-xl p-8 md:p-12 space-y-10">
-                    <div className="border-b border-slate-100 pb-6 flex items-center justify-between">
-                        <p className="text-sm text-slate-500 font-medium whitespace-nowrap overflow-hidden">
+                    <div className="border-b border-slate-100 pb-6">
+                        <p className="text-sm text-slate-500 font-medium whitespace-nowrap overflow-hidden mb-6">
                             Cerca de {companies.length} resultados encontrados
                         </p>
+
+                        {/* Region Filter UI */}
+                        <div className="flex items-center gap-2 overflow-x-auto pb-4 no-scrollbar -mx-2 px-2">
+                            {REGIONS.map((region) => {
+                                const isActive = selectedRegion === region.value;
+                                return (
+                                    <Link
+                                        key={region.value}
+                                        href={region.value === 'all' ? '/profesionales' : `/profesionales?region=${region.value}`}
+                                        className={`px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-all border ${
+                                            isActive
+                                                ? 'bg-[#1a0dab] text-white border-[#1a0dab]'
+                                                : 'bg-white text-slate-600 border-slate-200 hover:border-slate-400'
+                                        }`}
+                                    >
+                                        {region.label}
+                                    </Link>
+                                );
+                            })}
+                        </div>
                     </div>
 
                     <div className="space-y-12">
