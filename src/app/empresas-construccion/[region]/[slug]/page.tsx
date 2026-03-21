@@ -54,13 +54,14 @@ export default async function CompanyProfilePage({ params }: Props) {
     return (
         <div className="min-h-screen bg-slate-50 pb-20">
             {/* Top Banner (Elite) or Simple Header */}
-            <div className="relative h-[300px] md:h-[400px] w-full bg-[#3200C1]">
+            <div className="relative min-h-[380px] md:h-[400px] w-full bg-[#3200C1] flex items-center justify-center py-12 md:py-0">
                 {isElite && company.cover_image?.asset ? (
                     <Image 
                         src={urlFor(company.cover_image).url()} 
                         alt={company.company_name}
                         fill
                         className="object-cover opacity-60"
+                        priority
                     />
                 ) : (
                     <div className="absolute inset-0 bg-gradient-to-br from-[#3200C1] to-[#1e0075] opacity-90" />
@@ -69,10 +70,10 @@ export default async function CompanyProfilePage({ params }: Props) {
                 {/* Decorative abstract elements */}
                 <div className="absolute top-0 right-0 w-64 h-64 bg-[#37FFDB] rounded-full blur-[120px] opacity-20 -translate-y-1/2 translate-x-1/2" />
                 
-                <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="max-w-7xl mx-auto px-6 w-full flex flex-col md:flex-row items-center md:items-end gap-6 md:translate-y-20">
+                <div className="relative z-10 w-full">
+                    <div className="max-w-7xl mx-auto px-6 w-full flex flex-col md:flex-row items-center md:items-end gap-6 md:translate-y-20 text-center md:text-left">
                         {/* Logo */}
-                        <div className="relative w-32 h-32 md:w-48 md:h-48 rounded-3xl bg-white shadow-2xl p-4 flex items-center justify-center overflow-hidden border-4 border-white">
+                        <div className="relative shrink-0 w-32 h-32 md:w-48 md:h-48 rounded-3xl bg-white shadow-2xl p-4 flex items-center justify-center overflow-hidden border-4 border-white mt-4 md:mt-0">
                             {company.logo?.asset ? (
                                 <Image 
                                     src={urlFor(company.logo).url()} 
@@ -86,7 +87,7 @@ export default async function CompanyProfilePage({ params }: Props) {
                         </div>
 
                         {/* Company Info Header */}
-                        <div className="flex-1 text-center md:text-left text-white md:pb-4">
+                        <div className="flex-1 text-white md:pb-4 flex flex-col items-center md:items-start">
                             <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4 mb-2">
                                 <h1 className="text-3xl md:text-5xl font-black">{company.company_name}</h1>
                                 <div className="flex flex-wrap items-center justify-center md:justify-start gap-1.5">
@@ -117,8 +118,8 @@ export default async function CompanyProfilePage({ params }: Props) {
                         </div>
 
                         {/* Quick CTA */}
-                        <div className="flex gap-3 md:pb-4">
-                            <Link href={region === 'chile' || !region ? '/empresas-construccion' : `/empresas-construccion/${region}`} className="px-6 py-3 rounded-xl bg-white/10 backdrop-blur-md text-white border border-white/20 font-bold hover:bg-white/20 transition-all flex items-center gap-2">
+                        <div className="flex gap-3 md:pb-4 mt-4 md:mt-0">
+                            <Link href={region === 'chile' || !region ? '/empresas-construccion' : `/empresas-construccion/${region}`} className="px-6 py-3 rounded-xl bg-white/10 backdrop-blur-md text-white border border-white/20 font-bold hover:bg-white/20 transition-all flex items-center justify-center gap-2 min-w-[120px]">
                                 <ArrowLeft className="w-4 h-4" /> Volver
                             </Link>
                         </div>
