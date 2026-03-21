@@ -45,6 +45,8 @@ const MODEL_QUERY = `*[_type == "houseModel" && (_id == $slug || slug.current ==
     "meeting_url": *[_type == "companyUser" && (company_name == ^.company_name || lower(company_name) == lower(^.company_name))][0].meeting_url,
     "company_plan": *[_type == "companyUser" && (company_name == ^.company_name || lower(company_name) == lower(^.company_name))][0].plan,
     "company_email": *[_type == "companyUser" && (company_name == ^.company_name || lower(company_name) == lower(^.company_name))][0].email,
+    "company_slug": *[_type == "companyUser" && (company_name == ^.company_name || lower(company_name) == lower(^.company_name))][0].slug.current,
+    "company_regions": *[_type == "companyUser" && (company_name == ^.company_name || lower(company_name) == lower(^.company_name))][0].coverage_areas,
     "images": coalesce(
         images[]{ "url": asset->url, "alt": alt },
         image_urls[]{ "url": @, "alt": "" }
@@ -110,14 +112,17 @@ export default async function ModelPage({ params }: Props) {
                             <span className="w-6 h-6 rounded-md bg-[#37FFDB]/20 flex items-center justify-center text-[#3200C1]">
                                 <Factory className="w-3 h-3" />
                             </span>
-                            <span className="text-sm font-bold text-slate-700 flex items-center gap-1">
+                            <Link 
+                                href={`/empresas-construccion/${model.company_regions?.[0] || 'chile'}/${model.company_slug}`} 
+                                className="text-sm font-bold text-slate-700 hover:text-[#3200C1] flex items-center gap-1 transition-colors"
+                            >
                                 {model.company_name}
                                 {(model.company_plan === 'pro' || model.company_plan === 'elite') && (
                                     <span title="Empresa Verificada">
                                         <ShieldCheck className="w-4 h-4 text-emerald-500" />
                                     </span>
                                 )}
-                            </span>
+                            </Link>
                         </div>
                         {model.model_url && (
                             <VisitPublicationButton

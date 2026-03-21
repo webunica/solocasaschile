@@ -86,6 +86,26 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  // ─── 301 Redirects (old → new SEO URLs) ──────────────────────────────────
+  async redirects() {
+    return [
+      {
+        source: "/profesionales",
+        destination: "/empresas-construccion",
+        permanent: true,
+      },
+      {
+        source: "/profesionales/:path*",
+        destination: "/empresas-construccion/:path*",
+        permanent: true,
+      },
+      {
+        source: "/profesional/:slug",
+        destination: "/empresas-construccion/chile/:slug",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

@@ -155,7 +155,7 @@ export async function createProjectAction(formData: FormData) {
         console.log("Proyecto creado éxito:", result._id);
 
         revalidatePath("/dashboard/projects");
-        revalidatePath("/profesional"); 
+        revalidatePath("/empresas-construccion");
 
         return { success: true };
 

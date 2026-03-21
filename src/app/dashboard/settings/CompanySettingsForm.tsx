@@ -28,7 +28,8 @@ export default function CompanySettingsForm({ company }: Props) {
     };
 
     const currentSlug = company.slug?.current || slugify(company.company_name || "");
-    const publicUrl = `https://www.solocasaschile.com/profesional/${currentSlug}`;
+    const firstRegion = company.coverage_areas?.[0] || 'chile';
+    const publicUrl = `https://www.solocasaschile.com/empresas-construccion/${firstRegion}/${currentSlug}`;
 
     const [copied, setCopied] = useState(false);
     const [logoPreview, setLogoPreview] = useState<string | null>(company.logo?.asset ? urlFor(company.logo).url() : null);

@@ -15,7 +15,7 @@ export const Header = () => {
                         <Link href="/" className="text-sm font-bold text-[#3200C1] hover:text-[#37FFDB] transition-colors whitespace-nowrap">
                             Inicio
                         </Link>
-                        <Link href="/profesionales" className="text-sm font-bold text-[#3200C1] hover:text-[#37FFDB] transition-colors whitespace-nowrap">
+                        <Link href="/empresas-construccion" className="text-sm font-bold text-[#3200C1] hover:text-[#37FFDB] transition-colors whitespace-nowrap">
                             Empresas
                         </Link>
                         <Link href="/blog" className="text-sm font-bold text-[#3200C1] hover:text-[#37FFDB] transition-colors whitespace-nowrap">

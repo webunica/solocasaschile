@@ -66,7 +66,9 @@ export async function updateCompanyProfileAction(companyId: string, formData: Fo
             .commit();
 
         revalidatePath("/dashboard/settings");
-        revalidatePath("/profesional/[slug]", "page");
+        revalidatePath("/empresas-construccion");
+        revalidatePath("/empresas-construccion/[region]", "page");
+        revalidatePath("/empresas-construccion/[region]/[slug]", "page");
         
         return { success: true };
     } catch (err: any) {

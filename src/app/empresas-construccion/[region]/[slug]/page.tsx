@@ -9,11 +9,11 @@ import { formatPrice } from "@/lib/utils";
 import VisitPublicationButton from "@/components/VisitPublicationButton";
 
 type Props = {
-    params: Promise<{ slug: string }>
+    params: Promise<{ region: string, slug: string }>
 }
 
 export default async function CompanyProfilePage({ params }: Props) {
-    const { slug } = await params;
+    const { region, slug } = await params;
 
     // 1. Fetch Company Data
     const company = await sanityClient.fetch(
@@ -118,7 +118,7 @@ export default async function CompanyProfilePage({ params }: Props) {
 
                         {/* Quick CTA */}
                         <div className="flex gap-3 md:pb-4">
-                            <Link href="/" className="px-6 py-3 rounded-xl bg-white/10 backdrop-blur-md text-white border border-white/20 font-bold hover:bg-white/20 transition-all flex items-center gap-2">
+                            <Link href={region === 'chile' || !region ? '/empresas-construccion' : `/empresas-construccion/${region}`} className="px-6 py-3 rounded-xl bg-white/10 backdrop-blur-md text-white border border-white/20 font-bold hover:bg-white/20 transition-all flex items-center gap-2">
                                 <ArrowLeft className="w-4 h-4" /> Volver
                             </Link>
                         </div>
