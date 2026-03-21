@@ -36,7 +36,7 @@ export const metadata: Metadata = {
 
 export default async function HomePage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
   // Check home version setting from Sanity first
-  const siteSettings = await sanityClient.fetch(`*[_type == "siteSettings"][0]{ home_version }`, {}, { cache: 'no-store' });
+  const siteSettings = await sanityClient.fetch(`*[_type == "siteSettings" && !(_id in path("drafts.**"))] | order(_updatedAt desc)[0]{ home_version }`, {}, { cache: 'no-store' });
   if (siteSettings?.home_version === 'v2') {
     return <HomeV2 />;
   }

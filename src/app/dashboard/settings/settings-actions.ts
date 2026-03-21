@@ -18,11 +18,15 @@ export async function saveSettingsAction(formData: FormData) {
         const whatsapp_fallback = formData.get("whatsapp_fallback")?.toString() || "";
         const home_version = formData.get("home_version")?.toString() || "v1";
 
+        // Buscamos cuál es el ID del documento activo de settings
+        const latestDoc = await sanityWriteClient.fetch(`*[_type == "siteSettings" && !(_id in path("drafts.**"))] | order(_updatedAt desc)[0]{ _id }`);
+        const targetId = latestDoc?._id || SETTINGS_DOC_ID;
+
         // Aseguramos que existe el documento sin sobreescribir
-        await sanityWriteClient.createIfNotExists({ _id: SETTINGS_DOC_ID, _type: "siteSettings" });
+        await sanityWriteClient.createIfNotExists({ _id: targetId, _type: "siteSettings" });
 
         // Actualizamos solo los campos del formulario
-        await sanityWriteClient.patch(SETTINGS_DOC_ID).set({
+        await sanityWriteClient.patch(targetId).set({
             resend_api_key,
             from_email,
             admin_email,

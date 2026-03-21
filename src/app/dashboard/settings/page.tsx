@@ -19,8 +19,8 @@ export default async function SettingsPage() {
     if (isAdmin) {
         // Cargamos la config global (Solo Admin)
         const settings = await sanityClient.fetch(
-            `*[_type == "siteSettings" && _id == $id][0]`,
-            { id: SETTINGS_DOC_ID },
+            `*[_type == "siteSettings" && !(_id in path("drafts.**"))] | order(_updatedAt desc)[0]`,
+            {},
             { cache: "no-store" }
         );
 
