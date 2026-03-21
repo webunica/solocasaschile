@@ -112,12 +112,19 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
       </div>
 
       {/* Social Proof */}
-      <div className="w-full bg-slate-50 border-b border-slate-100 pt-16 pb-12 px-6">
-        <p className="text-center text-xs font-black text-slate-400 uppercase tracking-widest mb-8">Empresas que confían en nosotros</p>
-        <div className="max-w-7xl mx-auto flex flex-wrap justify-center gap-x-12 gap-y-6 opacity-60 hover:opacity-100 transition-opacity duration-500">
-           {companies.slice(0, 8).map((c: { company_name: string }) => (
-              <span key={c.company_name} className="text-xl font-black text-slate-400 hover:text-[#3200C1] transition-colors">{c.company_name}</span>
-           ))}
+      <div className="w-full bg-slate-50 border-b border-slate-100 py-16">
+        <p className="text-center text-xs font-black text-slate-400 uppercase tracking-widest mb-10">Empresas que confían en nosotros</p>
+        
+        <div className="overflow-hidden relative flex flex-col justify-center">
+            {/* Decorative gradients */}
+            <div className="absolute left-0 top-0 bottom-0 w-16 md:w-48 bg-gradient-to-r from-slate-50 to-transparent z-10 pointer-events-none" />
+            <div className="absolute right-0 top-0 bottom-0 w-16 md:w-48 bg-gradient-to-l from-slate-50 to-transparent z-10 pointer-events-none" />
+
+            <div className="flex gap-16 md:gap-32 items-center whitespace-nowrap animate-marquee relative z-0 w-max opacity-60 hover:opacity-100 transition-opacity duration-500">
+               {[...companies, ...companies, ...companies].map((c: { company_name: string }, idx) => (
+                  <span key={`${c.company_name}-${idx}`} className="text-xl md:text-2xl font-black text-slate-400 hover:text-[#3200C1] transition-colors px-4">{c.company_name}</span>
+               ))}
+            </div>
         </div>
       </div>
 

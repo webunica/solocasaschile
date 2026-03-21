@@ -1,7 +1,7 @@
 import { sanityClient } from "@/lib/sanity.client";
 import { Hash } from "lucide-react";
 import Link from "next/link";
-import HeaderClient from "./HeaderClient";
+import HeaderClient from "./HeaderClientV2";
 
 // Server component: obtiene datos del logo y pasa al client
 export const Header = async () => {

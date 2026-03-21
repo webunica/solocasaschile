@@ -21,20 +21,19 @@ function Logo({ siteName, logoUrl }: Props) {
     if (logoUrl) {
         return (
             <Link href="/" aria-label={`${siteName} - Inicio`}>
-                {/* h-11 = ~44px, 25% más grande que h-9 */}
                 <img
                     src={logoUrl}
                     alt={siteName}
-                    className="h-11 w-auto object-contain"
+                    className="h-[45px] md:h-11 w-auto object-contain max-w-[160px] md:max-w-none"
                 />
             </Link>
         );
     }
     return (
         <Link href="/" className="flex items-center gap-3" aria-label={`${siteName} - Inicio`}>
-            {/* Icono 25% más grande: w-10 h-10 */}
-            <div className="w-10 h-10 rounded-lg bg-[#37FFDB] flex items-center justify-center shadow-sm shrink-0">
-                <Hash className="w-6 h-6 text-[#3200C1]" aria-hidden="true" />
+            {/* Icono mejorado mobile */}
+            <div className="w-[50px] h-[50px] rounded-lg bg-[#37FFDB] flex items-center justify-center shadow-sm shrink-0">
+                <Hash className="w-8 h-8 text-[#3200C1]" aria-hidden="true" />
             </div>
             <span className="text-xl font-bold text-[#3200C1] whitespace-nowrap">
                 {siteName.toLowerCase()}
@@ -43,7 +42,7 @@ function Logo({ siteName, logoUrl }: Props) {
     );
 }
 
-export default function HeaderClient({ siteName, logoUrl }: Props) {
+export default function HeaderClientV2({ siteName, logoUrl }: Props) {
     const [isOpen, setIsOpen] = useState(false);
     const pathname = usePathname();
 
@@ -61,7 +60,7 @@ export default function HeaderClient({ siteName, logoUrl }: Props) {
     return (
         <>
             <header className="border-b border-slate-100 bg-white/90 backdrop-blur-md sticky top-0 z-50 w-full">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 grid grid-cols-3 items-center">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
 
                     {/* Columna 1: Logo */}
                     <div className="flex items-center">
@@ -118,18 +117,18 @@ export default function HeaderClient({ siteName, logoUrl }: Props) {
                             <span className="lg:hidden">Publicar</span>
                         </Link>
 
-                        {/* Botón hamburguesa — 25% más grande: w-10 h-10 */}
+                        {/* Botón hamburguesa — Mejorado para mobile +25% */}
                         <button
                             type="button"
                             onClick={() => setIsOpen((prev) => !prev)}
                             aria-label={isOpen ? "Cerrar menú" : "Abrir menú"}
                             aria-expanded={isOpen}
                             aria-controls="mobile-menu"
-                            className="md:hidden flex items-center justify-center w-10 h-10 rounded-lg text-slate-700 hover:bg-slate-100 transition-colors"
+                            className="md:hidden flex items-center justify-center w-[50px] h-[50px] rounded-lg text-slate-700 hover:bg-slate-100 transition-colors"
                         >
                             {isOpen
-                                ? <X className="w-6 h-6" />
-                                : <Menu className="w-6 h-6" />
+                                ? <X className="w-8 h-8" />
+                                : <Menu className="w-8 h-8" />
                             }
                         </button>
                     </div>
@@ -162,9 +161,9 @@ export default function HeaderClient({ siteName, logoUrl }: Props) {
                         type="button"
                         onClick={() => setIsOpen(false)}
                         aria-label="Cerrar menú"
-                        className="flex items-center justify-center w-10 h-10 rounded-lg text-slate-500 hover:bg-slate-100 transition-colors"
+                        className="flex items-center justify-center w-[50px] h-[50px] rounded-lg text-slate-500 hover:bg-slate-100 transition-colors"
                     >
-                        <X className="w-6 h-6" />
+                        <X className="w-8 h-8" />
                     </button>
                 </div>
 
