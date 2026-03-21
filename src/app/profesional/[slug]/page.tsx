@@ -2,7 +2,7 @@ import { sanityClient, urlFor } from "@/lib/sanity.client";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { CheckCircle2, MapPin, MessageCircle, Calendar, ArrowLeft, Star, Crown, ExternalLink, Bed, Bath, Scale } from "lucide-react";
+import { CheckCircle2, MapPin, MessageCircle, Calendar, ArrowLeft, Star, Crown, ExternalLink, Bed, Bath, Scale, ShieldCheck } from "lucide-react";
 import VisitWhatsAppButton from "@/components/VisitWhatsAppButton";
 import VisitExternalLinkButton from "@/components/VisitExternalLinkButton";
 import { formatPrice } from "@/lib/utils";
@@ -180,15 +180,47 @@ export default async function CompanyProfilePage({ params }: Props) {
                         </div>
                     )}
 
+                    {/* Certifications and Achievements */}
+                    {company.certifications && company.certifications.length > 0 && (
+                        <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm">
+                            <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-6">Certificaciones y Logros</h3>
+                            <div className="grid grid-cols-2 gap-4">
+                                {company.certifications.map((cert: any, idx: number) => (
+                                    <div key={idx} className="group relative aspect-square rounded-2xl bg-slate-50 border border-slate-100 overflow-hidden flex items-center justify-center p-4">
+                                        {cert.asset ? (
+                                            <Image 
+                                                src={urlFor(cert).url()} 
+                                                alt={cert.title || `Certificación ${idx + 1}`}
+                                                fill
+                                                className="object-contain p-4 group-hover:scale-110 transition-transform"
+                                            />
+                                        ) : (
+                                            <ShieldCheck className="w-8 h-8 text-slate-200" />
+                                        )}
+                                        {cert.title && (
+                                            <div className="absolute inset-0 bg-slate-900/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center p-4 text-center">
+                                                <span className="text-[10px] font-bold text-white leading-tight">{cert.title}</span>
+                                            </div>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
                     {/* Stats summary */}
                     <section className="bg-slate-900 rounded-3xl p-8 text-white">
                         <h3 className="text-xs font-black text-[#37FFDB] uppercase tracking-[0.2em] mb-6">Autoridad en el Mercado</h3>
-                        <div className="grid grid-cols-2 gap-6">
+                        <div className="grid grid-cols-2 lg:grid-cols-3 gap-6">
                             <div>
                                 <p className="text-3xl font-black">{models.length}</p>
                                 <p className="text-[10px] text-white/40 font-bold uppercase mt-1">Modelos Activos</p>
                             </div>
                             <div>
+                                <p className="text-3xl font-black">{company.years_experience || "1"}</p>
+                                <p className="text-[10px] text-white/40 font-bold uppercase mt-1">Años de Exp.</p>
+                            </div>
+                            <div className="col-span-2 lg:col-span-1 border-t lg:border-t-0 lg:border-l border-white/10 pt-6 lg:pt-0 lg:pl-6">
                                 <p className="text-3xl font-black">{company.projects_completed_count || projects.length || "0"}</p>
                                 <p className="text-[10px] text-white/40 font-bold uppercase mt-1">Obras Realizadas</p>
                             </div>
