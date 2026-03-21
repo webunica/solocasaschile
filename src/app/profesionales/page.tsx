@@ -53,95 +53,89 @@ export default async function ProfessionalsPage() {
                 </div>
             </div>
 
-            <main className="max-w-7xl mx-auto px-6 -translate-y-10">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {companies.map((company: any) => (
-                        <Link 
-                            key={company._id} 
-                            href={`/profesional/${company.slug}`}
-                            className="bg-white rounded-[2.5rem] border border-slate-200 overflow-hidden shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 group flex flex-col"
-                        >
-                            <div className="p-8 pb-4 relative">
-                                {company.plan === 'elite' && (
-                                    <div className="absolute top-6 right-6 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-400 text-amber-900 text-[10px] font-black uppercase shadow-lg z-10">
-                                        <Star className="w-3.5 h-3.5 fill-current" /> Empresa Destacada
-                                    </div>
-                                )}
-                                
-                                <div className="flex items-center gap-6">
-                                    <div className="relative w-24 h-24 rounded-3xl bg-slate-50 border border-slate-100 flex items-center justify-center overflow-hidden shrink-0 shadow-inner">
+            <main className="max-w-4xl mx-auto px-6 -translate-y-16">
+                <div className="bg-white rounded-[2rem] border border-slate-200 shadow-xl p-8 md:p-12 space-y-10">
+                    <div className="border-b border-slate-100 pb-6 flex items-center justify-between">
+                        <p className="text-sm text-slate-500 font-medium whitespace-nowrap overflow-hidden">
+                            Cerca de {companies.length} resultados encontrados
+                        </p>
+                    </div>
+
+                    <div className="space-y-12">
+                        {companies.map((company: any) => (
+                            <div key={company._id} className="group flex gap-6 md:gap-10">
+                                {/* Left side: Logo slightly bigger for B2B pride */}
+                                <div className="hidden md:block shrink-0">
+                                    <div className="relative w-20 h-20 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center overflow-hidden shadow-inner">
                                         {company.logo?.asset ? (
                                             <Image 
                                                 src={urlFor(company.logo).url()} 
                                                 alt={company.company_name}
                                                 fill
-                                                className="object-contain p-4 group-hover:scale-110 transition-transform duration-500"
+                                                className="object-contain p-3"
                                             />
                                         ) : (
                                             <Building2 className="w-8 h-8 text-slate-300" />
                                         )}
                                     </div>
-                                    <div className="space-y-1">
-                                        <h3 className="text-xl font-black text-slate-800 leading-tight group-hover:text-[#3200C1] transition-colors">{company.company_name}</h3>
-                                        <div className="flex items-center gap-2">
-                                            {(company.plan === 'pro' || company.plan === 'elite' || company.is_verified) && (
-                                                <span className="flex items-center gap-1 text-[10px] font-black text-emerald-600 uppercase tracking-tighter">
-                                                    <ShieldCheck className="w-3.5 h-3.5" /> Verificada
-                                                </span>
+                                </div>
+
+                                <div className="flex-1 space-y-1.5">
+                                    {/* Google Style Breadcrumb */}
+                                    <div className="flex items-center gap-2 text-xs text-slate-500 mb-1">
+                                        <span className="font-bold">solocasaschile.com</span>
+                                        <span>›</span>
+                                        <span>profesional</span>
+                                        <span>›</span>
+                                        <span>{company.slug}</span>
+                                    </div>
+
+                                    {/* Google Style Title */}
+                                    <Link href={`/profesional/${company.slug}`} className="block">
+                                        <h2 className="text-xl md:text-2xl font-black text-[#1a0dab] group-hover:underline decoration-2 underline-offset-4 leading-tight">
+                                            {company.company_name} 
+                                            {company.is_verified && (
+                                                <ShieldCheck className="w-5 h-5 inline ml-2 text-emerald-500 mb-1" />
                                             )}
-                                            <span className="flex items-center gap-1 text-[10px] font-black text-slate-400 uppercase tracking-tighter">
-                                                <MapPin className="w-3.5 h-3.5" /> 
-                                                {company.coverage_areas?.includes('todo_chile') 
-                                                    ? 'Todo Chile' 
-                                                    : company.coverage_areas?.length > 0 
-                                                        ? `${company.coverage_areas.length} Regiones`
-                                                        : 'Chile'}
-                                            </span>
+                                        </h2>
+                                    </Link>
+
+                                    {/* Snippet */}
+                                    <p className="text-sm text-[#4d5156] leading-relaxed line-clamp-2 max-w-3xl">
+                                        {company.description || `Constructora líder en modelos de casas residenciales. Conoce su catálogo de ${company.modelCount} modelos y su trayectoria en el mercado chileno.`}
+                                    </p>
+
+                                    {/* Meta Tags / "Sitelinks" Style stats */}
+                                    <div className="flex flex-wrap items-center gap-x-6 gap-y-2 pt-2">
+                                        <div className="flex items-center gap-1.5 py-1 px-3 rounded-full bg-slate-50 text-slate-600 text-[10px] font-black uppercase tracking-widest border border-slate-100">
+                                            <Star className="w-3 h-3 text-amber-500" />
+                                            {company.years_experience || "1"}+ Años de trayectoria
+                                        </div>
+                                        <div className="flex items-center gap-1.5 py-1 px-3 rounded-full bg-slate-50 text-slate-600 text-[10px] font-black uppercase tracking-widest border border-slate-100">
+                                            <Building2 className="w-3 h-3 text-[#3200C1]" />
+                                            {company.modelCount || "0"} Modelos Disponibles
+                                        </div>
+                                        <div className="flex items-center gap-1.5 py-1 px-3 rounded-full bg-slate-50 text-slate-600 text-[10px] font-black uppercase tracking-widest border border-slate-100">
+                                            <MapPin className="w-3 h-3 text-red-500" />
+                                            {company.coverage_areas?.includes('todo_chile') 
+                                                ? 'Todo Chile' 
+                                                : company.coverage_areas?.length > 0 
+                                                    ? `${company.coverage_areas.length} Regiones`
+                                                    : 'Chile'}
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
-                            <div className="px-8 flex-1">
-                                <p className="text-sm text-slate-500 line-clamp-3 leading-relaxed">
-                                    {company.description || `Constructora especializada en modelos de casas residenciales con altos estándares de calidad y compromiso.`}
-                                </p>
-                            </div>
-
-                            <div className="p-8 pt-6 space-y-6">
-                                <div className="grid grid-cols-3 gap-3 border-t border-slate-100 pt-6">
-                                    <div className="text-center">
-                                        <p className="text-lg font-black text-[#3200C1]">{company.modelCount || "0"}</p>
-                                        <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest mt-1">Modelos</p>
-                                    </div>
-                                    <div className="text-center border-x border-slate-100">
-                                        <p className="text-lg font-black text-[#3200C1]">{company.years_experience || "1"}+</p>
-                                        <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest mt-1">Años Exp.</p>
-                                    </div>
-                                    <div className="text-center">
-                                        <p className="text-lg font-black text-[#3200C1]">{company.projects_completed_count || "0"}+</p>
-                                        <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest mt-1">Proyectos</p>
-                                    </div>
-                                </div>
-
-                                <div className="flex items-center justify-between group/btn">
-                                    <span className="text-xs font-black text-[#3200C1] uppercase tracking-widest group-hover/btn:mr-2 transition-all">Ver Perfil Completo</span>
-                                    <div className="w-10 h-10 rounded-full bg-[#3200C1] text-[#37FFDB] flex items-center justify-center transform group-hover/btn:scale-110 transition-all shadow-lg shadow-[#3200C1]/20">
-                                        <ArrowRight className="w-5 h-5" />
-                                    </div>
-                                </div>
-                            </div>
-                        </Link>
-                    ))}
-                </div>
-
-                {companies.length === 0 && (
-                    <div className="bg-white rounded-[2.5rem] p-20 text-center border-2 border-dashed border-slate-200">
-                        <Building2 className="w-12 h-12 text-slate-300 mx-auto mb-4" />
-                        <h3 className="text-2xl font-black text-slate-400">Próximamente más empresas</h3>
-                        <p className="text-slate-400 mt-2">Estamos curando el catálogo para ofrecerte lo mejor.</p>
+                        ))}
                     </div>
-                )}
+
+                    {companies.length === 0 && (
+                        <div className="py-20 text-center space-y-4">
+                            <h3 className="text-xl font-bold text-slate-400">No se encontraron resultados</h3>
+                            <p className="text-slate-400">Prueba ajustando tus criterios de búsqueda pronto.</p>
+                        </div>
+                    )}
+                </div>
             </main>
         </div>
     );
