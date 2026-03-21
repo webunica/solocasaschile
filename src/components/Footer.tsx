@@ -81,6 +81,7 @@ export const Footer = ({ contactPhones = ["+56 9 1234 5678"] }: FooterProps) => 
                             {[
                                 { name: "Inicio", href: "/" },
                                 { name: "Modelos", href: "/#results" },
+                                { name: "Empresas", href: "/profesionales" },
                                 { name: "Planes y Precios", href: "/registro" },
                                 { name: "Blog", href: "/blog" },
                                 { name: "Términos y Condiciones", href: "/terminos" }

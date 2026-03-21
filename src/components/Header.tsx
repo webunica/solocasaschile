@@ -12,13 +12,16 @@ export const Header = () => {
                     </div>
 
                     <nav className="hidden md:flex items-center gap-6" aria-label="Navegación principal">
-                        <Link href="/" className="text-sm font-bold text-[#3200C1] hover:text-[#37FFDB] transition-colors">
+                        <Link href="/" className="text-sm font-bold text-[#3200C1] hover:text-[#37FFDB] transition-colors whitespace-nowrap">
                             Inicio
                         </Link>
-                        <Link href="/blog" className="text-sm font-bold text-[#3200C1] hover:text-[#37FFDB] transition-colors">
+                        <Link href="/profesionales" className="text-sm font-bold text-[#3200C1] hover:text-[#37FFDB] transition-colors whitespace-nowrap">
+                            Empresas
+                        </Link>
+                        <Link href="/blog" className="text-sm font-bold text-[#3200C1] hover:text-[#37FFDB] transition-colors whitespace-nowrap">
                             Publicaciones
                         </Link>
-                        <Link href="/registro" className="text-sm font-bold text-[#3200C1] hover:text-[#37FFDB] transition-colors">
+                        <Link href="/registro" className="text-sm font-bold text-[#3200C1] hover:text-[#37FFDB] transition-colors whitespace-nowrap">
                             Planes y Precios
                         </Link>
                     </nav>
