@@ -141,6 +141,18 @@ export default function SettingsForm({ settings }: { settings: any }) {
                             />
                         </div>
                         <div>
+                            <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Versión de Portada (Home)</label>
+                            <select
+                                name="home_version"
+                                defaultValue={settings?.home_version || "v1"}
+                                className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:border-[#3200C1] focus:outline-none bg-slate-50 focus:bg-white text-sm"
+                            >
+                                <option value="v1">Estándar Original (V1)</option>
+                                <option value="v2">Nuevo Portal de Catálogos (V2)</option>
+                            </select>
+                            <p className="text-xs text-slate-400 mt-1.5">Elige qué diseño mostrar en la raíz del sitio.</p>
+                        </div>
+                        <div>
                             <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">WhatsApp Fallback</label>
                             <div className="relative">
                                 <Globe className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />

@@ -16,18 +16,22 @@ export async function saveSettingsAction(formData: FormData) {
         const admin_email = formData.get("admin_email")?.toString() || "";
         const site_name = formData.get("site_name")?.toString() || "";
         const whatsapp_fallback = formData.get("whatsapp_fallback")?.toString() || "";
+        const home_version = formData.get("home_version")?.toString() || "v1";
 
-        // Usamos createOrReplace con ID fijo para mantenerlo como Singleton
-        await sanityWriteClient.createOrReplace({
-            _id: SETTINGS_DOC_ID,
-            _type: "siteSettings",
+        // Aseguramos que existe el documento sin sobreescribir
+        await sanityWriteClient.createIfNotExists({ _id: SETTINGS_DOC_ID, _type: "siteSettings" });
+
+        // Actualizamos solo los campos del formulario
+        await sanityWriteClient.patch(SETTINGS_DOC_ID).set({
             resend_api_key,
             from_email,
             admin_email,
             site_name,
             whatsapp_fallback,
-        });
+            home_version
+        }).commit();
 
+        revalidatePath("/");
         revalidatePath("/dashboard/settings");
         return { success: true };
 
