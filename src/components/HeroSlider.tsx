@@ -6,6 +6,7 @@ import Image from "next/image";
 import { ArrowUpRight, Bed, Bath, Scale, MapPin } from "lucide-react";
 import { formatPrice } from "@/lib/utils";
 import type { ModelRow } from "@/lib/db";
+import CompareButton from "@/components/CompareButton";
 
 export function HeroSlider({ models }: { models: ModelRow[] }) {
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -89,13 +90,18 @@ export function HeroSlider({ models }: { models: ModelRow[] }) {
                                     </p>
                                 </div>
 
-                                <Link
-                                    href={`/modelo/${model.slug || model.id}`}
-                                    className="brand-button-primary px-10 py-4 text-lg"
-                                    prefetch={false}
-                                >
-                                    Cotizar Ahora <ArrowUpRight className="w-5 h-5" aria-hidden="true" />
-                                </Link>
+                                <div className="flex gap-3">
+                                    <Link
+                                        href={`/modelo/${model.slug || model.id}`}
+                                        className="brand-button-primary px-10 py-4 text-lg"
+                                        prefetch={false}
+                                    >
+                                        Cotizar Ahora <ArrowUpRight className="w-5 h-5" aria-hidden="true" />
+                                    </Link>
+                                    <div className="bg-white/95 backdrop-blur-md rounded-xl shadow-lg border border-white/20">
+                                        <CompareButton modelId={model.id} />
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

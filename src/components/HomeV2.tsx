@@ -174,6 +174,8 @@ export default async function HomeV2() {
 
 // ─── Componentes Auxiliares ──────────────────────────────────────────────
 
+import CompareButton from "@/components/CompareButton";
+
 function MiniModelCard({ model }: { model: ModelRow }) {
     const imageUrl = model.image_urls ? model.image_urls.split(",")[0].trim() : null;
 
@@ -185,6 +187,11 @@ function MiniModelCard({ model }: { model: ModelRow }) {
                 ) : (
                     <div className="absolute inset-0 flex items-center justify-center text-slate-300">Sin Imagen</div>
                 )}
+                
+                <div className="absolute top-2 right-2 z-20 shadow-lg bg-white/90 backdrop-blur-sm rounded-xl">
+                    <CompareButton modelId={model.id} />
+                </div>
+                
                 <div className="absolute bottom-2 left-2 bg-black/60 backdrop-blur-sm text-white text-[10px] uppercase font-black px-2 py-1 rounded shadow-sm">
                     {model.category}
                 </div>
