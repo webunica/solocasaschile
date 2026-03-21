@@ -35,13 +35,15 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
+  const rawParams = await searchParams;
+  // Si hay parámetros (ej: búsqueda real), saltamos V2 y devolvemos la cuadrícula de resultados V1.
+  const hasFilters = Object.keys(rawParams).length > 0;
+
   // Check home version setting from Sanity first
   const siteSettings = await sanityClient.fetch(`*[_type == "siteSettings" && !(_id in path("drafts.**"))] | order(_updatedAt desc)[0]{ home_version }`, {}, { cache: 'no-store' });
-  if (siteSettings?.home_version === 'v2') {
+  if (siteSettings?.home_version === 'v2' && !hasFilters) {
     return <HomeV2 />;
   }
-
-  const rawParams = await searchParams;
 
   // Parse manually for safe filtering since it's going into SQLite
   const filtersParams = {

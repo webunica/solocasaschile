@@ -35,18 +35,21 @@ export default async function HomeV2() {
                     <HeroSlider models={sliderModels} />
                 </Suspense>
                 
-                {/* Search Bar superpuesta (simulación visual) */}
-                <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 w-[90%] md:w-[800px] bg-white rounded-xl shadow-xl p-4 md:p-6 z-20 flex flex-col md:flex-row gap-4 items-center border border-slate-100 hidden sm:flex">
-                    <input type="text" placeholder="Buscar casas por modelo, material..." className="flex-1 bg-slate-50 border border-slate-200 px-4 py-3 rounded-lg outline-none focus:ring-2 focus:ring-[#3200C1]" />
-                    <select className="bg-slate-50 border border-slate-200 px-4 py-3 rounded-lg outline-none min-w-[150px]">
-                        <option value="">Todas las regiones</option>
-                        <option value="metropolitana">Metropolitana</option>
-                        <option value="valparaiso">Valparaíso</option>
+                {/* Search Bar superpuesta (ahora funcional) */}
+                <form action="/" method="GET" className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 w-[90%] md:w-[800px] bg-white rounded-xl shadow-xl p-4 md:p-6 z-20 flex flex-col md:flex-row gap-4 items-center border border-slate-100 hidden sm:flex">
+                    <input name="search" type="text" placeholder="Buscar casas por empresa, precio, modelo p.ej: 'alicante'..." className="flex-1 bg-slate-50 border border-slate-200 px-4 py-3 rounded-lg outline-none focus:ring-2 focus:ring-[#3200C1]" />
+                    <select name="category" className="bg-slate-50 border border-slate-200 px-4 py-3 rounded-lg outline-none min-w-[150px]">
+                        <option value="">Cualquier categoría</option>
+                        <option value="Prefabricada Madera">Prefabricada Madera</option>
+                        <option value="SIP">Casas SIP</option>
+                        <option value="Modular">Modular</option>
+                        <option value="Llave en Mano">Llave en Mano</option>
+                        <option value="Metalcon">Metalcon</option>
                     </select>
-                    <button className="bg-[#3200C1] text-[#37FFDB] font-black px-8 py-3 rounded-lg hover:brightness-110 transition-all w-full md:w-auto">
+                    <button type="submit" className="bg-[#3200C1] text-[#37FFDB] font-black px-8 py-3 rounded-lg hover:brightness-110 transition-all w-full md:w-auto cursor-pointer">
                         Buscar
                     </button>
-                </div>
+                </form>
             </div>
 
             <main className="max-w-[1400px] mx-auto px-4 sm:px-6 pt-24 pb-20 flex flex-col gap-20">
