@@ -43,6 +43,20 @@ export const siteSettingsType = defineType({
             initialValue: '───────────────────────────────────',
         }),
         defineField({
+            name: 'home_version',
+            title: 'Versión de Portada (Home)',
+            type: 'string',
+            description: 'Elige qué diseño mostrar en la página principal',
+            options: {
+                list: [
+                    { title: 'Versión Original (V1)', value: 'v1' },
+                    { title: 'Nueva Versión Portal (V2)', value: 'v2' }
+                ],
+                layout: 'radio'
+            },
+            initialValue: 'v1',
+        }),
+        defineField({
             name: 'site_name',
             title: 'Nombre del Sitio',
             type: 'string',

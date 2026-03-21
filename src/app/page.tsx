@@ -17,6 +17,8 @@ import CompareButton from "@/components/CompareButton";
 
 import { BlogCarousel } from "@/components/BlogCarousel";
 import { ConstructorBanner } from "@/components/ConstructorBanner";
+import { sanityClient } from "@/lib/sanity.client";
+import HomeV2 from "@/components/HomeV2";
 
 export const metadata: Metadata = {
   title: "Casas Prefabricadas, SIP y Modulares en Chile | Comparador de Precios 2026",
@@ -33,6 +35,12 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
+  // Check home version setting from Sanity first
+  const siteSettings = await sanityClient.fetch(`*[_type == "siteSettings"][0]{ home_version }`, {}, { cache: 'no-store' });
+  if (siteSettings?.home_version === 'v2') {
+    return <HomeV2 />;
+  }
+
   const rawParams = await searchParams;
 
   // Parse manually for safe filtering since it's going into SQLite
