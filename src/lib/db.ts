@@ -137,7 +137,7 @@ export async function getModels(filters: {
         ...,
         "slug": slug.current,
         "image_urls":   coalesce(images[].asset->url, image_urls),
-        "company_plan": *[_type=="companyUser" && company_name==^.company_name && is_active!=false][0].plan
+        "company_plan": *[_type=="companyUser" && company_name==^.company_name && is_active!=false && role != "admin"][0].plan
     }`;
 
     const allDocs = await sanityClient.fetch(dataQuery, params);
@@ -179,8 +179,8 @@ export async function getDistinctCompanies() {
     // Paso 1: empresas con al menos un modelo ACTIVO
     const allNamesQuery = `array::unique(*[_type == "houseModel" && is_active != false && defined(company_name)].company_name)`;
 
-    // Paso 2: nombres de empresas con cuenta B2B DESACTIVADA explícitamente
-    const disabledQuery = `*[_type == "companyUser" && is_active == false].company_name`;
+    // Paso 2: nombres de empresas con cuenta B2B DESACTIVADA explícitamente o que son admins
+    const disabledQuery = `*[_type == "companyUser" && (is_active == false || role == "admin")].company_name`;
 
     const [allNames, disabledNames]: [string[], string[]] = await Promise.all([
         sanityClient.fetch(allNamesQuery),
@@ -204,7 +204,7 @@ export async function getRandomModels(limit: number = 5) {
     // Solo modelos activos de empresas sin cuenta O con cuenta activa
     const query = `*[_type == "houseModel" && is_active != false && (defined(image_urls) || defined(images)) && (
         count(*[_type=="companyUser" && company_name==^.company_name]) == 0 ||
-        count(*[_type=="companyUser" && company_name==^.company_name && is_active!=false]) > 0
+        count(*[_type=="companyUser" && company_name==^.company_name && is_active!=false && role != "admin"]) > 0
     )] | order(_updatedAt desc) [0...${limit}] {
         ...,
         "slug": slug.current,
@@ -216,7 +216,7 @@ export async function getRandomModels(limit: number = 5) {
 
 // Empresas Constructor con banner activo para la homepage
 export async function getConstructorCompanies() {
-    const query = `*[_type == "companyUser" && plan == "constructor" && is_active != false] | order(_createdAt asc) {
+    const query = `*[_type == "companyUser" && plan == "constructor" && is_active != false && role != "admin"] | order(_createdAt asc) {
         _id,
         company_name,
         "logo_url": logo.asset->url,

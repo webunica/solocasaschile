@@ -27,17 +27,15 @@ async function getSimilarModels({
     const minBeds = Math.max(1, (bedrooms || 1) - 1);
     const maxBeds = (bedrooms || 99) + 1;
 
-    const query = `* [
-        _type == "houseModel" &&
-        is_active != false &&
-        _id != $currentId &&
-        (
-            category == $category ||
-            (bedrooms >= $minBeds && bedrooms <= $maxBeds) ||
-            (surface_m2 >= $minSurface && surface_m2 <= $maxSurface)
-        )
-    ] | order(price_from asc)[0...6] {
-    _id,
+    const query = `*[_type == "houseModel" && is_active != false && _id != $currentId && (
+        category == $category ||
+        (bedrooms >= $minBeds && bedrooms <= $maxBeds) ||
+        (surface_m2 >= $minSurface && surface_m2 <= $maxSurface)
+    ) && (
+        count(*[_type=="companyUser" && company_name==^.company_name]) == 0 ||
+        count(*[_type=="companyUser" && company_name==^.company_name && is_active!=false && role != "admin"]) > 0
+    )] | order(price_from asc)[0...6] {
+        _id,
         model_name,
         company_name,
         category,
@@ -47,9 +45,9 @@ async function getSimilarModels({
         price_from,
         currency,
         model_url,
-        "imageUrl": coalesce(images[0].asset -> url, image_urls[0]),
-            "company_plan": * [_type == "companyUser" && company_name ==^.company_name && is_active != false][0].plan
-} `;
+        "imageUrl": coalesce(images[0].asset->url, image_urls[0]),
+        "company_plan": *[_type == "companyUser" && company_name == ^.company_name && is_active != false && role != "admin"][0].plan
+    }`;
 
     try {
         const results = await sanityClient.fetch(

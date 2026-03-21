@@ -97,6 +97,9 @@ export const companyUserType = defineType({
         }),
         defineField({ name: 'logo', title: 'Logotipo Corporativo', type: 'image', options: { hotspot: true } }),
         defineField({ name: 'favicon', title: 'Favicon / Icono (Redes)', type: 'image', options: { hotspot: true }, description: 'Símbolo o icono de tu empresa para la web y redes.' }),
+        defineField({ name: 'address', title: 'Dirección Matriz (Física)', type: 'string', description: 'Dirección física de la oficina o planta' }),
+        defineField({ name: 'city', title: 'Ciudad', type: 'string' }),
+        defineField({ name: 'region', title: 'Región Principal', type: 'string' }),
         defineField({ name: 'contact_phone', title: 'Teléfono Comercial (Receptor Leads)', type: 'string' }),
         defineField({
             name: 'whatsapp_number',
