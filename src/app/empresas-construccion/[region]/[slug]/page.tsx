@@ -12,8 +12,16 @@ type Props = {
     params: Promise<{ region: string, slug: string }>
 }
 
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import AdminEditButton from "@/components/AdminEditButton";
+
 export default async function CompanyProfilePage({ params }: Props) {
     const { region, slug } = await params;
+
+    // Check if user is admin
+    const session = await getServerSession(authOptions);
+    const isAdmin = (session?.user as any)?.role === "admin";
 
     // 1. Fetch Company Data
     const company = await sanityClient.fetch(
@@ -53,6 +61,9 @@ export default async function CompanyProfilePage({ params }: Props) {
 
     return (
         <div className="min-h-screen bg-slate-50 pb-20">
+            {/* Admin Floating Edit Button */}
+            {isAdmin && <AdminEditButton documentId={company._id} documentType="companyUser" />}
+
             {/* Top Banner (Elite) or Simple Header */}
             <div className="relative min-h-[380px] md:h-[400px] w-full bg-[#3200C1] flex items-center justify-center py-12 md:py-0">
                 {isElite && company.cover_image?.asset ? (

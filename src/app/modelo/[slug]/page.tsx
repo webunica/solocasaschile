@@ -74,6 +74,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
 }
 
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import AdminEditButton from "@/components/AdminEditButton";
+
 export default async function ModelPage({ params }: Props) {
     const { slug } = await params;
 
@@ -81,6 +85,10 @@ export default async function ModelPage({ params }: Props) {
     const model = await sanityClient.fetch(MODEL_QUERY, { slug });
 
     if (!model) return notFound();
+
+    // Check if user is admin
+    const session = await getServerSession(authOptions);
+    const isAdmin = (session?.user as any)?.role === "admin";
 
     // Check if the URL reached was the old _id but we have a slug
     if (model.slug && slug !== model.slug) {
@@ -98,6 +106,9 @@ export default async function ModelPage({ params }: Props) {
                 modelName={model.model_name} 
                 companyName={model.company_name} 
             />
+
+            {/* Admin Floating Edit Button */}
+            {isAdmin && <AdminEditButton documentId={model._id} documentType="houseModel" />}
 
             {/* Header / Breadcrumb */}
             <div className="bg-white border-b border-slate-200">
