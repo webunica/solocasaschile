@@ -52,26 +52,19 @@ export function ClientTabs({ categories, allModels, betaMode }: { categories: st
     );
 }
 
-// Reduplicado de MiniModelCard aquí o idealmente importado, 
-// pero como ClientTabs es cliente, podemos duplicar (o exportarlo de un archivo base)
-import CompareButton from "@/components/CompareButton";
-
+// MiniModelCard sin botones de acción — solo imagen, datos y link en el nombre
 function MiniModelCard({ model, betaMode }: { model: ModelRow, betaMode?: boolean }) {
     const imageUrl = model.image_urls ? model.image_urls.split(",")[0].trim() : null;
+    const href = `/modelo/${model.slug || model.id}`;
 
     return (
-        <article className="bg-white rounded-xl overflow-hidden border border-slate-200 hover:border-[#37FFDB] shadow-sm hover:shadow-md transition-all group flex flex-col relative h-full">
+        <article className="bg-white rounded-xl overflow-hidden border border-slate-200 hover:border-[#37FFDB] shadow-sm hover:shadow-md transition-all group flex flex-col h-full">
             <div className="relative aspect-[4/3] w-full overflow-hidden bg-slate-100">
                 {imageUrl ? (
                     <Image src={imageUrl} alt={model.model_name} fill className="object-cover group-hover:scale-105 transition-transform duration-500" sizes="(max-width: 640px) 100vw, 20vw" />
                 ) : (
                     <div className="absolute inset-0 flex items-center justify-center text-slate-300">Sin Imagen</div>
                 )}
-                
-                <div className="absolute top-2 right-2 z-20 shadow-lg bg-white/90 backdrop-blur-sm rounded-xl">
-                    <CompareButton modelId={model.id} />
-                </div>
-                
                 <div className="absolute bottom-2 left-2 bg-black/60 backdrop-blur-sm text-white text-[10px] uppercase font-black px-2 py-1 rounded shadow-sm">
                     {model.category}
                 </div>
@@ -79,7 +72,13 @@ function MiniModelCard({ model, betaMode }: { model: ModelRow, betaMode?: boolea
             
             <div className="p-4 flex flex-col flex-1 gap-2">
                 <p className="text-[10px] text-slate-400 font-bold flex items-center gap-1 uppercase truncate"><MapPin className="w-3 h-3" /> {model.company_name}</p>
-                <h3 className="font-extrabold text-[#3200C1] line-clamp-1 leading-tight text-sm">{model.model_name}</h3>
+                {betaMode ? (
+                    <h3 className="font-extrabold text-[#3200C1] line-clamp-1 leading-tight text-sm">{model.model_name}</h3>
+                ) : (
+                    <h3 className="font-extrabold line-clamp-1 leading-tight text-sm">
+                        <Link href={href} className="text-[#3200C1] hover:underline">{model.model_name}</Link>
+                    </h3>
+                )}
                 
                 <div className="flex items-center justify-between text-[11px] text-slate-500 bg-slate-50 p-2 rounded-lg mt-1 border border-slate-100">
                     <span className="flex items-center gap-1" title="Superficie"><Scale className="w-3 h-3 text-[#3200C1]" /> {model.surface_m2 || "--"}m²</span>
@@ -92,14 +91,6 @@ function MiniModelCard({ model, betaMode }: { model: ModelRow, betaMode?: boolea
                     <span className="text-sm font-black text-[#3200C1] whitespace-nowrap">{formatPrice(model.price_from, model.currency)}</span>
                 </div>
             </div>
-            
-            {betaMode ? (
-                <div onClick={() => alert('Modo Beta: Los modelos no están disponibles próximamente.')} className="absolute inset-0 z-10 cursor-pointer" />
-            ) : (
-                <Link href={`/modelo/${model.slug || model.id}`} className="absolute inset-0 z-10">
-                    <span className="sr-only">Ver {model.model_name}</span>
-                </Link>
-            )}
         </article>
     );
 }
