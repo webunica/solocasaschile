@@ -9,10 +9,22 @@ import { Bed, Bath, Scale, MapPin, Star, ArrowRight, Quote } from "lucide-react"
 
 export default async function HomeV2({ betaMode }: { betaMode?: boolean }) {
     // Definir queries - Buscamos casas destacadas, económicas y empresas verificadas
-    const [{ models: featuredModels }, { models: cheapModels }, { models: allModels }, companies] = await Promise.all([
-        getModels({ limit: 15, sort: "price_desc" }), // Simulando destacadas (ideales serían is_featured)
-        getModels({ limit: 10, sort: "price_asc" }),  // Más económicas
-        getModels({ limit: 50 }),                     // Para las pestañas
+    const [{ models: featuredModels }, cheapResult, { models: allModels }, companies] = await Promise.all([
+        getModels({ limit: 15, sort: "price_desc" }),
+        // Más económicas: query directa para respetar precio real
+        sanityClient.fetch<any[]>(
+            `*[_type == "houseModel" && is_active == true && price_from > 0
+                && count(*[_type=="companyUser" && company_name==^.company_name && is_active!=false && role!="admin"]) > 0
+            ] | order(price_from asc)[0...10] {
+                _id, model_name, company_name, category, surface_m2, bedrooms, bathrooms, price_from, currency,
+                "slug": slug.current,
+                "image_urls": coalesce(images[].asset->url, image_urls),
+                "company_plan": *[_type=="companyUser" && company_name==^.company_name && is_active!=false && role!="admin"][0].plan
+            }`,
+            {},
+            { next: { revalidate: 3600 } }
+        ),
+        getModels({ limit: 50 }),
         sanityClient.fetch(`*[_type == "companyUser" && is_verified == true] | order(_createdAt desc)[0...6]{
             _id, company_name, logo, cover_image, description, badges
         }`, {}, { cache: 'no-store' }),
@@ -23,6 +35,9 @@ export default async function HomeV2({ betaMode }: { betaMode?: boolean }) {
     
     // 2 filas de 5 modelos (total 10)
     const top10Models = featuredModels.slice(0, 10);
+
+    // cheapModels: resultado directo de la query GROQ ordenada por precio real
+    const cheapModels = cheapResult || [];
 
     // Tipos de casas para los tabs
     const categories = ["Madera", "SIP", "Metalcon", "Modular", "Hormigón"];
@@ -40,11 +55,11 @@ export default async function HomeV2({ betaMode }: { betaMode?: boolean }) {
                     <input name="search" type="text" placeholder="Buscar casas por empresa, precio, modelo p.ej: 'alicante'..." className="flex-1 bg-slate-50 border border-slate-200 px-4 py-3 rounded-lg outline-none focus:ring-2 focus:ring-[#3200C1]" />
                     <select name="category" className="bg-slate-50 border border-slate-200 px-4 py-3 rounded-lg outline-none min-w-[150px]">
                         <option value="">Cualquier categoría</option>
-                        <option value="Prefabricada Madera">Prefabricada Madera</option>
-                        <option value="SIP">Casas SIP</option>
-                        <option value="Modular">Modular</option>
-                        <option value="Llave en Mano">Llave en Mano</option>
+                        <option value="Madera">Madera</option>
+                        <option value="SIP">SIP</option>
                         <option value="Metalcon">Metalcon</option>
+                        <option value="Modular">Modular</option>
+                        <option value="Hormigón">Hormigón</option>
                     </select>
                     <button type="submit" className="bg-[#3200C1] text-[#37FFDB] font-black px-8 py-3 rounded-lg hover:brightness-110 transition-all w-full md:w-auto cursor-pointer">
                         Buscar
@@ -94,8 +109,8 @@ export default async function HomeV2({ betaMode }: { betaMode?: boolean }) {
                     </div>
                     
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-                        {cheapModels.slice(0, 5).map(model => (
-                            <MiniModelCard key={model.id} model={model} betaMode={betaMode} />
+                        {cheapModels.slice(0, 5).map((model: any) => (
+                            <MiniModelCard key={model._id || model.id} model={{ ...model, id: model._id || model.id, image_urls: Array.isArray(model.image_urls) ? model.image_urls.join(',') : (model.image_urls || '') }} betaMode={betaMode} />
                         ))}
                     </div>
                 </section>
