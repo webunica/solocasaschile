@@ -61,7 +61,10 @@ export default async function HomeV2({ betaMode }: { betaMode?: boolean }) {
                             <h2 className="text-2xl md:text-3xl font-black text-[#3200C1] mb-2">Modelos Destacados</h2>
                             <p className="text-slate-500">Los diseños favoritos con mejor relación calidad-precio.</p>
                         </div>
-                        <Link href={betaMode ? "#" : "/?sort=price_desc"} onClick={betaMode ? (e) => { e.preventDefault(); alert('Modo Beta: En desarrollo - Pronto disponible'); } : undefined} className="text-[#3200C1] font-bold text-sm hover:underline hidden sm:block">Ver todos</Link>
+                        {betaMode
+                            ? <span className="text-slate-300 font-bold text-sm hidden sm:block cursor-not-allowed">Ver todos</span>
+                            : <Link href="/?sort=price_desc" className="text-[#3200C1] font-bold text-sm hover:underline hidden sm:block">Ver todos</Link>
+                        }
                     </div>
                     
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
@@ -84,7 +87,10 @@ export default async function HomeV2({ betaMode }: { betaMode?: boolean }) {
                             <h2 className="text-2xl md:text-3xl font-black text-emerald-600 mb-2">Opciones Más Económicas</h2>
                             <p className="text-slate-500">Casas prefabricadas accesibles para empezar tu proyecto.</p>
                         </div>
-                        <Link href={betaMode ? "#" : "/?sort=price_asc"} onClick={betaMode ? (e) => { e.preventDefault(); alert('Modo Beta: En desarrollo - Pronto disponible'); } : undefined} className="text-emerald-600 font-bold text-sm hover:underline hidden sm:block">Revisar precios bajos</Link>
+                        {betaMode
+                            ? <span className="text-slate-300 font-bold text-sm hidden sm:block cursor-not-allowed">Revisar precios bajos</span>
+                            : <Link href="/?sort=price_asc" className="text-emerald-600 font-bold text-sm hover:underline hidden sm:block">Revisar precios bajos</Link>
+                        }
                     </div>
                     
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
@@ -214,7 +220,7 @@ function MiniModelCard({ model, betaMode }: { model: ModelRow, betaMode?: boolea
             </div>
             
             {betaMode ? (
-                <div onClick={() => alert('Modo Beta: Exploración inactiva por despliegue.')} className="absolute inset-0 z-10 cursor-pointer" />
+                <div title="Próximamente disponible" className="absolute inset-0 z-10 cursor-not-allowed" />
             ) : (
                 <Link href={`/modelo/${model.slug || model.id}`} className="absolute inset-0 z-10">
                     <span className="sr-only">Ver {model.model_name}</span>
