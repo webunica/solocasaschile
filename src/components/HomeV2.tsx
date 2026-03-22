@@ -7,7 +7,7 @@ import { HeroSlider } from "@/components/HeroSlider";
 import { formatPrice } from "@/lib/utils";
 import { Bed, Bath, Scale, MapPin, Star, ArrowRight, Quote } from "lucide-react";
 
-export default async function HomeV2() {
+export default async function HomeV2({ betaMode }: { betaMode?: boolean }) {
     // Definir queries - Buscamos casas destacadas, económicas y empresas verificadas
     const [{ models: featuredModels }, { models: cheapModels }, { models: allModels }, companies] = await Promise.all([
         getModels({ limit: 15, sort: "price_desc" }), // Simulando destacadas (ideales serían is_featured)
@@ -25,7 +25,7 @@ export default async function HomeV2() {
     const top10Models = featuredModels.slice(0, 10);
 
     // Tipos de casas para los tabs
-    const categories = ["Prefabricada Madera", "SIP", "Modular", "Llave en Mano", "Metalcon"];
+    const categories = ["Madera", "SIP", "Metalcon", "Modular", "Hormigón"];
 
     return (
         <div className="min-h-screen bg-[#f3f4f6]">
@@ -61,12 +61,12 @@ export default async function HomeV2() {
                             <h2 className="text-2xl md:text-3xl font-black text-[#3200C1] mb-2">Modelos Destacados</h2>
                             <p className="text-slate-500">Los diseños favoritos con mejor relación calidad-precio.</p>
                         </div>
-                        <Link href="/?sort=price_desc" className="text-[#3200C1] font-bold text-sm hover:underline hidden sm:block">Ver todos</Link>
+                        <Link href={betaMode ? "#" : "/?sort=price_desc"} onClick={betaMode ? (e) => { e.preventDefault(); alert('Modo Beta: En desarrollo - Pronto disponible'); } : undefined} className="text-[#3200C1] font-bold text-sm hover:underline hidden sm:block">Ver todos</Link>
                     </div>
                     
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
                         {top10Models.map(model => (
-                            <MiniModelCard key={model.id} model={model} />
+                            <MiniModelCard key={model.id} model={model} betaMode={betaMode} />
                         ))}
                     </div>
                 </section>
@@ -74,7 +74,7 @@ export default async function HomeV2() {
                 {/* 3. Tabs de Tipos de Casas */}
                 <section>
                     <h2 className="text-2xl md:text-3xl font-black text-[#3200C1] mb-8 text-center">Encuentra por Sistema Constructivo</h2>
-                    <HomeTabs categories={categories} allModels={allModels} />
+                    <HomeTabs categories={categories} allModels={allModels} betaMode={betaMode} />
                 </section>
 
                 {/* 4. Modelos Más Económicos */}
@@ -84,12 +84,12 @@ export default async function HomeV2() {
                             <h2 className="text-2xl md:text-3xl font-black text-emerald-600 mb-2">Opciones Más Económicas</h2>
                             <p className="text-slate-500">Casas prefabricadas accesibles para empezar tu proyecto.</p>
                         </div>
-                        <Link href="/?sort=price_asc" className="text-emerald-600 font-bold text-sm hover:underline hidden sm:block">Revisar precios bajos</Link>
+                        <Link href={betaMode ? "#" : "/?sort=price_asc"} onClick={betaMode ? (e) => { e.preventDefault(); alert('Modo Beta: En desarrollo - Pronto disponible'); } : undefined} className="text-emerald-600 font-bold text-sm hover:underline hidden sm:block">Revisar precios bajos</Link>
                     </div>
                     
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
                         {cheapModels.slice(0, 5).map(model => (
-                            <MiniModelCard key={model.id} model={model} />
+                            <MiniModelCard key={model.id} model={model} betaMode={betaMode} />
                         ))}
                     </div>
                 </section>
@@ -176,7 +176,7 @@ export default async function HomeV2() {
 
 import CompareButton from "@/components/CompareButton";
 
-function MiniModelCard({ model }: { model: ModelRow }) {
+function MiniModelCard({ model, betaMode }: { model: ModelRow, betaMode?: boolean }) {
     const imageUrl = model.image_urls ? model.image_urls.split(",")[0].trim() : null;
 
     return (
@@ -213,18 +213,20 @@ function MiniModelCard({ model }: { model: ModelRow }) {
                 </div>
             </div>
             
-            <Link href={`/modelo/${model.slug || model.id}`} className="absolute inset-0 z-10">
-                <span className="sr-only">Ver {model.model_name}</span>
-            </Link>
+            {betaMode ? (
+                <div onClick={() => alert('Modo Beta: Exploración inactiva por despliegue.')} className="absolute inset-0 z-10 cursor-pointer" />
+            ) : (
+                <Link href={`/modelo/${model.slug || model.id}`} className="absolute inset-0 z-10">
+                    <span className="sr-only">Ver {model.model_name}</span>
+                </Link>
+            )}
         </article>
     );
 }
 
-// Client Component Wrapper para Tabs (para no mezclar Client/Server hook actions si no es necesario, lo haremos simple)
-// Como es un mockup, podemos usar hash URLs o puro CSS/State. 
-// Para el state creamos un componente cliente muy pequeño
+// Client Component Wrapper para Tabs
 import { ClientTabs } from "./ClientTabs";
 
-function HomeTabs({ categories, allModels }: { categories: string[], allModels: ModelRow[] }) {
-    return <ClientTabs categories={categories} allModels={allModels} />;
+function HomeTabs({ categories, allModels, betaMode }: { categories: string[], allModels: ModelRow[], betaMode?: boolean }) {
+    return <ClientTabs categories={categories} allModels={allModels} betaMode={betaMode} />;
 }

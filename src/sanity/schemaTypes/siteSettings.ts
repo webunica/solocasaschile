@@ -63,6 +63,13 @@ export const siteSettingsType = defineType({
             initialValue: 'Solo Casas Chile',
         }),
         defineField({
+            name: 'beta_mode',
+            title: 'Modo Beta (Bloqueo de Navegación frontal)',
+            type: 'boolean',
+            description: 'Bloquea navegar a ver detalle de modelos o perfil de empresas, mostrando alerta en Front-End V2.',
+            initialValue: false,
+        }),
+        defineField({
             name: 'site_logo',
             title: 'Logotipo Principal (Cabecera)',
             type: 'image',

@@ -40,9 +40,9 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
   const hasFilters = Object.keys(rawParams).length > 0;
 
   // Check home version setting from Sanity first
-  const siteSettings = await sanityClient.fetch(`*[_type == "siteSettings" && !(_id in path("drafts.**"))] | order(_updatedAt desc)[0]{ home_version }`, {}, { cache: 'no-store' });
+  const siteSettings = await sanityClient.fetch(`*[_type == "siteSettings" && !(_id in path("drafts.**"))] | order(_updatedAt desc)[0]{ home_version, beta_mode }`, {}, { cache: 'no-store' });
   if (siteSettings?.home_version === 'v2' && !hasFilters) {
-    return <HomeV2 />;
+    return <HomeV2 betaMode={siteSettings?.beta_mode} />;
   }
 
   // Parse manually for safe filtering since it's going into SQLite

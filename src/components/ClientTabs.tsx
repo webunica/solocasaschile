@@ -7,13 +7,15 @@ import { MapPin, Scale, Bed, Bath } from "lucide-react";
 import { formatPrice } from "@/lib/utils";
 import type { ModelRow } from "@/lib/db";
 
-export function ClientTabs({ categories, allModels }: { categories: string[], allModels: ModelRow[] }) {
+export function ClientTabs({ categories, allModels, betaMode }: { categories: string[], allModels: ModelRow[], betaMode?: boolean }) {
     const [activeTab, setActiveTab] = useState(categories[0]);
 
-    // Filtrar hasta 10 modelos que coincidan (parcialmente, ignorando case) con la categoría activa
-    const filteredModels = allModels.filter((m: any) => 
-        m.category?.toLowerCase().includes(activeTab.toLowerCase())
-    ).slice(0, 10);
+    // Filtrar hasta 10 modelos que coincidan (parcialmente, ignorando case) con la categoría activa o material
+    const filteredModels = allModels.filter((m: any) => {
+        const matchCategory = m.category?.toLowerCase().includes(activeTab.toLowerCase());
+        const matchMaterial = m.structure_material?.toLowerCase().includes(activeTab.toLowerCase());
+        return matchCategory || matchMaterial;
+    }).slice(0, 10);
 
     return (
         <div>
@@ -38,7 +40,7 @@ export function ClientTabs({ categories, allModels }: { categories: string[], al
             {filteredModels.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
                     {filteredModels.map(model => (
-                        <MiniModelCard key={model.id} model={model} />
+                        <MiniModelCard key={model.id} model={model} betaMode={betaMode} />
                     ))}
                 </div>
             ) : (
@@ -54,7 +56,7 @@ export function ClientTabs({ categories, allModels }: { categories: string[], al
 // pero como ClientTabs es cliente, podemos duplicar (o exportarlo de un archivo base)
 import CompareButton from "@/components/CompareButton";
 
-function MiniModelCard({ model }: { model: ModelRow }) {
+function MiniModelCard({ model, betaMode }: { model: ModelRow, betaMode?: boolean }) {
     const imageUrl = model.image_urls ? model.image_urls.split(",")[0].trim() : null;
 
     return (
@@ -91,9 +93,13 @@ function MiniModelCard({ model }: { model: ModelRow }) {
                 </div>
             </div>
             
-            <Link href={`/modelo/${model.slug || model.id}`} className="absolute inset-0 z-10">
-                <span className="sr-only">Ver {model.model_name}</span>
-            </Link>
+            {betaMode ? (
+                <div onClick={() => alert('Modo Beta: Los modelos no están disponibles próximamente.')} className="absolute inset-0 z-10 cursor-pointer" />
+            ) : (
+                <Link href={`/modelo/${model.slug || model.id}`} className="absolute inset-0 z-10">
+                    <span className="sr-only">Ver {model.model_name}</span>
+                </Link>
+            )}
         </article>
     );
 }

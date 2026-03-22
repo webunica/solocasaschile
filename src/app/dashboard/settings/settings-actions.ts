@@ -17,6 +17,7 @@ export async function saveSettingsAction(formData: FormData) {
         const site_name = formData.get("site_name")?.toString() || "";
         const whatsapp_fallback = formData.get("whatsapp_fallback")?.toString() || "";
         const home_version = formData.get("home_version")?.toString() || "v1";
+        const beta_mode = formData.get("beta_mode") === "on";
 
         // Buscamos cuál es el ID del documento activo de settings
         const latestDoc = await sanityWriteClient.fetch(`*[_type == "siteSettings" && !(_id in path("drafts.**"))] | order(_updatedAt desc)[0]{ _id }`);
@@ -32,7 +33,8 @@ export async function saveSettingsAction(formData: FormData) {
             admin_email,
             site_name,
             whatsapp_fallback,
-            home_version
+            home_version,
+            beta_mode
         }).commit();
 
         revalidatePath("/");

@@ -152,6 +152,23 @@ export default function SettingsForm({ settings }: { settings: any }) {
                             </select>
                             <p className="text-xs text-slate-400 mt-1.5">Elige qué diseño mostrar en la raíz del sitio.</p>
                         </div>
+                        {/* Beta Mode toggle */}
+                        <div className="col-span-1 md:col-span-2 bg-amber-50 border border-amber-200 rounded-xl p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                            <div className="flex-1">
+                                <p className="font-black text-sm text-amber-800">🧪 Modo Beta (Bloqueo de Navegación)</p>
+                                <p className="text-xs text-amber-700 mt-1">Al activar, los visitantes solo ven el Home V2 con imágenes referenciales. Los links a modelos y empresas están deshabilitados. Los links a "Publicaciones" y "Empresas" son visibles pero no navegan.</p>
+                            </div>
+                            <label className="relative inline-flex items-center cursor-pointer shrink-0">
+                                <input
+                                    type="checkbox"
+                                    name="beta_mode"
+                                    defaultChecked={!!settings?.beta_mode}
+                                    className="sr-only peer"
+                                />
+                                <div className="w-14 h-7 bg-slate-200 rounded-full peer peer-checked:bg-[#3200C1] peer-focus:ring-2 peer-focus:ring-[#3200C1]/30 transition-colors after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:after:translate-x-7" />
+                                <span className="ml-3 text-sm font-bold text-slate-600 peer-checked:text-[#3200C1]">Activar</span>
+                            </label>
+                        </div>
                         <div>
                             <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">WhatsApp Fallback</label>
                             <div className="relative">
