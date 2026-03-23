@@ -134,18 +134,6 @@ export default async function ComingSoonPage() {
                 </div>
             </footer>
 
-            <style jsx global>{`
-                @keyframes float-slow {
-                    0%, 100% { transform: translateY(0) rotate(0); }
-                    50% { transform: translateY(-30px) rotate(2deg); }
-                }
-                @keyframes float-delayed {
-                    0%, 100% { transform: translateY(0) rotate(0); }
-                    50% { transform: translateY(-20px) rotate(-2deg); }
-                }
-                .animate-float-slow { animation: float-slow 15s ease-in-out infinite; }
-                .animate-float-delayed { animation: float-delayed 18s ease-in-out infinite; }
-            `}</style>
         </div>
     );
 }
