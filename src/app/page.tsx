@@ -11,5 +11,5 @@ export default async function HomePage({ searchParams }: { searchParams: { dev?:
       redirect("/empresas-construccion");
   }
   
-  return <ComingSoonPage searchParams={searchParams} />;
+  return <ComingSoonPage />;
 }
