@@ -38,19 +38,76 @@ export async function GET() {
         }
 
         let imported = 0;
+        const regionMapping: Record<string, string> = {
+            'Arica': 'Arica y Parinacota',
+            'Iquique': 'Tarapacá',
+            'Antofagasta': 'Antofagasta',
+            'Calama': 'Antofagasta',
+            'Copiapó': 'Atacama',
+            'Vallenar': 'Atacama',
+            'La Serena': 'Coquimbo',
+            'Coquimbo': 'Coquimbo',
+            'Ovalle': 'Coquimbo',
+            'Valparaíso': 'Valparaíso',
+            'Viña del Mar': 'Valparaíso',
+            'Quilpué': 'Valparaíso',
+            'Villa Alemana': 'Valparaíso',
+            'Quillota': 'Valparaíso',
+            'San Antonio': 'Valparaíso',
+            'Los Andes': 'Valparaíso',
+            'San Felipe': 'Valparaíso',
+            'Santiago': 'Metropolitana de Santiago',
+            'Puente Alto': 'Metropolitana de Santiago',
+            'Maipú': 'Metropolitana de Santiago',
+            'Rancagua': 'O\'Higgins',
+            'San Fernando': 'O\'Higgins',
+            'Curicó': 'Maule',
+            'Talca': 'Maule',
+            'Linares': 'Maule',
+            'Chillán': 'Ñuble',
+            'Concepción': 'Biobío',
+            'Talcahuano': 'Biobío',
+            'Los Ángeles': 'Biobío',
+            'Temuco': 'La Araucanía',
+            'Angol': 'La Araucanía',
+            'Villarrica': 'La Araucanía',
+            'Pucón': 'La Araucanía',
+            'Valdivia': 'Los Ríos',
+            'Osorno': 'Los Lagos',
+            'Puerto Montt': 'Los Lagos',
+            'Puerto Varas': 'Los Lagos',
+            'Chiloé': 'Los Lagos',
+            'Castro': 'Los Lagos',
+            'Coyhaique': 'Aysén',
+            'Punta Arenas': 'Magallanes',
+        };
+
         for (const record of records as any[]) {
             const companyName = record.name || record.domain;
-            if (!companyName) continue;
+            if (!companyName || ["Instagram", "WhatsApp.com", "TikTok", "X (formerly Twitter)", "Trato Directo", "Página Principal", "Mercado PÃºblico", "Página principal"].includes(companyName)) continue;
 
             const slugStr = slugify(companyName);
             const email = record.email_corp || `hola@${record.domain || slugStr + '.cl'}`;
+            const desc = record.description || '';
+            
+            // Deduce region
+            let region = record.region || '';
+            if (!region) {
+                for (const [city, reg] of Object.entries(regionMapping)) {
+                    if (desc.toLowerCase().includes(city.toLowerCase()) || companyName.toLowerCase().includes(city.toLowerCase())) {
+                        region = reg;
+                        break;
+                    }
+                }
+            }
+            if (!region) region = "Metropolitana de Santiago"; // Default
 
             const doc = {
                 _type: 'companyUser',
                 _id: `imported-${slugStr}`,
                 company_name: companyName,
                 slug: { _type: 'slug', current: slugStr },
-                description: record.description ? record.description.substring(0, 500) : '',
+                description: desc.substring(0, 500),
                 email: email.toLowerCase().trim(),
                 role: 'company',
                 plan: 'free',
@@ -58,7 +115,8 @@ export async function GET() {
                 contact_phone: record.phone_corp || '',
                 whatsapp_number: record.phone_corp ? record.phone_corp.replace(/\s+/g, '').replace('+', '') : '',
                 address: record.address || '',
-                region: record.region || 'Metropolitana',
+                region: region,
+                website: record.url || (record.domain ? `https://${record.domain}` : '')
             };
 
             await sanityWriteClient.createOrReplace(doc);
