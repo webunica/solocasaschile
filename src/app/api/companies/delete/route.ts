@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { sanityClient } from "@/lib/sanity.client";
+import { sanityWriteClient } from "@/lib/sanity.server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../auth/[...nextauth]/route";
 
@@ -20,7 +20,7 @@ export async function POST(req: Request) {
 
         console.log(`Deleting ${ids.length} companies...`);
 
-        const transaction = sanityClient.transaction();
+        const transaction = sanityWriteClient.transaction();
         ids.forEach(id => {
             transaction.delete(id);
         });
