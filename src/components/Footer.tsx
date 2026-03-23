@@ -13,12 +13,17 @@ import {
     ArrowRight
 } from "lucide-react";
 
+import { usePathname } from "next/navigation";
+
 interface FooterProps {
     contactPhones?: string[];
 }
 
 export const Footer = ({ contactPhones = ["+56 9 1234 5678"] }: FooterProps) => {
     const currentYear = new Date().getFullYear();
+    const pathname = usePathname();
+
+    if (pathname === "/") return null;
 
     return (
         <footer className="bg-[#3200C1] text-white pt-16 pb-8">

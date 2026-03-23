@@ -57,6 +57,8 @@ export default function HeaderClientV2({ siteName, logoUrl }: Props) {
         return () => { document.body.style.overflow = ""; };
     }, [isOpen]);
 
+    if (pathname === "/") return null;
+
     return (
         <>
             <header className="border-b border-slate-100 bg-white/90 backdrop-blur-md sticky top-0 z-50 w-full">
