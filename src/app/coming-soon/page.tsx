@@ -1,9 +1,9 @@
-import { Building2, Mail, Sparkles, Phone, Hash, Globe, ShieldCheck } from "lucide-react";
+import { Mail, Sparkles, Phone, Hash, Globe, ShieldCheck, Building2, MousePointer2 } from "lucide-react";
 import { sanityClient } from "@/lib/sanity.client";
 
 export const metadata = {
     title: "Próximamente | solocasaschile.com",
-    description: "La plataforma definitiva para comparar constructoras de casas prefabricadas y sólidas en Chile. Lanzamiento Abril 2026.",
+    description: "Encuentra tu casa ideal. Lanzamiento Abril 2026.",
 };
 
 export default async function ComingSoonPage() {
@@ -19,146 +19,156 @@ export default async function ComingSoonPage() {
     const logoUrl = settings?.logo_url || null;
 
     return (
-        <div className="min-h-screen bg-[#020010] text-white selection:bg-[#37FFDB] selection:text-[#020010] overflow-hidden flex flex-col items-center justify-between relative font-sans">
+        <div className="min-h-screen bg-[#FDFDFF] text-[#1A1A1A] selection:bg-[#3200C1] selection:text-white overflow-hidden flex flex-col items-center justify-between relative font-sans antialiased">
             
-            {/* Background Blueprint Animation - Modern Line Art */}
-            <div className="absolute inset-0 z-0 flex flex-col justify-around opacity-[0.07] pointer-events-none">
-                <div className="flex gap-40 animate-scroll-left whitespace-nowrap">
-                    <ModernBlueprint1 /> <ModernBlueprint2 /> <ModernBlueprint1 /> <ModernBlueprint2 />
+            {/* Background Architecture - Very subtle fine lines */}
+            <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none">
+                <div className="absolute inset-0" style={{ 
+                    backgroundImage: 'radial-gradient(#000 0.5px, transparent 0.5px)', 
+                    backgroundSize: '40px 40px' 
+                }}></div>
+                
+                {/* Floating Detailed Blueprints */}
+                <div className="absolute top-[10%] left-[5%] animate-float-slow">
+                    <DetailedBlueprint />
                 </div>
-                <div className="flex gap-40 animate-scroll-right whitespace-nowrap">
-                    <ModernBlueprint3 /> <ModernBlueprint1 /> <ModernBlueprint3 /> <ModernBlueprint1 />
-                </div>
-                <div className="flex gap-40 animate-scroll-left whitespace-nowrap opacity-50">
-                    <ModernBlueprint2 /> <ModernBlueprint3 /> <ModernBlueprint2 /> <ModernBlueprint3 />
+                <div className="absolute bottom-[10%] right-[5%] animate-float-delayed">
+                    <DetailedBlueprintAlt />
                 </div>
             </div>
 
-            {/* Glowing Effects */}
-            <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-[#3200C1]/20 rounded-full blur-[180px] z-0"></div>
-            <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] bg-[#37FFDB]/10 rounded-full blur-[180px] z-0 opacity-40"></div>
+            {/* Subtle Gradient Glows (Light mode style) */}
+            <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-[#3200C1]/5 rounded-full blur-[120px] z-0"></div>
+            <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] bg-[#37FFDB]/5 rounded-full blur-[120px] z-0"></div>
 
-            {/* Main Content Area */}
-            <main className="flex-1 flex flex-col items-center justify-center text-center px-6 relative z-10 w-full max-w-7xl pt-20 pb-10">
-                
-                <div className="relative group">
-                    {/* Glass Container */}
-                    <div className="absolute -inset-1 bg-gradient-to-r from-[#3200C1] via-[#37FFDB] to-[#3200C1] rounded-[3rem] blur opacity-20 animate-pulse"></div>
-                    
-                    <div className="relative bg-[#020010]/60 backdrop-blur-3xl border border-white/10 p-12 md:p-20 rounded-[3rem] shadow-2xl space-y-12 max-w-5xl">
-                        
-                        <div className="space-y-6">
-                            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#37FFDB]/10 border border-[#37FFDB]/20 text-[#37FFDB] text-[10px] font-black uppercase tracking-[0.3em]">
-                                <Sparkles className="w-4 h-4" /> Lanzamiento Abril 2026
-                            </div>
-
-                            <h1 className="text-6xl md:text-9xl font-black leading-[0.9] tracking-tighter">
-                                TU HOGAR <br />
-                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#37FFDB] via-white to-[#37FFDB] bg-[length:200%_auto] animate-gradient-text">REIMAGINADO</span>
-                            </h1>
-
-                            <p className="text-slate-400 text-lg md:text-2xl font-medium max-w-3xl mx-auto leading-relaxed">
-                                Estamos consolidando el ecosistema de <span className="text-white font-black">226 constructoras</span> líderes en Chile. Comparar modelos nunca fue tan inteligente.
-                            </p>
-                        </div>
-
-                        {/* Stats Grid */}
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
-                            <div className="p-8 rounded-[2.5rem] bg-white/5 border border-white/10 flex flex-col items-center">
-                                <Building2 className="w-10 h-10 text-[#3200C1] mb-4" />
-                                <span className="text-[10px] font-black uppercase text-slate-500 tracking-widest mb-1">Empresas</span>
-                                <p className="text-2xl font-black text-white">+226</p>
-                            </div>
-                            <div className="p-8 rounded-[2.5rem] bg-white/5 border border-white/10 flex flex-col items-center">
-                                <ShieldCheck className="w-10 h-10 text-[#37FFDB] mb-4" />
-                                <span className="text-[10px] font-black uppercase text-slate-500 tracking-widest mb-1">Seguridad</span>
-                                <p className="text-2xl font-black text-white">Certificada</p>
-                            </div>
-                            <div className="p-8 rounded-[2.5rem] bg-white/5 border border-white/10 flex flex-col items-center">
-                                <Globe className="w-10 h-10 text-emerald-500 mb-4" />
-                                <span className="text-[10px] font-black uppercase text-slate-500 tracking-widest mb-1">Cobertura</span>
-                                <p className="text-2xl font-black text-white">Todo Chile</p>
-                            </div>
-                        </div>
-
-                        {/* Contact Buttons */}
-                        <div className="pt-6 flex flex-col md:flex-row items-center justify-center gap-6">
-                            <a href={`mailto:${contactEmail}`} className="w-full md:w-auto px-10 py-5 bg-white text-[#05001A] rounded-2xl font-black text-sm flex items-center justify-center gap-3 hover:scale-105 active:scale-95 transition-all shadow-2xl shadow-white/10">
-                                <Mail className="w-5 h-5" /> {contactEmail}
-                            </a>
-                            <a href={`tel:${contactPhone.replace(/\s+/g, '')}`} className="w-full md:w-auto px-10 py-5 bg-[#3200C1] text-white rounded-2xl font-black text-sm flex items-center justify-center gap-3 hover:brightness-110 active:scale-95 transition-all">
-                                <Phone className="w-5 h-5 text-[#37FFDB]" /> {contactPhone}
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </main>
-
-            {/* Refined Footer */}
-            <footer className="w-full px-10 py-12 relative z-10 flex flex-col md:flex-row items-center justify-between gap-8 border-t border-white/5 bg-[#020010]/80 backdrop-blur-3xl">
-                <div className="flex items-center gap-4">
+            {/* Header / Logo Area */}
+            <header className="w-full px-10 py-10 relative z-10 flex justify-between items-center max-w-7xl">
+                <div className="flex items-center gap-3">
                     {logoUrl ? (
-                        <img src={logoUrl} alt={siteName} className="h-10 md:h-12 w-auto grayscale brightness-200" />
+                        <img src={logoUrl} alt={siteName} className="h-8 md:h-9 w-auto grayscale contrast-125" />
                     ) : (
-                        <div className="flex items-center gap-3">
-                            <div className="w-12 h-12 rounded-2xl bg-[#3200C1] flex items-center justify-center">
-                                <Hash className="w-6 h-6 text-[#37FFDB]" />
+                        <div className="flex items-center gap-2.5">
+                            <div className="w-9 h-9 rounded-lg bg-[#3200C1] flex items-center justify-center shadow-lg shadow-[#3200C1]/10">
+                                <Hash className="w-5.5 h-5.5 text-white" />
                             </div>
-                            <div className="flex flex-col">
-                                <span className="text-xl font-black tracking-tight leading-none">{siteName.toUpperCase()}</span>
-                                <span className="text-[9px] font-black text-[#37FFDB] tracking-[0.3em]">PRÓXIMAMENTE 2026</span>
-                            </div>
+                            <span className="text-xl font-bold tracking-tight text-[#3200C1]">{siteName.toUpperCase()}</span>
                         </div>
                     )}
                 </div>
+                <div className="hidden md:flex items-center gap-6 text-[10px] font-bold uppercase tracking-[0.2em] text-[#A0A0A0]">
+                    <span>Architecture</span>
+                    <span className="w-1 h-1 rounded-full bg-[#3200C1]"></span>
+                    <span>Technology</span>
+                    <span className="w-1 h-1 rounded-full bg-[#3200C1]"></span>
+                    <span>Chile</span>
+                </div>
+            </header>
 
-                <div className="flex items-center gap-10 text-[11px] font-black text-slate-500 tracking-[0.3em] uppercase">
-                    <div className="flex items-center gap-3">
-                        <span className="w-2.5 h-2.5 rounded-full bg-[#37FFDB] animate-pulse"></span>
-                        <span className="text-white">Site Deployment</span>
+            {/* Main Content Area */}
+            <main className="flex-1 flex flex-col items-center justify-center text-center px-6 relative z-10 w-full max-w-5xl space-y-12">
+                
+                <div className="space-y-8">
+                    <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#3200C1]/5 border border-[#3200C1]/10 text-[#3200C1] text-[10px] font-bold uppercase tracking-[0.25em]">
+                        <Sparkles className="w-3.5 h-3.5" /> Estreno Abril 2026
                     </div>
-                    <span className="hidden lg:block opacity-40">Solocasaschile v2.0.0</span>
-                    <span className="hidden lg:block">Chile</span>
+
+                    <div className="space-y-4">
+                        <h1 className="text-5xl md:text-8xl font-medium leading-[1] tracking-tight text-[#1A1A1A]">
+                            Comparar casas nunca <br />
+                            <span className="font-light italic text-[#3200C1]">fue tan sofisticado.</span>
+                        </h1>
+                        <p className="text-slate-500 text-lg md:text-2xl font-normal max-w-3xl mx-auto leading-relaxed">
+                            Diseñando el directorio más completo de <span className="text-[#3200C1] font-semibold">226 constructoras</span>. 
+                            Transparencia y diseño en cada detalle.
+                        </p>
+                    </div>
+                </div>
+
+                {/* Delicate Features Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-4xl">
+                    <div className="group p-8 rounded-3xl bg-white border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-[#3200C1]/5 transition-all duration-500 flex flex-col items-center text-center">
+                        <div className="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center mb-6 group-hover:bg-[#3200C1] transition-colors duration-500">
+                            <Building2 className="w-6 h-6 text-[#3200C1] group-hover:text-white transition-colors duration-500" />
+                        </div>
+                        <h3 className="text-xs font-bold uppercase text-slate-400 tracking-widest mb-1">Catálogo</h3>
+                        <p className="text-xl font-medium text-[#1A1A1A]">+5.000 Modelos</p>
+                    </div>
+                    <div className="group p-8 rounded-3xl bg-white border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-[#3200C1]/5 transition-all duration-500 flex flex-col items-center text-center">
+                        <div className="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center mb-6 group-hover:bg-[#3200C1] transition-colors duration-500">
+                            <ShieldCheck className="w-6 h-6 text-[#3200C1] group-hover:text-white transition-colors duration-500" />
+                        </div>
+                        <h3 className="text-xs font-bold uppercase text-slate-400 tracking-widest mb-1">Calidad</h3>
+                        <p className="text-xl font-medium text-[#1A1A1A]">Sello de Confianza</p>
+                    </div>
+                    <div className="group p-8 rounded-3xl bg-white border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-[#3200C1]/5 transition-all duration-500 flex flex-col items-center text-center">
+                        <div className="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center mb-6 group-hover:bg-[#3200C1] transition-colors duration-500">
+                            <Globe className="w-6 h-6 text-[#3200C1] group-hover:text-white transition-colors duration-500" />
+                        </div>
+                        <h3 className="text-xs font-bold uppercase text-slate-400 tracking-widest mb-1">Alcance</h3>
+                        <p className="text-xl font-medium text-[#1A1A1A]">Todo Chile</p>
+                    </div>
+                </div>
+
+                {/* Contact Section - Minimalist */}
+                <div className="pt-8 flex flex-col md:flex-row items-center justify-center gap-10 text-slate-400 font-medium text-sm">
+                    <a href={`mailto:${contactEmail}`} className="flex items-center gap-3 hover:text-[#3200C1] transition-colors">
+                        <Mail className="w-4.5 h-4.5" /> {contactEmail}
+                    </a>
+                    <a href={`tel:${contactPhone.replace(/\s+/g, '')}`} className="flex items-center gap-3 hover:text-[#3200C1] transition-colors">
+                        <Phone className="w-4.5 h-4.5" /> {contactPhone}
+                    </a>
+                </div>
+            </main>
+
+            {/* Footer / Status */}
+            <footer className="w-full px-10 py-12 relative z-10 flex flex-col md:flex-row justify-between items-center gap-6 max-w-7xl border-t border-slate-100">
+                <p className="text-[#A0A0A0] text-[10px] font-bold uppercase tracking-widest">
+                    © 2024 solocasaschile.com — Todos los derechos reservados.
+                </p>
+                <div className="flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.2em] text-[#3200C1]">
+                    <span className="relative flex h-2 w-2">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#3200C1] opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-[#3200C1]"></span>
+                    </span>
+                    <span>Auditando Sistemas</span>
                 </div>
             </footer>
+
+            <style jsx global>{`
+                @keyframes float-slow {
+                    0%, 100% { transform: translateY(0) rotate(0); }
+                    50% { transform: translateY(-30px) rotate(2deg); }
+                }
+                @keyframes float-delayed {
+                    0%, 100% { transform: translateY(0) rotate(0); }
+                    50% { transform: translateY(-20px) rotate(-2deg); }
+                }
+                .animate-float-slow { animation: float-slow 15s ease-in-out infinite; }
+                .animate-float-delayed { animation: float-delayed 18s ease-in-out infinite; }
+            `}</style>
         </div>
     );
 }
 
-// MODERN Blueprint SVG Components
-function ModernBlueprint1() {
+// DELICATE Blueprint SVG Components
+function DetailedBlueprint() {
     return (
-        <svg width="300" height="200" viewBox="0 0 300 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0">
-            {/* Boxy Modern House */}
-            <rect x="20" y="60" width="120" height="100" stroke="white" strokeWidth="0.5" strokeDasharray="4 4" />
-            <rect x="140" y="40" width="100" height="120" stroke="white" strokeWidth="0.5" strokeDasharray="4 4" />
-            <rect x="60" y="80" width="40" height="40" stroke="white" strokeWidth="0.5" />
-            <rect x="160" y="60" width="60" height="80" stroke="white" strokeWidth="0.5" />
-            {/* Outline path */}
-            <path d="M20 160 H240 M140 40 V160" stroke="white" strokeWidth="0.2" />
+        <svg width="400" height="300" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg" className="opacity-40">
+            <rect x="50" y="50" width="300" height="200" stroke="currentColor" strokeWidth="0.5" strokeDasharray="2 4" />
+            <path d="M50 150 H350 M200 50 V250" stroke="currentColor" strokeWidth="0.3" strokeDasharray="1 2" />
+            <rect x="70" y="70" width="100" height="60" stroke="currentColor" strokeWidth="0.5" />
+            <rect x="230" y="70" width="100" height="100" stroke="currentColor" strokeWidth="0.5" />
+            <path d="M70 200 Q150 180 230 200" stroke="currentColor" strokeWidth="0.5" strokeDasharray="2 2" />
         </svg>
     );
 }
 
-function ModernBlueprint2() {
+function DetailedBlueprintAlt() {
     return (
-        <svg width="300" height="200" viewBox="0 0 300 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0">
-            {/* Minimalist Multi-level */}
-            <rect x="40" y="100" width="220" height="60" stroke="white" strokeWidth="0.5" strokeDasharray="4 4" />
-            <rect x="60" y="40" width="100" height="60" stroke="white" strokeWidth="0.5" strokeDasharray="4 4" />
-            <line x1="60" y1="40" x2="260" y2="40" stroke="white" strokeWidth="0.5" strokeDasharray="2 2" />
-            <circle cx="200" cy="70" r="15" stroke="white" strokeWidth="0.5" strokeDasharray="4 4" />
-        </svg>
-    );
-}
-
-function ModernBlueprint3() {
-    return (
-        <svg width="300" height="200" viewBox="0 0 300 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0">
-            {/* Geometry house */}
-            <path d="M20 160 L100 80 L180 160 Z" stroke="white" strokeWidth="0.5" strokeDasharray="4 4" />
-            <rect x="180" y="80" width="100" height="80" stroke="white" strokeWidth="0.5" strokeDasharray="4 4" />
-            <path d="M100 80 H280" stroke="white" strokeWidth="0.5" strokeDasharray="2 2" />
+        <svg width="400" height="300" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg" className="opacity-40">
+            <circle cx="200" cy="150" r="100" stroke="currentColor" strokeWidth="0.5" strokeDasharray="4 8" />
+            <path d="M100 150 L200 50 L300 150 L200 250 Z" stroke="currentColor" strokeWidth="0.3" />
+            <rect x="150" y="100" width="100" height="100" stroke="currentColor" strokeWidth="0.5" strokeDasharray="2 2" />
         </svg>
     );
 }
