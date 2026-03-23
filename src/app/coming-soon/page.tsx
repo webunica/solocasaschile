@@ -108,6 +108,12 @@ export default async function ComingSoonPage() {
                         </div>
                         {contactPhone}
                     </a>
+                    <a href="tel:+56964130601" className="flex items-center gap-3 text-slate-600 hover:text-[#3200C1] transition-colors font-bold text-sm">
+                        <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center border border-slate-200">
+                            <Phone className="w-4.5 h-4.5 text-[#3200C1]" />
+                        </div>
+                        +56 9 6413 0601
+                    </a>
                 </div>
             </main>
 
