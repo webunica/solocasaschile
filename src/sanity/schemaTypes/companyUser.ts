@@ -113,6 +113,8 @@ export const companyUserType = defineType({
             type: 'url',
             description: 'Se habilitará el botón "Agendar Reunión" en la ficha del modelo.'
         }),
+        defineField({ name: 'address', title: 'Dirección Comercial', type: 'string' }),
+        defineField({ name: 'region', title: 'Región de Operación', type: 'string' }),
         defineField({
             name: 'reset_password_token',
             title: 'Token de Recuperación',
@@ -205,16 +207,11 @@ export const companyUserType = defineType({
         }),
     ],
     preview: {
-        select: { title: 'company_name', subtitle: 'plan', media: 'logo' },
+        select: { title: 'company_name', subtitle: 'region', media: 'logo' },
         prepare({ title, subtitle, media }) {
-            const planLabels: Record<string, string> = {
-                free: '🌟 Inicial (Gratis)',
-                pro: '🚀 Plan Pro',
-                elite: '👑 Plan Elite',
-            };
             return {
                 title,
-                subtitle: planLabels[subtitle] || 'Sin Plan',
+                subtitle: subtitle || 'Sin Región',
                 media
             };
         }

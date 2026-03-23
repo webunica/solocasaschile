@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -35,6 +36,7 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
+  redirect("/registro");
   const rawParams = await searchParams;
   // Si hay parámetros (ej: búsqueda real), saltamos V2 y devolvemos la cuadrícula de resultados V1.
   const hasFilters = Object.keys(rawParams).length > 0;
