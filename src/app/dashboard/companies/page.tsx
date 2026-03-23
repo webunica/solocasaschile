@@ -6,6 +6,7 @@ import { KeyRound, Building2, PlusCircle, Zap } from "lucide-react";
 import Link from "next/link";
 import ToggleStatusButton from "./ToggleStatusButton";
 import BulkCreateButton from "./BulkCreateButton";
+import CompaniesTable from "./CompaniesTable";
 
 const PLAN_CONFIG: Record<string, { label: string; uf: string; clp: string; color: string }> = {
     free: { label: "Plan Inicial", uf: "0 UF", clp: "$0", color: "bg-emerald-100 text-emerald-700 border-emerald-200" },
@@ -107,132 +108,12 @@ export default async function CompaniesManagementPage() {
                 </div>
             </div>
 
-            {/* Tabla unificada: todas las empresas */}
-            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-                <div className="px-6 py-4 border-b border-slate-200 flex items-center justify-between">
-                    <h3 className="font-bold text-slate-800">Todas las Empresas ({allNames.length})</h3>
-                    <span className="text-xs text-slate-400">Empresas con modelos en la base de datos</span>
-                </div>
-
-                <div className="overflow-x-auto">
-                    <table className="w-full text-sm text-left">
-                        <thead className="text-xs text-slate-500 bg-slate-50 uppercase">
-                            <tr>
-                                <th className="px-6 py-4 font-bold">Empresa</th>
-                                <th className="px-6 py-4 font-bold">Correo / Plan</th>
-                                <th className="px-6 py-4 font-bold text-center">Modelos</th>
-                                <th className="px-6 py-4 font-bold text-center">Estado</th>
-                                <th className="px-6 py-4 font-bold text-right">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-slate-100">
-                            {allNames.map((companyName) => {
-                                const b2b = b2bMap[companyName];
-                                const hasB2B = !!b2b;
-                                const isActive = hasB2B ? b2b.is_active !== false : null;
-                                const isAdminRole = hasB2B && b2b.role === "admin";
-                                const plan = b2b ? (PLAN_CONFIG[b2b.plan] || PLAN_CONFIG.free) : null;
-                                const count = modelCounts[companyName] || b2b?.model_count || 0;
-
-                                return (
-                                    <tr key={companyName} className={`hover:bg-slate-50 transition-colors ${hasB2B && !isActive ? "opacity-50" : ""}`}>
-                                        {/* Empresa */}
-                                        <td className="px-6 py-4">
-                                            <div className="flex items-center gap-3">
-                                                <div className="w-9 h-9 rounded-lg bg-slate-100 flex items-center justify-center shrink-0 border border-slate-200 overflow-hidden">
-                                                    {b2b?.logo_url
-                                                        ? <img src={b2b.logo_url} alt="" className="w-full h-full object-cover" />
-                                                        : <Building2 className="w-4 h-4 text-slate-400" />
-                                                    }
-                                                </div>
-                                                <div>
-                                                    <span className="font-bold text-slate-800 block leading-tight">{companyName}</span>
-                                                    {isAdminRole && (
-                                                        <span className="text-[10px] font-black text-amber-600 uppercase tracking-widest">Superadmin</span>
-                                                    )}
-                                                    {!hasB2B && (
-                                                        <span className="text-[10px] font-bold text-slate-400">Sin cuenta B2B</span>
-                                                    )}
-                                                </div>
-                                            </div>
-                                        </td>
-
-                                        {/* Correo / Plan */}
-                                        <td className="px-6 py-4">
-                                            {hasB2B ? (
-                                                <div>
-                                                    <p className="text-xs text-slate-500 font-medium mb-1">{b2b.email}</p>
-                                                    {isAdminRole ? (
-                                                        <span className="px-2.5 py-1 text-xs font-black rounded-full border bg-amber-100 text-amber-700 border-amber-200">Superadmin</span>
-                                                    ) : plan ? (
-                                                        <span className={`px-2.5 py-1 text-xs font-black rounded-full border ${plan.color}`}>
-                                                            {plan.label}
-                                                        </span>
-                                                    ) : null}
-                                                </div>
-                                            ) : (
-                                                <span className="text-xs text-slate-400 italic">—</span>
-                                            )}
-                                        </td>
-
-                                        {/* Modelos */}
-                                        <td className="px-6 py-4 text-center">
-                                            <span className="font-black text-lg text-slate-700">{count}</span>
-                                            {hasB2B && !isAdminRole && (!b2b.plan || b2b.plan === "free") && (
-                                                <span className="block text-[10px] text-slate-400">de 3 máx.</span>
-                                            )}
-                                            {hasB2B && !isAdminRole && b2b.plan === "pro" && (
-                                                <span className="block text-[10px] text-slate-400">de 20 máx.</span>
-                                            )}
-                                        </td>
-
-                                        {/* Estado */}
-                                        <td className="px-6 py-4">
-                                            {hasB2B && !isAdminRole ? (
-                                                <div className="flex flex-col items-center gap-1">
-                                                    <ToggleStatusButton id={b2b._id} isActive={isActive!} />
-                                                    <span className={`text-[10px] font-bold ${isActive ? "text-emerald-600" : "text-slate-400"}`}>
-                                                        {isActive ? "Activa" : "Inactiva"}
-                                                    </span>
-                                                </div>
-                                            ) : !hasB2B ? (
-                                                <div className="flex justify-center">
-                                                    <span className="px-2 py-1 text-[10px] font-bold rounded-full bg-slate-100 text-slate-500 border border-slate-200">Sin cuenta</span>
-                                                </div>
-                                            ) : (
-                                                <div className="flex justify-center">
-                                                    <span className="text-xs text-slate-400">—</span>
-                                                </div>
-                                            )}
-                                        </td>
-
-                                        {/* Acciones */}
-                                        <td className="px-6 py-4 text-right">
-                                            {hasB2B ? (
-                                                <Link
-                                                    href={`/dashboard/companies/edit/${b2b._id}`}
-                                                    className="p-2 hover:text-amber-500 hover:bg-amber-50 rounded-lg transition-colors inline-flex"
-                                                    title="Editar empresa"
-                                                >
-                                                    <KeyRound className="w-4 h-4" />
-                                                </Link>
-                                            ) : (
-                                                <Link
-                                                    href={`/dashboard/companies/create?name=${encodeURIComponent(companyName)}`}
-                                                    className="p-2 hover:text-[#3200C1] hover:bg-[#3200C1]/5 rounded-lg transition-colors inline-flex"
-                                                    title="Crear cuenta B2B para esta empresa"
-                                                >
-                                                    <PlusCircle className="w-4 h-4" />
-                                                </Link>
-                                            )}
-                                        </td>
-                                    </tr>
-                                );
-                            })}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            {/* Nueva Tabla Unificada con Selección y Eliminación Masiva */}
+            <CompaniesTable 
+                allNames={allNames}
+                b2bMap={b2bMap}
+                modelCounts={modelCounts}
+            />
 
             {/* Tabla de planes */}
             <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
