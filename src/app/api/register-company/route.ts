@@ -6,7 +6,7 @@ const client = createClient({
     projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || process.env.SANITY_PROJECT_ID || "c3n3g73v",
     dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || process.env.SANITY_DATASET || "production",
     apiVersion: "2024-02-26",
-    token: process.env.SANITY_API_WRITE_TOKEN,
+    token: process.env.SANITY_API_WRITE_TOKEN || process.env.SANITY_TOKEN,
     useCdn: false,
 });
 
@@ -62,9 +62,17 @@ export async function POST(req: NextRequest) {
         const sixMonthsFromNow = new Date();
         sixMonthsFromNow.setMonth(sixMonthsFromNow.getMonth() + 6);
 
+        function slugify(text: string) {
+            return text.toString().toLowerCase().trim()
+                .replace(/\s+/g, '-')
+                .replace(/[^\w-]+/g, '')
+                .replace(/--+/g, '-');
+        }
+
         await client.create({
             _type: "companyUser",
             company_name,
+            slug: { _type: 'slug', current: slugify(company_name) },
             email,
             contact_phone: contact_phone || "",
             role: "company",
