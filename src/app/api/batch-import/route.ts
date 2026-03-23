@@ -38,7 +38,7 @@ export async function GET() {
         }
 
         let imported = 0;
-        for (const record of records) {
+        for (const record of records as any[]) {
             const companyName = record.name || record.domain;
             if (!companyName) continue;
 
