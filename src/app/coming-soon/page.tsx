@@ -1,4 +1,4 @@
-import { Mail, Sparkles, Phone, Hash, Globe, ShieldCheck, Building2 } from "lucide-react";
+import { Mail, Sparkles, Phone, Globe, ShieldCheck, Building2 } from "lucide-react";
 import { sanityClient } from "@/lib/sanity.client";
 
 export const metadata = {
@@ -8,16 +8,14 @@ export const metadata = {
 
 export default async function ComingSoonPage() {
     
+    // Fetch site name only as logo is removed
     const settings = await sanityClient.fetch(`*[_type == "siteSettings"][0]{
-        site_name,
-        "logo_url": site_logo.asset->url
+        site_name
     }`);
 
-    const siteName = settings?.site_name || "solocasaschile.com";
     const contactPhone1 = "+56 9 6619 8752";
     const contactPhone2 = "+56 9 6413 0601";
     const contactEmail = "ventas@solocasaschile.com";
-    const logoUrl = settings?.logo_url || null;
 
     return (
         <div className="min-h-screen bg-[#020110] text-white selection:bg-[#37FFDB] selection:text-[#3200C1] overflow-hidden flex flex-col items-center justify-between relative font-sans antialiased">
@@ -35,7 +33,7 @@ export default async function ComingSoonPage() {
                 </div>
             </div>
 
-            {/* Andes Cordillera - Taller for more impact */}
+            {/* Andes Cordillera */}
             <div className="absolute bottom-[60px] md:bottom-[80px] left-0 w-full z-0 opacity-[0.3] pointer-events-none transition-opacity duration-1000">
                 <AndesSilhouette color="#FFFFFF" />
             </div>
@@ -50,34 +48,17 @@ export default async function ComingSoonPage() {
                 </div>
             </header>
 
-            {/* Main Content Area */}
+            {/* Main Content Area - Re-centered */}
             <main className="flex-1 flex flex-col items-center justify-center text-center px-6 relative z-10 w-full max-w-7xl space-y-16 md:space-y-24 pb-20 md:pb-32">
                 
-                {/* Hero Section with Logo on the Left */}
-                <div className="flex flex-col xl:flex-row items-center justify-center gap-10 md:gap-20">
-                    
-                    {/* Logo Section */}
-                    <div className="relative group shrink-0">
-                        {logoUrl ? (
-                            <img 
-                                src={logoUrl} 
-                                alt={siteName} 
-                                className="h-auto w-auto max-w-[280px] md:max-w-[500px] drop-shadow-[0_0_40px_rgba(55,255,219,0.15)] md:drop-shadow-[0_0_60px_rgba(55,255,219,0.25)] brightness-110 group-hover:scale-[1.03] transition-transform duration-700 ease-out" 
-                            />
-                        ) : (
-                            <div className="w-28 h-28 md:w-40 md:h-40 rounded-[2.5rem] bg-gradient-to-br from-[#3200C1] to-[#020110] flex items-center justify-center shadow-2xl shadow-[#3200C1]/40 border border-[#37FFDB]/30">
-                                <Hash className="w-14 h-14 md:w-20 md:h-20 text-[#37FFDB]" />
-                            </div>
-                        )}
-                    </div>
-
-                    {/* Title & Description */}
-                    <div className="text-center xl:text-left space-y-8">
+                <div className="space-y-10 md:space-y-12">
+                    {/* Title Text Centered */}
+                    <div className="text-center space-y-8">
                         <h1 className="text-5xl md:text-9xl font-black leading-[0.9] tracking-tighter">
                             TU HOGAR <br />
                             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#37FFDB] via-[#FFFFFF] to-[#3200C1] animate-gradient-x">EVOLUCIONADO</span>
                         </h1>
-                        <p className="text-slate-400 text-lg md:text-3xl font-medium max-w-2xl mx-auto xl:mx-0 leading-relaxed md:leading-snug opacity-90">
+                        <p className="text-slate-400 text-lg md:text-3xl font-medium max-w-2xl mx-auto leading-relaxed md:leading-snug opacity-90">
                             Estamos integrando el catálogo digital más grande de <br className="hidden md:block" />
                             <span className="text-white font-black underline decoration-[#37FFDB] decoration-2 md:decoration-4 underline-offset-4 pointer-events-none">226 constructoras</span> para tu próxima decisión.
                         </p>
