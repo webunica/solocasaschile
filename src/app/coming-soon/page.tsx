@@ -1,5 +1,6 @@
-import { Mail, Sparkles, Phone, Globe, ShieldCheck, Building2, Send, User, MessageSquare } from "lucide-react";
+import { Mail, Sparkles, Phone, Globe, ShieldCheck, Building2 } from "lucide-react";
 import { sanityClient } from "@/lib/sanity.client";
+import ConsultationForm from "@/components/ConsultationForm";
 
 export const metadata = {
     title: "Próximamente | solocasaschile.com",
@@ -49,72 +50,9 @@ export default async function ComingSoonPage() {
             {/* Main Content Area - Two Column Layout */}
             <main className="flex-1 w-full max-w-7xl px-6 py-12 md:py-20 flex flex-col xl:flex-row items-center justify-center gap-12 xl:gap-24 relative z-20">
                 
-                {/* Left Column: Consultation Form */}
+                {/* Left Column: Consultation Form (Client Component) */}
                 <div className="w-full xl:w-[450px] shrink-0 animate-in fade-in slide-in-from-left duration-1000">
-                    <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-[2.5rem] p-8 md:p-10 shadow-2xl relative overflow-hidden group">
-                        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#3200C1] via-[#37FFDB] to-[#3200C1]"></div>
-                        
-                        <div className="mb-8 space-y-2">
-                            <h3 className="text-2xl font-black tracking-tight text-white uppercase">Obtener Datos</h3>
-                            <p className="text-slate-400 text-sm font-medium leading-relaxed">
-                                Si eres una constructora o buscas información detallada, completa el formulario.
-                            </p>
-                        </div>
-
-                        <form className="space-y-5">
-                            <div className="space-y-1.5">
-                                <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-2">Constructora</label>
-                                <div className="relative">
-                                    <Building2 className="absolute left-4 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-[#37FFDB]/50" />
-                                    <input 
-                                        type="text" 
-                                        placeholder="Nombre de la empresa"
-                                        className="w-full bg-white/5 border border-white/10 rounded-2xl py-3.5 pl-12 pr-4 text-sm focus:outline-none focus:border-[#37FFDB]/50 focus:bg-white/10 transition-all placeholder:text-slate-600"
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="space-y-1.5">
-                                <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-2">Contacto</label>
-                                <div className="relative">
-                                    <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-[#37FFDB]/50" />
-                                    <input 
-                                        type="text" 
-                                        placeholder="Nombre completo"
-                                        className="w-full bg-white/5 border border-white/10 rounded-2xl py-3.5 pl-12 pr-4 text-sm focus:outline-none focus:border-[#37FFDB]/50 focus:bg-white/10 transition-all placeholder:text-slate-600"
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="space-y-1.5">
-                                <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-2">Email</label>
-                                <div className="relative">
-                                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-[#37FFDB]/50" />
-                                    <input 
-                                        type="email" 
-                                        placeholder="correo@ejemplo.com"
-                                        className="w-full bg-white/5 border border-white/10 rounded-2xl py-3.5 pl-12 pr-4 text-sm focus:outline-none focus:border-[#37FFDB]/50 focus:bg-white/10 transition-all placeholder:text-slate-600"
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="space-y-1.5">
-                                <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-2">Comentario</label>
-                                <div className="relative">
-                                    <MessageSquare className="absolute left-4 top-4 w-4.5 h-4.5 text-[#37FFDB]/50" />
-                                    <textarea 
-                                        placeholder="¿En qué podemos ayudarte?"
-                                        rows={3}
-                                        className="w-full bg-white/5 border border-white/10 rounded-2xl py-3.5 pl-12 pr-4 text-sm focus:outline-none focus:border-[#37FFDB]/50 focus:bg-white/10 transition-all placeholder:text-slate-600 resize-none"
-                                    ></textarea>
-                                </div>
-                            </div>
-
-                            <button className="w-full bg-gradient-to-r from-[#3200C1] to-[#37FFDB] hover:from-[#37FFDB] hover:to-[#3200C1] text-white font-black uppercase tracking-[0.2em] text-xs py-4 rounded-2xl shadow-xl shadow-[#3200C1]/20 transition-all active:scale-95 flex items-center justify-center gap-2 mt-4">
-                                <Send className="w-4 h-4" /> Registrar Interés
-                            </button>
-                        </form>
-                    </div>
+                    <ConsultationForm />
                 </div>
 
                 {/* Right Column: Information */}
@@ -181,7 +119,7 @@ export default async function ComingSoonPage() {
                 <p className="text-slate-500 text-[10px] md:text-[11px] font-black uppercase tracking-[0.3em] text-center md:text-left leading-relaxed">
                     © 2024 solocasaschile.com — El Comparador de Chile
                 </p>
-                <div className="flex items-center gap-6 text-[10px] md:text-[11px] font-black uppercase tracking-[0.3em] text-[#37FFDB]/30">
+                <div className="flex items-center gap-6 text-[10px] md:text-[11px] font-black uppercase tracking-[0.4em] text-[#37FFDB]/30">
                     <span className="text-[#37FFDB]">Official Launch</span>
                     <span className="w-1.5 h-1.5 rounded-full bg-white/10"></span>
                     <span>Chile v2.0</span>
