@@ -1,4 +1,4 @@
-import { Mail, Sparkles, Phone, Globe, ShieldCheck, Building2 } from "lucide-react";
+import { Mail, Sparkles, Phone, Globe, ShieldCheck, Building2, Send, User, MessageSquare } from "lucide-react";
 import { sanityClient } from "@/lib/sanity.client";
 
 export const metadata = {
@@ -8,7 +8,6 @@ export const metadata = {
 
 export default async function ComingSoonPage() {
     
-    // Fetch site name only as logo is removed
     const settings = await sanityClient.fetch(`*[_type == "siteSettings"][0]{
         site_name
     }`);
@@ -20,7 +19,7 @@ export default async function ComingSoonPage() {
     return (
         <div className="min-h-screen bg-[#020110] text-white selection:bg-[#37FFDB] selection:text-[#3200C1] overflow-hidden flex flex-col items-center justify-between relative font-sans antialiased">
             
-            {/* Background Carousel - Ultra subtle */}
+            {/* Background Carousel */}
             <div className="absolute inset-0 z-0 flex flex-col justify-around py-10 md:py-20 pointer-events-none opacity-[0.02] md:opacity-[0.04]">
                 <div className="flex gap-20 md:gap-40 animate-scroll-left whitespace-nowrap">
                     <ModernBlueprint color="#FFFFFF" /> <ModernBlueprint color="#37FFDB" /> <ModernBlueprint color="#FFFFFF" /> <ModernBlueprint color="#37FFDB" />
@@ -39,85 +38,153 @@ export default async function ComingSoonPage() {
             </div>
 
             <div className="absolute top-[-10%] left-[-5%] w-[50%] h-[50%] bg-[#3200C1]/10 rounded-full blur-[140px] z-0"></div>
-            <div className="absolute bottom-[-10%] right-[-5%] w-[40%] h-[40%] bg-[#37FFDB]/5 rounded-full blur-[120px] z-0"></div>
 
             {/* Top Status Bar */}
-            <header className="w-full px-6 py-6 md:px-10 md:py-8 relative z-10 flex flex-col items-center">
+            <header className="w-full px-6 py-6 md:px-10 md:py-8 relative z-20 flex flex-col items-center">
                 <div className="inline-flex items-center gap-2.5 px-4 md:px-6 py-2 rounded-full bg-[#37FFDB]/10 border border-[#37FFDB]/20 text-[#37FFDB] text-[9px] md:text-[10px] font-black uppercase tracking-[0.4em] shadow-xl shadow-[#37FFDB]/5 backdrop-blur-sm">
                     <Sparkles className="w-3.5 h-3.5 md:w-4 md:h-4 animate-pulse" /> Lanzamiento Abril 2026
                 </div>
             </header>
 
-            {/* Main Content Area - Re-centered */}
-            <main className="flex-1 flex flex-col items-center justify-center text-center px-6 relative z-10 w-full max-w-7xl space-y-16 md:space-y-24 pb-20 md:pb-32">
+            {/* Main Content Area - Two Column Layout */}
+            <main className="flex-1 w-full max-w-7xl px-6 py-12 md:py-20 flex flex-col xl:flex-row items-center justify-center gap-12 xl:gap-24 relative z-20">
                 
-                <div className="space-y-10 md:space-y-12">
-                    {/* Title Text Centered */}
-                    <div className="text-center space-y-8">
-                        <h1 className="text-5xl md:text-9xl font-black leading-[0.9] tracking-tighter">
+                {/* Left Column: Consultation Form */}
+                <div className="w-full xl:w-[450px] shrink-0 animate-in fade-in slide-in-from-left duration-1000">
+                    <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-[2.5rem] p-8 md:p-10 shadow-2xl relative overflow-hidden group">
+                        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#3200C1] via-[#37FFDB] to-[#3200C1]"></div>
+                        
+                        <div className="mb-8 space-y-2">
+                            <h3 className="text-2xl font-black tracking-tight text-white uppercase">Obtener Datos</h3>
+                            <p className="text-slate-400 text-sm font-medium leading-relaxed">
+                                Si eres una constructora o buscas información detallada, completa el formulario.
+                            </p>
+                        </div>
+
+                        <form className="space-y-5">
+                            <div className="space-y-1.5">
+                                <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-2">Constructora</label>
+                                <div className="relative">
+                                    <Building2 className="absolute left-4 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-[#37FFDB]/50" />
+                                    <input 
+                                        type="text" 
+                                        placeholder="Nombre de la empresa"
+                                        className="w-full bg-white/5 border border-white/10 rounded-2xl py-3.5 pl-12 pr-4 text-sm focus:outline-none focus:border-[#37FFDB]/50 focus:bg-white/10 transition-all placeholder:text-slate-600"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="space-y-1.5">
+                                <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-2">Contacto</label>
+                                <div className="relative">
+                                    <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-[#37FFDB]/50" />
+                                    <input 
+                                        type="text" 
+                                        placeholder="Nombre completo"
+                                        className="w-full bg-white/5 border border-white/10 rounded-2xl py-3.5 pl-12 pr-4 text-sm focus:outline-none focus:border-[#37FFDB]/50 focus:bg-white/10 transition-all placeholder:text-slate-600"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="space-y-1.5">
+                                <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-2">Email</label>
+                                <div className="relative">
+                                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-[#37FFDB]/50" />
+                                    <input 
+                                        type="email" 
+                                        placeholder="correo@ejemplo.com"
+                                        className="w-full bg-white/5 border border-white/10 rounded-2xl py-3.5 pl-12 pr-4 text-sm focus:outline-none focus:border-[#37FFDB]/50 focus:bg-white/10 transition-all placeholder:text-slate-600"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="space-y-1.5">
+                                <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-2">Comentario</label>
+                                <div className="relative">
+                                    <MessageSquare className="absolute left-4 top-4 w-4.5 h-4.5 text-[#37FFDB]/50" />
+                                    <textarea 
+                                        placeholder="¿En qué podemos ayudarte?"
+                                        rows={3}
+                                        className="w-full bg-white/5 border border-white/10 rounded-2xl py-3.5 pl-12 pr-4 text-sm focus:outline-none focus:border-[#37FFDB]/50 focus:bg-white/10 transition-all placeholder:text-slate-600 resize-none"
+                                    ></textarea>
+                                </div>
+                            </div>
+
+                            <button className="w-full bg-gradient-to-r from-[#3200C1] to-[#37FFDB] hover:from-[#37FFDB] hover:to-[#3200C1] text-white font-black uppercase tracking-[0.2em] text-xs py-4 rounded-2xl shadow-xl shadow-[#3200C1]/20 transition-all active:scale-95 flex items-center justify-center gap-2 mt-4">
+                                <Send className="w-4 h-4" /> Registrar Interés
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                {/* Right Column: Information */}
+                <div className="flex-1 text-center xl:text-left space-y-12 animate-in fade-in slide-in-from-right duration-1000">
+                    
+                    <div className="space-y-8">
+                        <h1 className="text-4xl md:text-8xl xl:text-9xl font-black leading-[0.9] tracking-tighter">
                             TU HOGAR <br />
                             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#37FFDB] via-[#FFFFFF] to-[#3200C1] animate-gradient-x">EVOLUCIONADO</span>
                         </h1>
-                        <p className="text-slate-400 text-lg md:text-3xl font-medium max-w-2xl mx-auto leading-relaxed md:leading-snug opacity-90">
+                        <p className="text-slate-400 text-lg md:text-2xl font-medium max-w-2xl mx-auto xl:mx-0 leading-relaxed md:leading-snug opacity-90">
                             Estamos integrando el catálogo digital más grande de <br className="hidden md:block" />
                             <span className="text-white font-black underline decoration-[#37FFDB] decoration-2 md:decoration-4 underline-offset-4 pointer-events-none">226 constructoras</span> para tu próxima decisión.
                         </p>
                     </div>
-                </div>
 
-                {/* Info Cards Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 md:gap-8 w-full max-w-5xl">
-                    <div className="p-8 md:p-10 rounded-[2rem] md:rounded-[3rem] bg-white/5 backdrop-blur-md border border-white/10 flex flex-col items-center group hover:bg-white/10 hover:border-[#37FFDB]/40 transition-all duration-500 shadow-2xl">
-                        <Building2 className="w-10 h-10 md:w-12 md:h-12 text-[#3200C1] mb-4 md:mb-5 group-hover:scale-110 transition-transform" />
-                        <p className="text-2xl md:text-3xl font-black text-white">+5.000</p>
-                        <span className="text-[10px] md:text-[11px] font-bold uppercase text-slate-500 tracking-widest leading-none mt-2">Modelos Únicos</span>
-                    </div>
-                    <div className="p-8 md:p-10 rounded-[2rem] md:rounded-[3rem] bg-white/5 backdrop-blur-md border border-white/10 flex flex-col items-center group hover:bg-white/10 hover:border-[#37FFDB]/40 transition-all duration-500 shadow-2xl">
-                        <ShieldCheck className="w-10 h-10 md:w-12 md:h-12 text-[#37FFDB] mb-4 md:mb-5 group-hover:scale-110 transition-transform" />
-                        <p className="text-2xl md:text-3xl font-black text-white">Certificado</p>
-                        <span className="text-[10px] md:text-[11px] font-bold uppercase text-slate-500 tracking-widest leading-none mt-2">Calidad Garantizada</span>
-                    </div>
-                    <div className="p-8 md:p-10 rounded-[2rem] md:rounded-[3rem] bg-white/5 backdrop-blur-md border border-white/10 flex flex-col items-center group hover:bg-white/10 hover:border-[#37FFDB]/40 transition-all duration-500 shadow-2xl">
-                        <Globe className="w-10 h-10 md:w-12 md:h-12 text-emerald-400 mb-4 md:mb-5 group-hover:scale-110 transition-transform" />
-                        <p className="text-2xl md:text-3xl font-black text-white">Nacional</p>
-                        <span className="text-[10px] md:text-[11px] font-bold uppercase text-slate-500 tracking-widest leading-none mt-2">Todas las Regiones</span>
-                    </div>
-                </div>
-
-                {/* Contact Links */}
-                <div className="pt-6 flex flex-col md:flex-row flex-wrap items-center justify-center gap-6 md:gap-12 px-4 relative">
-                    <a href={`mailto:${contactEmail}`} className="flex items-center gap-4 text-slate-400 hover:text-white transition-all font-bold text-sm md:text-base group">
-                        <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:border-[#37FFDB]/50 group-hover:bg-[#37FFDB]/10 transition-all">
-                            <Mail className="w-5 h-5 md:w-6 md:h-6 text-[#37FFDB]" />
+                    {/* Feature Cards Inline for Right Column */}
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 xl:gap-6 pt-4">
+                        <div className="p-6 rounded-[1.5rem] bg-white/5 border border-white/10 flex flex-col items-center xl:items-start group hover:bg-white/10 transition-all duration-500">
+                            <Building2 className="w-8 h-8 text-[#3200C1] mb-3 group-hover:scale-110 transition-transform" />
+                            <p className="text-xl font-black text-white">+5.000</p>
+                            <span className="text-[9px] font-bold uppercase text-slate-500 tracking-widest leading-none mt-1 text-center xl:text-left">Modelos Únicos</span>
                         </div>
-                        <span className="truncate max-w-[250px] md:max-w-none">{contactEmail}</span>
-                    </a>
-                    <div className="flex flex-col sm:flex-row gap-6 md:gap-12">
-                        <a href={`tel:${contactPhone1.replace(/\s+/g, '')}`} className="flex items-center gap-4 text-slate-400 hover:text-white transition-all font-bold text-sm md:text-base group">
-                            <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:border-[#37FFDB]/50 group-hover:bg-[#37FFDB]/10 transition-all">
-                                <Phone className="w-5 h-5 md:w-6 md:h-6 text-[#37FFDB]" />
+                        <div className="p-6 rounded-[1.5rem] bg-white/5 border border-white/10 flex flex-col items-center xl:items-start group hover:bg-white/10 transition-all duration-500">
+                            <ShieldCheck className="w-8 h-8 text-[#37FFDB] mb-3 group-hover:scale-110 transition-transform" />
+                            <p className="text-xl font-black text-white">Certificado</p>
+                            <span className="text-[9px] font-bold uppercase text-slate-500 tracking-widest leading-none mt-1 text-center xl:text-left">Calidad Segura</span>
+                        </div>
+                        <div className="p-6 rounded-[1.5rem] bg-white/5 border border-white/10 flex flex-col items-center xl:items-start group hover:bg-white/10 transition-all duration-500">
+                            <Globe className="w-8 h-8 text-emerald-400 mb-3 group-hover:scale-110 transition-transform" />
+                            <p className="text-xl font-black text-white">Nacional</p>
+                            <span className="text-[9px] font-bold uppercase text-slate-500 tracking-widest leading-none mt-1 text-center xl:text-left">Todas las Regiones</span>
+                        </div>
+                    </div>
+
+                    {/* Contact Links */}
+                    <div className="flex flex-col md:flex-row flex-wrap items-center xl:items-start gap-6 md:gap-10">
+                        <a href={`mailto:${contactEmail}`} className="flex items-center gap-3 text-slate-400 hover:text-white transition-all font-bold text-sm group">
+                            <div className="w-9 h-9 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:bg-[#37FFDB]/10 transition-all">
+                                <Mail className="w-4 h-4 text-[#37FFDB]" />
                             </div>
-                            {contactPhone1}
+                            {contactEmail}
                         </a>
-                        <a href={`tel:${contactPhone2.replace(/\s+/g, '')}`} className="flex items-center gap-4 text-slate-400 hover:text-white transition-all font-bold text-sm md:text-base group">
-                            <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:border-[#37FFDB]/50 group-hover:bg-[#37FFDB]/10 transition-all">
-                                <Phone className="w-5 h-5 md:w-6 md:h-6 text-[#37FFDB]" />
-                            </div>
-                            {contactPhone2}
-                        </a>
+                        <div className="flex gap-10">
+                            <a href={`tel:${contactPhone1.replace(/\s+/g, '')}`} className="flex items-center gap-3 text-slate-400 hover:text-white transition-all font-bold text-sm group">
+                                <div className="w-9 h-9 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:bg-[#37FFDB]/10 transition-all">
+                                    <Phone className="w-4 h-4 text-[#37FFDB]" />
+                                </div>
+                                {contactPhone1}
+                            </a>
+                            <a href={`tel:${contactPhone2.replace(/\s+/g, '')}`} className="flex items-center gap-3 text-slate-400 hover:text-white transition-all font-bold text-sm group">
+                                <div className="w-9 h-9 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:bg-[#37FFDB]/10 transition-all">
+                                    <Phone className="w-4 h-4 text-[#37FFDB]" />
+                                </div>
+                                {contactPhone2}
+                            </a>
+                        </div>
                     </div>
                 </div>
             </main>
 
             {/* Footer */}
-            <footer className="w-full px-6 py-10 md:px-12 md:py-12 relative z-10 flex flex-col md:flex-row justify-between items-center gap-6 border-t border-white/5 bg-[#020110]/95 backdrop-blur-xl">
+            <footer className="w-full px-6 py-8 md:px-12 md:py-10 relative z-20 flex flex-col md:flex-row justify-between items-center gap-6 border-t border-white/5 bg-[#020110]/95 backdrop-blur-xl">
                 <p className="text-slate-500 text-[10px] md:text-[11px] font-black uppercase tracking-[0.3em] text-center md:text-left leading-relaxed">
                     © 2024 solocasaschile.com — El Comparador de Chile
                 </p>
-                <div className="flex items-center gap-6 text-[10px] md:text-[11px] font-black uppercase tracking-[0.3em] text-[#37FFDB]/40">
-                    <span className="text-[#37FFDB] animate-pulse">Chile Edition</span>
+                <div className="flex items-center gap-6 text-[10px] md:text-[11px] font-black uppercase tracking-[0.3em] text-[#37FFDB]/30">
+                    <span className="text-[#37FFDB]">Official Launch</span>
                     <span className="w-1.5 h-1.5 rounded-full bg-white/10"></span>
-                    <span>Lanzamiento v2.0</span>
+                    <span>Chile v2.0</span>
                 </div>
             </footer>
         </div>
@@ -155,14 +222,14 @@ function AndesSilhouette({ color = "#FFFFFF" }: { color?: string }) {
                 stroke={color} 
                 strokeWidth="1.2" 
                 strokeDasharray="6 6"
-                className="opacity-60"
+                className="opacity-50"
             />
             <path 
                 d="M0 190 L150 150 L300 185 L450 125 L600 170 L750 90 L900 140 L1050 115 L1200 170 L1350 155 L1440 195" 
                 stroke={color} 
                 strokeWidth="0.6" 
                 strokeDasharray="3 3"
-                className="opacity-40"
+                className="opacity-20"
             />
         </svg>
     );
