@@ -62,7 +62,7 @@ export default async function ComingSoonPage() {
                             <img 
                                 src={logoUrl} 
                                 alt={siteName} 
-                                className="h-28 md:h-56 w-auto drop-shadow-[0_0_40px_rgba(55,255,219,0.15)] md:drop-shadow-[0_0_60px_rgba(55,255,219,0.25)] brightness-110 group-hover:scale-[1.03] transition-transform duration-700 ease-out" 
+                                className="h-auto w-auto max-w-[280px] md:max-w-[500px] drop-shadow-[0_0_40px_rgba(55,255,219,0.15)] md:drop-shadow-[0_0_60px_rgba(55,255,219,0.25)] brightness-110 group-hover:scale-[1.03] transition-transform duration-700 ease-out" 
                             />
                         ) : (
                             <div className="w-28 h-28 md:w-40 md:h-40 rounded-[2.5rem] bg-gradient-to-br from-[#3200C1] to-[#020110] flex items-center justify-center shadow-2xl shadow-[#3200C1]/40 border border-[#37FFDB]/30">
