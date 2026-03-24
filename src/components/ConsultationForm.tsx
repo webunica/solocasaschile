@@ -1,23 +1,42 @@
 "use client";
 
 import { useState } from "react";
-import { Mail, Building2, User, MessageSquare, Send, CheckCircle2, Loader2, RefreshCw } from "lucide-react";
+import { Mail, Building2, User, MessageSquare, Send, CheckCircle2, Loader2, RefreshCw, AlertCircle } from "lucide-react";
 
 export default function ConsultationForm() {
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setIsLoading(true);
+        setError(null);
 
-        // Simulamos envío a contacto@solocasaschile.com (Mock de API)
-        // En un entorno real, aquí llamaríamos a /api/consultation
+        const formData = new FormData(e.currentTarget);
+        const data = {
+            company: formData.get("company"),
+            contact: formData.get("contact"),
+            email: formData.get("email"),
+            message: formData.get("message"),
+        };
+
         try {
-            await new Promise(resolve => setTimeout(resolve, 1500));
+            const response = await fetch("/api/consultation", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data),
+            });
+
+            if (!response.ok) {
+                const resData = await response.json();
+                throw new Error(resData.error || "Error al enviar la consulta");
+            }
+
             setIsSubmitted(true);
-        } catch (error) {
-            console.error("Error sending consultation:", error);
+        } catch (err: any) {
+            console.error("Error sending consultation:", err);
+            setError(err.message || "No se pudo enviar el mensaje por favor reintente.");
         } finally {
             setIsLoading(false);
         }
@@ -113,6 +132,13 @@ export default function ConsultationForm() {
                         ></textarea>
                     </div>
                 </div>
+
+                {error && (
+                    <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 flex items-start gap-3 text-red-400 text-xs animate-in slide-in-from-top-2 duration-300">
+                        <AlertCircle className="w-4 h-4 shrink-0" />
+                        <span>{error}</span>
+                    </div>
+                )}
 
                 <button 
                     disabled={isLoading}

@@ -59,7 +59,7 @@ export default async function ComingSoonPage() {
                 <div className="flex-1 text-center xl:text-left space-y-12 animate-in fade-in slide-in-from-right duration-1000">
                     
                     <div className="space-y-8">
-                        <h1 className="text-4xl md:text-8xl xl:text-9xl font-black leading-[0.9] tracking-tighter">
+                        <h1 className="text-2xl md:text-6xl xl:text-7xl font-black leading-[0.9] tracking-tighter">
                             TU HOGAR <br />
                             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#37FFDB] via-[#FFFFFF] to-[#3200C1] animate-gradient-x">EVOLUCIONADO</span>
                         </h1>
